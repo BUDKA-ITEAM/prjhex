@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AnimeDle — Главная</title>
+  <title>AnimeDle — One Piece</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -24,18 +24,122 @@
       <li><a href="index.html" data-page="home" aria-current="page">Главная</a></li>
       <li><a href="how-to-play.html" data-page="how-to-play">Как играть</a></li>
       <li><a href="profile.html" data-page="profile">Профиль</a></li>
+      <li><a href="#" data-page="settings">Настройки</a></li>
     </ul>
   </nav>
 
   <main id="main-content">
     <section id="page-home" aria-labelledby="home-heading">
       <header id="home-title">
-        <h1 id="home-heading">Аниме</h1>
-        <p>Выбери тайтл — персонажи из него появятся в игре.</p>
+        <h1 id="home-heading">Персонаж дня</h1>
+        <p>One Piece · обновляется раз в сутки</p>
       </header>
 
-      <ul id="anime-grid" role="list"></ul>
-      <p id="anime-grid-status" role="status" aria-live="polite" hidden></p>
+      <!-- ============================================================
+           ЦИТАТА ДНЯ
+           ============================================================ -->
+      <section id="quote-section" data-state="locked" aria-labelledby="quote-heading">
+        <h2 id="quote-heading" class="section-heading">Цитата дня</h2>
+
+        <p id="quote-placeholder">Цитата скрыта до разблокировки.</p>
+
+        <blockquote id="quote-full" hidden></blockquote>
+
+        <div id="quote-lock">
+          <p>
+            Полная цитата откроется после
+            <strong><span id="wrong-attempts-needed">3</span></strong>
+            неверных попыток.
+          </p>
+          <p>
+            Сделано неверных:
+            <strong><span id="wrong-attempts-count">0</span></strong>
+            из <span id="wrong-attempts-total">3</span>.
+          </p>
+          <button id="reveal-quote-btn" type="button" class="btn" disabled>
+            Открыть полную цитату
+          </button>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           ВВОД ДОГАДКИ
+           ============================================================ -->
+      <section id="guess-section" aria-labelledby="guess-heading">
+        <h2 id="guess-heading" class="section-heading">Твоя догадка</h2>
+
+        <form id="guess-form" autocomplete="off" novalidate>
+          <label for="character-input" class="sr-only">Имя персонажа</label>
+
+          <div id="autocomplete" role="combobox" aria-expanded="false"
+               aria-haspopup="listbox" aria-owns="suggestions-list">
+            <input
+              id="character-input"
+              name="character"
+              type="text"
+              placeholder="Начни вводить имя персонажа..."
+              autocomplete="off"
+              spellcheck="false"
+              aria-autocomplete="list"
+              aria-controls="suggestions-list"
+              required
+            />
+            <ul id="suggestions-list" role="listbox" hidden></ul>
+          </div>
+
+          <button type="submit" id="submit-guess-btn" class="btn btn--accent">
+            Угадать
+          </button>
+        </form>
+
+        <p id="guess-error" class="form-error" role="alert" hidden></p>
+      </section>
+
+      <!-- ============================================================
+           ТАБЛИЦА ПОПЫТОК
+           ============================================================ -->
+      <section id="results-section" aria-labelledby="results-heading">
+        <h2 id="results-heading" class="section-heading">Попытки</h2>
+
+        <div class="results-wrapper">
+          <table id="results-table">
+            <thead>
+              <tr>
+                <th scope="col">Персонаж</th>
+                <th scope="col">Дебют</th>
+                <th scope="col">Принадлежность</th>
+                <th scope="col">Занятие</th>
+                <th scope="col">Происхождение</th>
+                <th scope="col">Статус</th>
+                <th scope="col">Возраст</th>
+                <th scope="col">Награда</th>
+                <th scope="col">Тип фрукта</th>
+              </tr>
+            </thead>
+            <tbody id="results-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           СТАТУС ИГРЫ
+           ============================================================ -->
+      <section id="status-section" aria-labelledby="status-heading">
+        <h2 id="status-heading" class="sr-only">Статус</h2>
+
+        <p id="status-message" role="status" aria-live="polite">
+          Попыток: <span id="attempts-left">0</span>
+        </p>
+
+        <div id="result-banner" hidden role="status" aria-live="polite">
+          <p id="result-text"></p>
+          <p id="result-character"></p>
+        </div>
+
+        <button id="new-game-btn" type="button" class="btn" hidden>
+          Сыграть ещё
+        </button>
+      </section>
     </section>
   </main>
 

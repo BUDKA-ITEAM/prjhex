@@ -1,0 +1,18 @@
+import { useId } from 'react';
+
+function Sharingan() {
+  const id = useId();
+  return <svg className="scroll-emblem sharingan" viewBox="0 0 120 120" aria-hidden="true"><defs><radialGradient id={id}><stop stopColor="#fa6450"/><stop offset=".7" stopColor="#ba2425"/><stop offset="1" stopColor="#4e1719"/></radialGradient></defs><circle cx="60" cy="60" r="49" fill="#30221b" stroke="#94754c" strokeWidth="4"/><circle cx="60" cy="60" r="43" fill={`url(#${id})`} stroke="#170d0b" strokeWidth="3"/><circle cx="60" cy="60" r="31" fill="none" stroke="#351113" strokeWidth="2"/><circle cx="60" cy="60" r="11" fill="#100d0e"/>{[0,120,240].map(angle=><path key={angle} transform={`rotate(${angle} 60 60)`} d="M58 18C88 24 96 52 79 66C86 48 72 43 65 46C51 49 43 34 58 18Z" fill="#100d0e"/>)}<path d="M30 34Q50 13 76 26" fill="none" stroke="#ffb38a" strokeOpacity=".5" strokeWidth="4"/></svg>;
+}
+function Headband() {
+  return <svg className="scroll-emblem headband" viewBox="0 0 160 110" aria-hidden="true"><path d="M15 25Q80 9 145 25L148 85Q78 100 12 83Z" fill="#9c3030" stroke="#211712" strokeWidth="4"/><path d="M31 29Q80 21 129 30L130 78Q78 87 29 77Z" fill="#dbd8cd" stroke="#251e1b" strokeWidth="3"/><path d="M37 33Q78 26 122 34" fill="none" stroke="#fff7e6" strokeWidth="4"/>{[38,121].flatMap(x=>[39,67].map(y=><circle key={`${x}-${y}`} cx={x} cy={y} r="3" fill="#4f4944"/>))}<path d="M92 41C75 32 62 42 64 57C67 73 91 71 94 55C97 42 78 39 75 50C71 60 83 65 87 55M66 61L53 68L56 52L70 37M92 41L101 32" fill="none" stroke="#7e2729" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/></svg>;
+}
+function Ornament() {
+ return <svg className="scroll-frame" viewBox="0 0 300 190" preserveAspectRatio="none" aria-hidden="true"><path d="M3 3H297V187H3ZM8 8H292V182H8" fill="none" stroke="currentColor"/>{['','translate(300 0) scale(-1 1)','translate(0 190) scale(1 -1)','translate(300 190) scale(-1 -1)'].map(t=><g key={t} transform={t} fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M9 50L9 9H52L19 23ZM13 42L26 27L41 13M10 71C31 61 38 44 35 34C48 23 65 20 76 10M22 60C47 64 69 48 60 37C53 28 39 38 45 45C50 50 56 42 50 40M10 99Q20 83 28 78"/><path d="M13 13L21 13L13 21Z" fill="currentColor"/></g>)}</svg>;
+}
+export function NarutoBanner({ failedAttempts, playing, busy, hintRevealed, onHint, onSurrender }: {failedAttempts:number;playing:boolean;busy:boolean;hintRevealed:boolean;onHint:()=>void;onSurrender:()=>void}) {
+ return <section className="naruto-scroll illustrated-scroll" aria-labelledby="game-title"><div className="scroll-roller" aria-hidden="true"/><span className="scroll-cloud cloud-left" aria-hidden="true">☁</span><span className="scroll-cloud cloud-right" aria-hidden="true">☁</span><h1 id="game-title">Угадай сегодняшнего персонажа из<br/>«Наруто»!</h1><div className="scroll-cards">
+ <button className="scroll-card" disabled={!playing||busy||failedAttempts<5||hintRevealed} onClick={onHint} title={hintRevealed?'Подсказка уже открыта':failedAttempts<5?`Ещё ${5-failedAttempts} неверных попыток`:'Открыть подсказку первого появления'}><Ornament/><Sharingan/><span aria-live="polite">{hintRevealed?'ПОДСКАЗКА ОТКРЫТА':'ПЕРВОЕ ПОЯВЛЕНИЕ'} · {Math.min(failedAttempts,5)}/5</span></button>
+ <button className="scroll-card" disabled={!playing||busy||failedAttempts<10} onClick={onSurrender} title={failedAttempts<10?`Ещё ${10-failedAttempts} неверных попыток`:'Показать ответ и завершить партию'}><Ornament/><Headband/><span aria-live="polite">ПОКАЗАТЬ ПЕРСОНАЖА И СДАТЬСЯ<br/>{Math.min(failedAttempts,10)}/10</span></button>
+ </div><div className="scroll-bottom" aria-hidden="true"/></section>;
+}

@@ -1,0 +1,91 @@
+{
+  "dle_id": "onepiece",
+  "title": "One Piece",
+  "version": 1,
+
+  "source": {
+    "type": "fandom",
+    "wiki": "onepiece",
+    "language": "en",
+    "categories": ["Characters", "Male Characters", "Female Characters"]
+  },
+
+  "guess": {
+    "source": "ename",
+    "fallback": "name",
+    "label": "Персонаж",
+    "colorize": false
+  },
+
+  "columns": [
+    {
+      "key": "first",
+      "label": "Дебют",
+      "source": "first",
+      "type": "appearance",
+      "compare": { "kind": "appearance_number", "exact": 5, "close": 20 }
+    },
+    {
+      "key": "affiliation",
+      "label": "Принадлежность",
+      "source": "affiliation",
+      "type": "list",
+      "compare": { "kind": "list_priority" }
+    },
+    {
+      "key": "occupation",
+      "label": "Занятие",
+      "source": "occupation",
+      "type": "list",
+      "compare": { "kind": "list_priority" }
+    },
+    {
+      "key": "origin",
+      "label": "Происхождение",
+      "source": "origin",
+      "type": "region",
+      "compare": { "kind": "region" }
+    },
+    {
+      "key": "status",
+      "label": "Статус",
+      "source": "status",
+      "type": "enum",
+      "values": ["Alive", "Deceased", "Unknown"],
+      "compare": { "kind": "exact" }
+    },
+    {
+      "key": "age",
+      "label": "Возраст",
+      "source": "age",
+      "type": "number",
+      "unit": "years",
+      "compare": { "kind": "numeric_close", "tolerance": 5 }
+    },
+    {
+      "key": "bounty",
+      "label": "Награда",
+      "source": "bounty",
+      "type": "number",
+      "unit": "belly",
+      "hint": "Для моряков сумма пересчитана в бели (Cross Guild: 1 звезда = 100 000 000).",
+      "compare": { "kind": "numeric_order", "tolerance_percent": 10 }
+    },
+    {
+      "key": "dftype",
+      "label": "Тип фрукта",
+      "source": "dftype",
+      "type": "enum",
+      "values": [
+        "Paramecia",
+        "Zoan",
+        "Logia",
+        "Mythical Zoan",
+        "Ancient Zoan",
+        "Artificial Zoan",
+        "None"
+      ],
+      "compare": { "kind": "exact" }
+    }
+  ]
+}

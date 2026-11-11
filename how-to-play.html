@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AnimeDle — Как играть</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header id="site-header">
+    <button id="burger-btn" type="button" aria-label="Открыть меню"
+            aria-expanded="false" aria-controls="side-menu">
+      <span></span><span></span><span></span>
+    </button>
+    <div id="header-icon" aria-hidden="true"></div>
+    <div id="header-slot"></div>
+  </header>
+
+  <div id="menu-backdrop" hidden></div>
+
+  <nav id="side-menu" aria-label="Главное меню" hidden>
+    <ul>
+      <li><a href="index.html" data-page="home">Главная</a></li>
+      <li><a href="how-to-play.html" data-page="how-to-play" aria-current="page">Как играть</a></li>
+      <li><a href="profile.html" data-page="profile">Профиль</a></li>
+    </ul>
+  </nav>
+
+  <main id="main-content">
+    <section id="page-how-to-play" aria-labelledby="htp-heading">
+      <header id="htp-title">
+        <h1 id="htp-heading">Как играть</h1>
+        <p>Правила займут минуту, играть можно каждый день.</p>
+      </header>
+
+      <article class="rules">
+        <h2>Цель</h2>
+        <p>Угадать персонажа дня за минимальное число попыток.</p>
+
+        <h2>Как угадывать</h2>
+        <ol>
+          <li>Введи имя персонажа в поле на главной.</li>
+          <li>Нажми «Угадать».</li>
+          <li>Таблица покажет, в чём догадка совпала с ответом, а где — нет.</li>
+        </ol>
+
+        <h2>Значение цветов</h2>
+        <ul class="rules-legend">
+          <li><span class="legend-swatch" data-status="correct"></span> Точное совпадение</li>
+          <li><span class="legend-swatch" data-status="close"></span> Близко (год ±2, возраст ±5, рост ±10 см)</li>
+          <li><span class="legend-swatch" data-status="wrong"></span> Не совпало</li>
+          <li>
+            <span class="legend-swatch" data-status="up"></span>
+            <span class="legend-swatch" data-status="down"></span>
+            Ответ больше / меньше
+          </li>
+        </ul>
+
+        <h2>Колонки таблицы</h2>
+        <ul>
+          <li><strong>Персонаж</strong> — кого ты угадал</li>
+          <li><strong>Аниме</strong> — из какого тайтла</li>
+          <li><strong>Пол</strong>, <strong>Волосы</strong>, <strong>Возраст</strong>, <strong>Рост</strong>, <strong>Роль</strong>, <strong>Год</strong> — характеристики</li>
+        </ul>
+
+        <h2>Цитата дня</h2>
+        <p>На главной есть замаскированная цитата. Полная цитата открывается после <strong>3 неверных попыток</strong> — она поможет, если ты застрял.</p>
+      </article>
+    </section>
+  </main>
+
+  <footer id="site-footer">
+    <div id="footer-inner">
+      <a id="footer-github" href="https://github.com/chikichumba"
+         target="_blank" rel="noopener noreferrer" aria-label="Репозиторий на GitHub">
+        <svg viewBox="0 0 16 16" width="20" height="20" aria-hidden="true" fill="currentColor">
+          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+        </svg>
+        <span>GitHub</span>
+      </a>
+
+      <div id="footer-actions">
+        <button type="button" class="btn" data-page="help">Помощь</button>
+        <button type="button" class="btn" data-page="feedback">Предложения</button>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js" defer></script>
+</body>
+</html>

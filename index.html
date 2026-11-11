@@ -1,165 +1,63 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AnimeDle — One Piece</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>AnimeDle — угадай персонажа дня</title>
+  <meta name="description" content="Ежедневная игра: угадай аниме-персонажа по характеристикам.">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+<main id="main-content">
+  <h1 class="sr-only">AnimeDle: угадай персонажа дня</h1>
 
-  <header id="site-header">
-    <button id="burger-btn" type="button" aria-label="Открыть меню"
-            aria-expanded="false" aria-controls="side-menu">
-      <span></span><span></span><span></span>
-    </button>
-    <div id="header-icon" aria-hidden="true"></div>
-    <div id="header-slot"></div>
-  </header>
+  <section class="quote" aria-labelledby="quote-h">
+    <h2 id="quote-h">Цитата дня</h2>
+    <p id="quote-locked" class="dim">Цитата скрыта до разблокировки</p>
+    <p id="wrong-counter" class="dim" role="status" aria-live="polite">Сделано неверных: <b id="wrong-n">0</b> из <span id="wrong-need">3</span></p>
+    <button id="quote-btn" class="btn" type="button" disabled>Открыть полную цитату</button>
+    <blockquote id="quote-text" hidden></blockquote>
+  </section>
 
-  <div id="menu-backdrop" hidden></div>
-
-  <nav id="side-menu" aria-label="Главное меню" hidden>
-    <ul>
-      <li><a href="index.html" data-page="home" aria-current="page">Главная</a></li>
-      <li><a href="how-to-play.html" data-page="how-to-play">Как играть</a></li>
-      <li><a href="profile.html" data-page="profile">Профиль</a></li>
-      <li><a href="#" data-page="settings">Настройки</a></li>
-    </ul>
-  </nav>
-
-  <main id="main-content">
-    <section id="page-home" aria-labelledby="home-heading">
-      <header id="home-title">
-        <h1 id="home-heading">Персонаж дня</h1>
-        <p>One Piece · обновляется раз в сутки</p>
-      </header>
-
-      <!-- ============================================================
-           ЦИТАТА ДНЯ
-           ============================================================ -->
-      <section id="quote-section" data-state="locked" aria-labelledby="quote-heading">
-        <h2 id="quote-heading" class="section-heading">Цитата дня</h2>
-
-        <p id="quote-placeholder">Цитата скрыта до разблокировки.</p>
-
-        <blockquote id="quote-full" hidden></blockquote>
-
-        <div id="quote-lock">
-          <p>
-            Полная цитата откроется после
-            <strong><span id="wrong-attempts-needed">3</span></strong>
-            неверных попыток.
-          </p>
-          <p>
-            Сделано неверных:
-            <strong><span id="wrong-attempts-count">0</span></strong>
-            из <span id="wrong-attempts-total">3</span>.
-          </p>
-          <button id="reveal-quote-btn" type="button" class="btn" disabled>
-            Открыть полную цитату
-          </button>
-        </div>
-      </section>
-
-      <!-- ============================================================
-           ВВОД ДОГАДКИ
-           ============================================================ -->
-      <section id="guess-section" aria-labelledby="guess-heading">
-        <h2 id="guess-heading" class="section-heading">Твоя догадка</h2>
-
-        <form id="guess-form" autocomplete="off" novalidate>
-          <label for="character-input" class="sr-only">Имя персонажа</label>
-
-          <div id="autocomplete" role="combobox" aria-expanded="false"
-               aria-haspopup="listbox" aria-owns="suggestions-list">
-            <input
-              id="character-input"
-              name="character"
-              type="text"
-              placeholder="Начни вводить имя персонажа..."
-              autocomplete="off"
-              spellcheck="false"
-              aria-autocomplete="list"
-              aria-controls="suggestions-list"
-              required
-            />
-            <ul id="suggestions-list" role="listbox" hidden></ul>
-          </div>
-
-          <button type="submit" id="submit-guess-btn" class="btn btn--accent">
-            Угадать
-          </button>
-        </form>
-
-        <p id="guess-error" class="form-error" role="alert" hidden></p>
-      </section>
-
-      <!-- ============================================================
-           ТАБЛИЦА ПОПЫТОК
-           ============================================================ -->
-      <section id="results-section" aria-labelledby="results-heading">
-        <h2 id="results-heading" class="section-heading">Попытки</h2>
-
-        <div class="results-wrapper">
-          <table id="results-table">
-            <thead>
-              <tr>
-                <th scope="col">Персонаж</th>
-                <th scope="col">Дебют</th>
-                <th scope="col">Принадлежность</th>
-                <th scope="col">Занятие</th>
-                <th scope="col">Происхождение</th>
-                <th scope="col">Статус</th>
-                <th scope="col">Возраст</th>
-                <th scope="col">Награда</th>
-                <th scope="col">Тип фрукта</th>
-              </tr>
-            </thead>
-            <tbody id="results-body"></tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- ============================================================
-           СТАТУС ИГРЫ
-           ============================================================ -->
-      <section id="status-section" aria-labelledby="status-heading">
-        <h2 id="status-heading" class="sr-only">Статус</h2>
-
-        <p id="status-message" role="status" aria-live="polite">
-          Попыток: <span id="attempts-left">0</span>
-        </p>
-
-        <div id="result-banner" hidden role="status" aria-live="polite">
-          <p id="result-text"></p>
-          <p id="result-character"></p>
-        </div>
-
-        <button id="new-game-btn" type="button" class="btn" hidden>
-          Сыграть ещё
-        </button>
-      </section>
-    </section>
-  </main>
-
-  <footer id="site-footer">
-    <div id="footer-inner">
-      <a id="footer-github" href="https://github.com/chikichumba"
-         target="_blank" rel="noopener noreferrer" aria-label="Репозиторий на GitHub">
-        <svg viewBox="0 0 16 16" width="20" height="20" aria-hidden="true" fill="currentColor">
-          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
-        </svg>
-        <span>GitHub</span>
-      </a>
-
-      <div id="footer-actions">
-        <button type="button" class="btn" data-page="help">Помощь</button>
-        <button type="button" class="btn" data-page="feedback">Предложения</button>
-      </div>
+  <form id="guess-form" autocomplete="off">
+    <div class="ac-wrap">
+      <label class="sr-only" for="guess-input">Имя персонажа</label>
+      <img id="sel-ico" class="sel-ico" alt="" referrerpolicy="no-referrer" hidden>
+      <input id="guess-input" type="text" placeholder="Имя персонажа…" role="combobox"
+             aria-autocomplete="list" aria-expanded="false" aria-controls="ac-list" disabled>
+      <ul id="ac-list" class="ac-list" role="listbox" aria-label="Подсказки" hidden></ul>
     </div>
-  </footer>
+    <button id="guess-btn" class="btn" type="submit" disabled>Угадать</button>
+  </form>
+  <p id="form-error" class="form-error" role="alert"></p>
 
-  <script src="script.js" defer></script>
+  <div class="status-row">
+    <span>Попыток: <b id="attempts-n">0</b></span>
+  </div>
+
+  <div id="win" class="win" role="status" aria-live="polite" hidden>
+    <b>Угадал!</b> Это <b id="win-name"></b>.
+    <div class="dim">Следующий персонаж через <span class="countdown">--:--:--</span></div>
+  </div>
+
+  <div id="lose" class="lose" role="status" aria-live="polite" hidden>
+    <img id="lose-img" class="lose-img" alt="" referrerpolicy="no-referrer" hidden>
+    <div>
+      <b>Попытки закончились.</b> Сегодня был <b id="lose-name"></b>.
+      <div class="dim">Следующий персонаж через <span class="countdown">--:--:--</span></div>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <caption class="sr-only">Твои попытки</caption>
+      <thead><tr id="thead-row"></tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+</main>
+
+<script type="module" src="js/common.js"></script>
+<script type="module" src="js/game.js"></script>
 </body>
 </html>

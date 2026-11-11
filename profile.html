@@ -1,116 +1,32 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AnimeDle — Профиль</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Профиль — AnimeDle</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+<main id="main-content" class="page">
+  <h1>Профиль</h1>
 
-  <header id="site-header">
-    <button id="burger-btn" type="button" aria-label="Открыть меню"
-            aria-expanded="false" aria-controls="side-menu">
-      <span></span><span></span><span></span>
-    </button>
-    <div id="header-icon" aria-hidden="true"></div>
-    <div id="header-slot"></div>
-  </header>
-
-  <div id="menu-backdrop" hidden></div>
-
-  <nav id="side-menu" aria-label="Главное меню" hidden>
-    <ul>
-      <li><a href="index.html" data-page="home">Главная</a></li>
-      <li><a href="how-to-play.html" data-page="how-to-play">Как играть</a></li>
-      <li><a href="profile.html" data-page="profile" aria-current="page">Профиль</a></li>
-    </ul>
-  </nav>
-
-  <main id="main-content">
-    <section id="page-profile" aria-labelledby="profile-heading">
-      <header id="profile-title">
-        <h1 id="profile-heading">Профиль</h1>
-        <p>Твоя статистика за всё время.</p>
-      </header>
-
-      <section aria-labelledby="stats-heading">
-        <h2 id="stats-heading" class="section-heading">Общая статистика</h2>
-
-        <ul class="stats-grid" role="list">
-          <li class="stat-card">
-            <p class="stat-card__label">Сыграно</p>
-            <p class="stat-card__value">42</p>
-          </li>
-          <li class="stat-card">
-            <p class="stat-card__label">Побед</p>
-            <p class="stat-card__value">38</p>
-          </li>
-          <li class="stat-card">
-            <p class="stat-card__label">Процент побед</p>
-            <p class="stat-card__value">90%</p>
-          </li>
-          <li class="stat-card">
-            <p class="stat-card__label">Текущая серия</p>
-            <p class="stat-card__value">5</p>
-          </li>
-          <li class="stat-card">
-            <p class="stat-card__label">Лучшая серия</p>
-            <p class="stat-card__value">12</p>
-          </li>
-        </ul>
-      </section>
-
-      <section aria-labelledby="distribution-heading">
-        <h2 id="distribution-heading" class="section-heading">Распределение попыток</h2>
-
-        <ol class="distribution" role="list">
-          <li class="distribution__row">
-            <span class="distribution__label">1</span>
-            <span class="distribution__bar" style="width: 40%">8</span>
-          </li>
-          <li class="distribution__row">
-            <span class="distribution__label">2</span>
-            <span class="distribution__bar" style="width: 60%">12</span>
-          </li>
-          <li class="distribution__row">
-            <span class="distribution__label">3</span>
-            <span class="distribution__bar" style="width: 50%">10</span>
-          </li>
-          <li class="distribution__row">
-            <span class="distribution__label">4</span>
-            <span class="distribution__bar" style="width: 30%">6</span>
-          </li>
-          <li class="distribution__row">
-            <span class="distribution__label">5</span>
-            <span class="distribution__bar" style="width: 10%">2</span>
-          </li>
-          <li class="distribution__row">
-            <span class="distribution__label">6+</span>
-            <span class="distribution__bar" style="width: 0%">0</span>
-          </li>
-        </ol>
-      </section>
-    </section>
-  </main>
-
-  <footer id="site-footer">
-    <div id="footer-inner">
-      <a id="footer-github" href="https://github.com/chikichumba"
-         target="_blank" rel="noopener noreferrer" aria-label="Репозиторий на GitHub">
-        <svg viewBox="0 0 16 16" width="20" height="20" aria-hidden="true" fill="currentColor">
-          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
-        </svg>
-        <span>GitHub</span>
-      </a>
-
-      <div id="footer-actions">
-        <button type="button" class="btn" data-page="help">Помощь</button>
-        <button type="button" class="btn" data-page="feedback">Предложения</button>
-      </div>
+  <section aria-labelledby="total-h">
+    <h2 id="total-h">Статистика</h2>
+    <div class="stats">
+      <div class="stat"><b id="st-played">0</b>сыграно</div>
+      <div class="stat"><b id="st-wins">0</b>побед</div>
+      <div class="stat"><b id="st-rate">0%</b>процент побед</div>
+      <div class="stat"><b id="st-streak">0</b>текущая серия</div>
+      <div class="stat"><b id="st-best">0</b>лучшая серия</div>
     </div>
-  </footer>
+  </section>
 
-  <script src="script.js" defer></script>
+  <section aria-labelledby="dist-h">
+    <h2 id="dist-h">Победы по числу попыток</h2>
+    <div id="dist" class="dist"></div>
+  </section>
+</main>
+<script type="module" src="js/common.js"></script>
+<script type="module" src="js/profile.js"></script>
 </body>
 </html>

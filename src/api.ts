@@ -27,7 +27,13 @@ export async function api<T>(path:string,options:RequestInit={}):Promise<T>{
  if(!worlds.some(w=>w.id===world))throw new RequestError('NO_PROFILES','Неизвестный мир.');
  const cols=configuration(world).columns,criteria=gameCriteria(world);const data=await catalog(world);options.signal?.throwIfAborted();let result:unknown;
  if(url.pathname==='/bootstrap') result={worlds:worlds.map(w=>({...w,criteria:gameCriteria(w.id)})),coverage:await Promise.all(worlds.map(async w=>{const rows=await catalog(w.id);return {worldId:w.id,catalog:rows.length,playable:rows.length,reviewed:0,drafts:0,importedWorks:0};})),stats:stats(world),draftMode:false};
- else if(url.pathname==='/characters'){const q=(url.searchParams.get('q')||'').trim().toLocaleLowerCase();result={characters:data.filter(c=>[c.name,...c.aliases??[]].some(n=>n.toLocaleLowerCase().includes(q))).slice(0,30).map(summary)};}
+ else if(url.pathname==='/catalog'){
+ const q=(url.searchParams.get('q')||'').trim().toLocaleLowerCase();
+ const numeric=(key:string,fallback:number,max:number)=>{const value=Number(url.searchParams.get(key)??fallback);return Number.isFinite(value)?Math.max(0,Math.min(max,Math.floor(value))):fallback;};
+ const offset=numeric('offset',0,Number.MAX_SAFE_INTEGER),limit=Math.max(1,numeric('limit',40,100));
+ const filtered=data.filter(c=>[c.name,...c.aliases??[]].some(name=>name.toLocaleLowerCase().includes(q)));
+ result={characters:filtered.slice(offset,offset+limit).map(summary),total:filtered.length};
+ } else if(url.pathname==='/characters'){const q=(url.searchParams.get('q')||'').trim().toLocaleLowerCase();result={characters:data.filter(c=>[c.name,...c.aliases??[]].some(n=>n.toLocaleLowerCase().includes(q))).slice(0,30).map(summary)};}
  else if(url.pathname==='/games'&&options.method==='POST'){
 
  if(!data.length)throw new RequestError('NO_PROFILES','Каталог пуст.');

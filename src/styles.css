@@ -466,3 +466,33 @@ h1 { font-family:'Arial Black','Segoe UI',Arial,sans-serif; font-size:clamp(42px
   .onepiece-scroll h1 { top:4.8%; font-size:clamp(9px,2.3vw,12px); }
   .onepiece-card { padding-bottom:8%; }
 }
+
+/* Searchable character library, independent of the active guessing game. */
+.modal.modal-catalog { width:min(900px,calc(100% - 32px)); padding:24px; background:#0d263b; color:#e4f1f8; border-color:#3c6c86; color-scheme:dark; }
+.catalog-worlds { display:flex; gap:10px; margin-bottom:16px; }
+.catalog-worlds button { display:flex; align-items:center; justify-content:center; gap:8px; flex:1; padding:12px; border:1px solid #3e6881; border-radius:7px; background:#12344d; color:#aecddd; }
+.catalog-worlds button[aria-pressed="true"] { background:#216789; border-color:#6ac1dc; color:#fff; }
+.catalog-search { display:flex; align-items:center; gap:10px; padding:10px 12px; border:1px solid #527d96; border-radius:7px; background:#091f32; color:#9fcfe2; }
+.catalog-search:focus-within { outline:2px solid #6ac1dc; outline-offset:2px; }
+.catalog-search input { width:100%; min-width:0; padding:4px 0; border:0; outline:none; background:transparent; color:#edf8ff; font:inherit; font-size:14px; }
+.catalog-search input::placeholder { color:#8eafc3; }
+.catalog-summary { margin:15px 0; color:#a9cbdc; font-size:12px; }
+.catalog-results { min-height:220px; }
+.catalog-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; margin:0; padding:0; list-style:none; }
+.catalog-card { display:flex; flex-direction:column; align-items:center; gap:6px; min-width:0; overflow:hidden; padding:10px; border:1px solid #2d546d; border-radius:8px; background:#123149; text-align:center; }
+.catalog-portrait { display:grid; place-items:center; width:100%; height:120px; color:#a1cddd; font-size:25px; }
+.catalog-portrait img { display:block; width:100%; height:100%; object-fit:contain; }
+.catalog-card strong { width:100%; font-size:13px; overflow-wrap:anywhere; }
+.catalog-card small { width:100%; font-size:10px; color:#9fbed0; overflow-wrap:anywhere; }
+.catalog-message { display:flex; min-height:220px; flex-direction:column; align-items:center; justify-content:center; gap:12px; text-align:center; font-size:14px; color:#bbd7e7; }
+.catalog-pagination { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:18px; }
+.catalog-pagination span { font-size:12px; color:#afcddd; text-align:center; }
+.character-catalog .secondary-button { background:#153a53; border-color:#48768f; color:#e2f2fb; }
+@media(max-width:600px) { .modal.modal-catalog { padding:18px 14px; }.catalog-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }.catalog-pagination .secondary-button { padding:10px; font-size:11px; }.catalog-pagination span { font-size:10px; } }
+
+/* Missing photos retain a readable card width instead of shrinking to initials. */
+.avatar.avatar-placeholder { display:grid; place-items:center; }
+.app-shell:is([data-world="naruto"],[data-world="one-piece"]) .comparison-table .character-cell:has(.avatar-placeholder) { width:120px; max-width:100%; }
+.app-shell:is([data-world="naruto"],[data-world="one-piece"]) .comparison-table .character-cell .avatar.avatar-placeholder { display:grid; place-items:center; width:120px; max-width:100%; height:120px; min-height:120px; background:linear-gradient(145deg,#f0e6cc,#d5c39c); color:#7b6a4a; }
+.app-shell:is([data-world="naruto"],[data-world="one-piece"]) .comparison-table .avatar-placeholder svg { width:40px; height:40px; opacity:.75; }
+.app-shell[data-world="one-piece"] .comparison-table .character-cell .avatar.avatar-placeholder { background:linear-gradient(145deg,#1a425c,#102d43); color:#9fc9de; }

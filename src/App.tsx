@@ -1,7 +1,9 @@
+import { CharacterCatalog } from './CharacterCatalog.js';
+import { OnePieceBanner } from './OnePieceBanner.js';
 import { NarutoBanner } from './NarutoBanner.js';
 import { NatureIcons } from './NatureIcons.js';
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
-import { Anchor, ArrowDown, ArrowRight, ArrowUp, Check, CircleHelp, Copy, Database, Flame, Leaf, LoaderCircle, RotateCcw, Search, Shield, Sparkles, Target, Trophy, X, Zap } from 'lucide-react';
+import { Anchor, ArrowDown, ArrowRight, ArrowUp, Check, CircleHelp, Copy, Database, Flame, Leaf, LoaderCircle, RotateCcw, Search, Shield, Sparkles, Target, Trophy, UserRound, X, Zap } from 'lucide-react';
 import { worlds, worldById, type Bootstrap, type Cell, type CharacterSummary, type Criterion, type FranchiseId, type GameView } from '../shared/game.js';
 import { api, readSaved, save, RequestError } from './api.js';
 
@@ -12,9 +14,9 @@ const initialWorld = (): FranchiseId => { const saved = readSaved('anidle-world'
 function Avatar({ character, large = false }: { character: CharacterSummary; large?: boolean }) {
   const [failed,setFailed] = useState(false);
   useEffect(()=>setFailed(false),[character.imageUrl]);
-  const initials = character.name.split(/[\s,]+/).filter(Boolean).slice(0,2).map(s => s[0]).join('');
-  return <span className={`avatar ${large ? 'avatar-large' : ''}`}>
-    {character.imageUrl && !failed ? <img src={character.imageUrl} alt="" loading="lazy" onError={() => setFailed(true)} referrerPolicy="no-referrer" /> : initials}
+  const missingImage = !character.imageUrl || failed;
+  return <span className={`avatar ${large ? 'avatar-large' : ''}${missingImage ? ' avatar-placeholder' : ''}`} role={missingImage ? 'img' : undefined} aria-label={missingImage ? 'Нет изображения персонажа' : undefined}>
+    {character.imageUrl && !failed ? <img src={character.imageUrl} alt="" loading="lazy" onError={() => setFailed(true)} referrerPolicy="no-referrer" /> : <UserRound size={24} aria-hidden="true"/>}
   </span>;
 }
 function TraitCell({ cell, criterion }: { cell: Cell; criterion: Criterion }) {
@@ -29,10 +31,16 @@ function TraitCell({ cell, criterion }: { cell: Cell; criterion: Criterion }) {
     <span className="sr-only">{matchLabel[cell.match]}{cell.direction === 'up' ? ', у загаданного больше' : cell.direction === 'down' ? ', у загаданного меньше' : ''}</span>
   </div></td>;
 }
-function Modal({ title, children, onClose }: { title: string; children: ReactNode; onClose: () => void }) {
+function Modal({ title, children, onClose, wide = false }: { title: string; children: ReactNode; onClose: () => void; wide?: boolean }) {
   const ref = useRef<HTMLDialogElement>(null);
-  useEffect(() => { const el = ref.current!; el.showModal(); const handler = () => onClose(); el.addEventListener('close',handler); return () => { el.removeEventListener('close',handler); el.close(); }; },[onClose]);
-  return <dialog ref={ref} className="modal" aria-labelledby="modal-title" onClick={e => { if (e.target === e.currentTarget) onClose(); }}>
+  useEffect(() => {
+    const dialog = ref.current!;
+    if (!dialog.open) dialog.showModal();
+    // StrictMode replays effects. Its cleanup queues a native close event,
+    // which must not dismiss the freshly reopened dialog.
+    return () => { if (dialog.open) dialog.close(); };
+  }, []);
+  return <dialog ref={ref} className={`modal${wide ? ' modal-catalog' : ''}`} aria-labelledby="modal-title" onCancel={e => { e.preventDefault(); onClose(); }} onClick={e => { if (e.target !== e.currentTarget) return; const bounds = e.currentTarget.getBoundingClientRect(); if (e.clientX < bounds.left || e.clientX > bounds.right || e.clientY < bounds.top || e.clientY > bounds.bottom) onClose(); }}>
     <div className="modal-heading"><h2 id="modal-title">{title}</h2><button className="icon-button" onClick={onClose} aria-label="Закрыть"><X size={20}/></button></div>{children}
   </dialog>;
 }
@@ -168,7 +176,7 @@ export default function App() {
           <Icon size={21}/><span>{w.name}</span>{w.id === worldId ? <span className="tab-dot"/> : <span className="tab-number">{w.symbol}</span>}
         </button>; })}
       </section>
-      {worldId === 'naruto' ? <NarutoBanner failedAttempts={failedAttempts} playing={game?.status === 'playing'} busy={busy || loading} hintRevealed={Boolean(game?.debutHint)} onHint={()=>void revealHint()} onSurrender={()=>void surrender()}/> : (      <section className="hero" aria-labelledby="game-title">
+      {worldId === 'naruto' ? <NarutoBanner failedAttempts={failedAttempts} playing={game?.status === 'playing'} busy={busy || loading} hintRevealed={Boolean(game?.debutHint)} onHint={()=>void revealHint()} onSurrender={()=>void surrender()}/> : worldId === 'one-piece' ? <OnePieceBanner failedAttempts={failedAttempts} playing={game?.status === 'playing'} busy={busy || loading} hintRevealed={Boolean(game?.debutHint)} onHint={()=>void revealHint()} onSurrender={()=>void surrender()}/> : (      <section className="hero" aria-labelledby="game-title">
         <div className="hero-art" aria-hidden="true"><div className="orbit orbit-one"/><div className="orbit orbit-two"/><div className="orbit orbit-three"/><Symbol className="world-symbol" strokeWidth={0.75}/><span className="art-coordinate">EAST / {world.symbol}°</span><span className="art-star star-one">✦</span><span className="art-star star-two">✧</span></div>
         <div className="hero-content">
           <div className="hero-eyebrow"><span className="chapter-number">МИР {world.symbol}</span><span className="japanese">{world.japanese}</span><button className="surrender-button" disabled={!canSurrender} onClick={() => void surrender()}>Сдаться</button></div>
@@ -177,7 +185,7 @@ export default function App() {
         <div className="hero-side"><span className="outline-number">{world.symbol}</span><span>GUESS THE CHARACTER</span></div>
       </section>)}
       <section className="play-area" aria-label="Игра">
-        {worldId!=='naruto'&&game?.status==='playing'&&!game.debutHint&&<button className="hint-button" disabled={!game.debutHintAvailable||busy||loading} onClick={()=>void revealHint()}><Sparkles size={17}/>{game.debutHintAvailable?'Показать подсказку: первое появление':`Первое появление · ещё ${Math.max(0,5-game.guesses.filter(g=>!g.won).length)} неверных попыток`}</button>}
+        {worldId!=='naruto'&&worldId!=='one-piece'&&game?.status==='playing'&&!game.debutHint&&<button className="hint-button" disabled={!game.debutHintAvailable||busy||loading} onClick={()=>void revealHint()}><Sparkles size={17}/>{game.debutHintAvailable?'Показать подсказку: первое появление':`Первое появление · ещё ${Math.max(0,5-game.guesses.filter(g=>!g.won).length)} неверных попыток`}</button>}
         {game?.debutHint&&<div className="debut-hint" role="status"><Sparkles size={18}/><div><strong>Подсказка: первое появление</strong><p>{game.debutHint}</p></div></div>}
         <div className="game-toolbar"><div className="section-label"><span className="accent-line"/> ТВОЯ СЛЕДУЮЩАЯ ДОГАДКА</div>
           <div className="toolbar-right flex items-center gap-4"><button className="text-button restart-button" disabled={busy || loading} onClick={() => game?.status === 'playing' && game.guesses.length ? setModal('restart') : void restart()}><RotateCcw size={14}/><span>Новая партия</span></button></div>
@@ -211,8 +219,8 @@ export default function App() {
       </section>
     </main>
     {notice && <div className="toast" role="status">{notice}</div>}
-    {modal && <Modal title={modal === 'help' ? 'Как играть' : modal === 'catalog' ? 'База персонажей' : 'Новая партия'} onClose={closeModal}>
-{modal === 'help' ? <div><p>Выбирайте персонажей из списка. Зелёный означает совпадение, жёлтый — частичное или близкое значение, красный — различие. Стрелка показывает направление для чисел.</p><p>В новой партии выбирается случайный персонаж. Подсказка дебюта доступна после 5 ошибок, сдача — после 10. Прогресс хранится в браузере.</p></div> : modal === 'catalog' ? <div><p>Данные One Piece загружаются из каталога prjhex. Другие миры будут доступны после добавления их данных.</p><p>Доступно персонажей: {bootstrap?.coverage[0]?.playable ?? '—'}</p></div> : <div className="restart-content"><p>Текущая партия будет завершена как пропущенная. Серия побед прервётся.</p><div className="modal-actions"><button className="secondary-button" onClick={closeModal}>Продолжить угадывать</button><button className="primary-button" onClick={() => void restart()}>Новая партия <ArrowRight size={16}/></button></div></div>}
+    {modal && <Modal wide={modal === 'catalog'} title={modal === 'help' ? 'Как играть' : modal === 'catalog' ? 'База персонажей' : 'Новая партия'} onClose={closeModal}>
+{modal === 'help' ? <div><p>Выбирайте персонажей из списка. Зелёный означает совпадение, жёлтый — частичное или близкое значение, красный — различие. Стрелка показывает направление для чисел.</p><p>В новой партии выбирается случайный персонаж. Подсказка дебюта доступна после 5 ошибок, сдача — после 10. Прогресс хранится в браузере.</p></div> : modal === 'catalog' ? <CharacterCatalog initialWorld={worldId}/> : <div className="restart-content"><p>Текущая партия будет завершена как пропущенная. Серия побед прервётся.</p><div className="modal-actions"><button className="secondary-button" onClick={closeModal}>Продолжить угадывать</button><button className="primary-button" onClick={() => void restart()}>Новая партия <ArrowRight size={16}/></button></div></div>}
     </Modal>}
   </div>;
 }

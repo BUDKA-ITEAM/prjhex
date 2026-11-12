@@ -64,10 +64,19 @@ const TYPES = {
 };
 
 export const GAMES = {
+  naruto: {name:'Naruto',title:'AnimeDle — Naruto',dataDir:'datanar',columns:[
+    {key:'gender',label:'Пол',type:'enum'},
+    {key:'affiliation',label:'Аффилиации',type:'list'},
+    {key:'clan',label:'Клан',type:'list'},
+    {key:'attributes',label:'Атрибуты',type:'list'},
+    {key:'kekkei_genkai',label:'Kekkei Genkai',type:'list'},
+    {key:'nature_type',label:'Виды природы',type:'list'},
+    {key:'debut_arc',label:'Дебютная арка',type:'enum'}
+  ]},
   onepiece: {
     name: 'One Piece',
     title: 'AnimeDle — One Piece',
-    dataDir: 'data',
+    dataDir: 'dataop',
     columns: [
       { key: 'first', label: 'Дебют', type: 'appearance', close: 20 },
       { key: 'affiliation', label: 'Принадлежность', type: 'list', limit: 2 },

@@ -18,7 +18,7 @@ from dle_parser.parse import (
     normalize_character as normalize_base,
     parse_infobox as parse_infobox_base,
 )
-from dle_parser import parse_naruto
+from dle_parser import parse_naruto, parse_gup
 
 log = logging.getLogger("dle_parser")
 
@@ -82,6 +82,7 @@ def parse_all(
 
     dle_id = config.get("dle_id", "onepiece")
     is_naruto = dle_id == "naruto"
+    is_gup = dle_id == "gup"
 
     for i, title in enumerate(titles[:total], 1):
         page_id = title.replace(" ", "_")
@@ -96,6 +97,9 @@ def parse_all(
             if is_naruto:
                 infobox = parse_naruto.parse_infobox(html)
                 record, reason = parse_naruto.normalize_character(title, infobox, config, wiki)
+            elif is_gup:
+                infobox = parse_gup.parse_infobox(html)
+                record, reason = parse_gup.normalize_character(title, infobox, config, wiki)
             else:
                 infobox = parse_infobox_base(html)
                 record, reason = normalize_base(title, infobox, config, wiki)

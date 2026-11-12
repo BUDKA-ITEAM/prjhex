@@ -1,0 +1,54 @@
+{
+  "dle_id": "gup",
+  "title": "Girls und Panzer",
+  "version": 1,
+  "source": {
+    "type": "fandom",
+    "wiki": "gup",
+    "language": "en",
+    "categories": ["Characters"]
+  },
+  "guess": {
+    "source": "name",
+    "fallback": "name",
+    "label": "Персонаж",
+    "colorize": false
+  },
+  "columns": [
+    {
+      "key": "height",
+      "label": "Рост",
+      "source": "height",
+      "type": "number",
+      "compare": { "kind": "numeric_close", "tolerance": 5 }
+    },
+    {
+      "key": "affiliation",
+      "label": "Принадлежность",
+      "source": "affiliation",
+      "type": "list",
+      "compare": { "kind": "list_priority" }
+    },
+    {
+      "key": "team",
+      "label": "Команда",
+      "source": "team",
+      "type": "list",
+      "compare": { "kind": "list_priority" }
+    },
+    {
+      "key": "role",
+      "label": "Роль",
+      "source": "role",
+      "type": "list",
+      "compare": { "kind": "list_priority" }
+    },
+    {
+      "key": "tank",
+      "label": "Танк",
+      "source": "tank",
+      "type": "list",
+      "compare": { "kind": "list_priority" }
+    }
+  ]
+}

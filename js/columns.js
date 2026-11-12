@@ -64,6 +64,12 @@ const TYPES = {
 };
 
 export const GAMES = {
+ dxd:{name:'High School DxD',title:'AnimeDle — High School DxD',dataDir:'datadxd',columns:[
+ {key:'race',label:'Раса',type:'list'},{key:'hair',label:'Цвет волос',type:'enum'},
+ {key:'equipment',label:'Снаряжение / способности',type:'list'},{key:'status',label:'Статус',type:'enum'},{key:'ranking',label:'Ранг',type:'enum'}]},
+ gup:{name:'Girls und Panzer',title:'AnimeDle — Girls und Panzer',dataDir:'datagup',columns:[
+ {key:'height',label:'Рост',type:'number',tolerance:5,suffix:' см'},{key:'affiliation',label:'Школа / принадлежность',type:'list'},
+ {key:'team',label:'Команда',type:'list'},{key:'role',label:'Роль',type:'list'},{key:'tank',label:'Танк',type:'list'}]},
   naruto: {name:'Naruto',title:'AnimeDle — Naruto',dataDir:'datanar',columns:[
     {key:'gender',label:'Пол',type:'enum'},
     {key:'affiliation',label:'Аффилиации',type:'list'},

@@ -81,14 +81,13 @@ def fetch_infobox_html(
     wiki: str,
     page: str,
 ) -> str:
-    """Возвращает HTML lead-секции страницы (там лежит portable-infobox)."""
+    """Возвращает HTML страницы целиком."""
     url = f"https://{wiki}.fandom.com/api.php"
     params = {
         "action": "parse",
         "page": page,
         "format": "json",
         "prop": "text",
-        "section": 0,
         "formatversion": 2,
         "redirects": 1,
     }
@@ -104,3 +103,46 @@ def fetch_infobox_html(
         )
 
     return data["parse"]["text"]
+
+@retry(
+    stop=stop_after_attempt(4),
+    wait=wait_exponential(min=1, max=15),
+    reraise=True,
+)
+def fetch_wikitext(
+    client: httpx.Client,
+    wiki: str,
+    page: str,
+) -> str:
+    """Возвращает сырой wikitext страницы."""
+    url = f"https://{wiki}.fandom.com/api.php"
+    params = {
+        "action": "query",
+        "prop": "revisions",
+        "rvslots": "main",
+        "rvprop": "content",
+        "titles": page,
+        "format": "json",
+        "formatversion": 2,
+    }
+    r = client.get(url, params=params)
+    r.raise_for_status()
+    data = r.json()
+    
+    if "error" in data:
+        raise RuntimeError(data["error"])
+
+    pages_data = data["query"]["pages"]
+    
+    if isinstance(pages_data, list):
+        page_data = pages_data[0]
+    else:
+        page_data = next(iter(pages_data.values()))
+
+    if "missing" in page_data:
+        print(f"DEBUG: Страница '{page}' не существует (missing).")
+        return ""
+    
+    content = page_data["revisions"][0]["slots"]["main"]["content"]
+    print(f"DEBUG: Получено {len(content)} символов для '{page}'.")
+    return content

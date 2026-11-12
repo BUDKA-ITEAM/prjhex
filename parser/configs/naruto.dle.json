@@ -1,0 +1,69 @@
+{
+  "dle_id": "naruto",
+  "title": "Naruto",
+  "version": 1,
+  "source": {
+    "type": "fandom",
+    "wiki": "naruto",
+    "language": "en",
+    "categories": ["Characters", "Male Characters", "Female Characters"]
+  },
+  "guess": {
+    "source": "english name",
+    "fallback": "name",
+    "label": "Персонаж",
+    "colorize": false
+  },
+  "columns": [
+    {
+      "key": "gender",
+      "label": "Пол",
+      "source": "sex",
+      "type": "enum",
+      "values": ["Male", "Female", "Unknown"],
+      "compare": { "kind": "exact" }
+    },
+    {
+      "key": "affiliation",
+      "label": "Аффилиации",
+      "source": "affiliation",
+      "type": "list",
+      "compare": { "kind": "list_priority" }
+    },
+    {
+      "key": "clan",
+      "label": "Клан",
+      "source": "clan",
+      "type": "list",
+      "compare": { "kind": "list_priority" }
+    },
+    {
+      "key": "attributes",
+      "label": "Атрибуты",
+      "source": "classification",
+      "type": "list",
+      "compare": { "kind": "list_priority" }
+    },
+    {
+      "key": "kekkei_genkai",
+      "label": "Kekkei Genkai",
+      "source": "kekkei genkai",
+      "type": "list",
+      "compare": { "kind": "list_priority" }
+    },
+    {
+      "key": "nature_type",
+      "label": "Виды природы",
+      "source": "nature type",
+      "type": "list",
+      "compare": { "kind": "list_priority" }
+    },
+    {
+      "key": "debut_arc",
+      "label": "Дебютная дуга",
+      "source": "arc",
+      "type": "string",
+      "compare": { "kind": "exact" }
+    }
+  ]
+}

@@ -1,9 +1,8 @@
-"""Парсинг portable-infobox и нормализация под конфиг dle."""
+"""Парсинг portable-infobox и нормализация под конфиг dle (базовая логика для One Piece)."""
 
 from __future__ import annotations
 
 import re
-
 from bs4 import BeautifulSoup
 
 
@@ -115,43 +114,39 @@ def _appearance(raw: str | None) -> dict | None:
     episodes = [int(n) for n in re.findall(r"Episode\s+(\d+)", raw)]
     if not chapters and not episodes:
         return None
-    return {"chapter": min(chapters) if chapters else None,
-            "episode": min(episodes) if episodes else None}
+    return {
+        "chapter": min(chapters) if chapters else None,
+        "episode": min(episodes) if episodes else None,
+    }
 
 
 def _list(raw: str | None) -> list[str]:
     """
-    Список значений. Бывшие элементы сохраняются с пометкой "(former)"
-    и идут ПОСЛЕ текущих — чтобы в игре первым показывалось актуальное.
-
-    Пример:
-      "Fake Straw Hat Crew (Former); His own crew"
-      → ["his own crew", "fake straw hat crew (former)"]
+    Список текущих значений. Элементы с пометкой (former) / (Former)
+    сохраняются с этой пометкой, чтобы в игре было видно, что это в прошлом.
     """
     if not raw:
         return []
     raw = _clean(raw)
     parts = re.split(r"[;,]", raw)
-
-    current: list[str] = []
-    former: list[str] = []
+    out: list[str] = []
     seen: set[str] = set()
-
+    
     for p in parts:
         is_former = "(former)" in p.lower()
-        # убираем ВСЕ скобки с содержимым: "(Billions)", "(former)", и т.п.
+        # убираем скобки с содержимым
         p = re.sub(r"\([^)]*\)", "", p).strip().lower()
         if not p or p.isdigit() or len(p) < 3:
             continue
-        if p in seen:
-            continue
-        seen.add(p)
+            
         if is_former:
-            former.append(f"{p} (former)")
-        else:
-            current.append(p)
-
-    return current + former
+            p = f"{p} (former)"
+            
+        if p not in seen:
+            seen.add(p)
+            out.append(p)
+            
+    return out
 
 
 def _region(raw: str | None) -> dict | None:
@@ -250,7 +245,7 @@ def normalize_character(
     Возвращает (record, reason).
     reason = None при успехе, иначе строка с причиной пропуска:
       "empty_infobox"        — на странице нет portable-infobox
-      "no_debut"             — нет поля first (Chapter/Episode) → не персонаж
+      "no_debut"             — нет самого поля first в инфобоксе → не персонаж
       "normalize_error:..."  — исключение в нормализаторе
 
     Недостающие поля не отсеивают персонажа — они остаются
@@ -259,6 +254,11 @@ def normalize_character(
     # 1) нет инфобокса — это не страница персонажа
     if not infobox:
         return None, "empty_infobox"
+
+    # 2) нет поля first вообще — это не персонаж (локации/группы/события)
+    # Важно: проверяем наличие ключа в словаре, а не распарсенное значение.
+    if not infobox.get("first"):
+        return None, "no_debut"
 
     guess_cfg = config["guess"]
     name_raw = (
@@ -270,7 +270,7 @@ def normalize_character(
     if not name:
         name = page_title
 
-    # 2) нормализация полей — недостающие становятся None / []
+    # 3) нормализация полей — недостающие становятся None / []
     fields: dict = {}
     raw_fields: dict = {}
     for col in config["columns"]:
@@ -281,11 +281,7 @@ def normalize_character(
         except Exception as e:
             return None, f"normalize_error:{e}"
 
-    # 2.5) нет дебюта — это не персонаж (локации/группы/события)
-    if not infobox.get("first"):
-        return None, "no_debut"
-
-    # 3) aliases
+    # 4) aliases
     aliases: list[str] = []
     seen: set[str] = set()
 

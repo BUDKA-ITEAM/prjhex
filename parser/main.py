@@ -1,4 +1,4 @@
-"""Точка входа: собрать список страниц, распарсить, сохранить JSON + отчёт о пропусках."""
+"""Точка входа: сбор страниц, парсинг, сохранение JSON и отчёта о пропусках."""
 
 from __future__ import annotations
 
@@ -14,7 +14,11 @@ from dle_parser.api import (
     fetch_infobox_html,
     make_client,
 )
-from dle_parser.parse import normalize_character, parse_infobox
+from dle_parser.parse import (
+    normalize_character as normalize_base,
+    parse_infobox as parse_infobox_base,
+)
+from dle_parser import parse_naruto
 
 log = logging.getLogger("dle_parser")
 
@@ -58,7 +62,6 @@ def parse_all(
     limit: int | None,
     skip_existing: bool,
 ) -> None:
-    # уже спарсенные (для --skip-existing)
     existing: dict[str, dict] = {}
     if skip_existing and out_path.exists():
         try:
@@ -72,9 +75,13 @@ def parse_all(
     total = len(titles) if limit is None else min(len(titles), limit)
     results: list[dict] = list(existing.values())
     done_ids = set(existing.keys())
+    
     new_count = 0
     errors = 0
     skipped: list[dict] = []
+
+    dle_id = config.get("dle_id", "onepiece")
+    is_naruto = dle_id == "naruto"
 
     for i, title in enumerate(titles[:total], 1):
         page_id = title.replace(" ", "_")
@@ -85,8 +92,13 @@ def parse_all(
         log.info("[%d/%d] %s", i, total, title)
         try:
             html = fetch_infobox_html(client, wiki, title)
-            infobox = parse_infobox(html)
-            record, reason = normalize_character(title, infobox, config, wiki)
+            
+            if is_naruto:
+                infobox = parse_naruto.parse_infobox(html)
+                record, reason = parse_naruto.normalize_character(title, infobox, config, wiki)
+            else:
+                infobox = parse_infobox_base(html)
+                record, reason = normalize_base(title, infobox, config, wiki)
 
             if record is None:
                 skipped.append({
@@ -118,50 +130,24 @@ def parse_all(
         skipped_path = out_path.with_name(out_path.stem + ".skipped.json")
         with skipped_path.open("w", encoding="utf-8") as f:
             json.dump(skipped, f, ensure_ascii=False, indent=2)
-        log.info(
-            "Отчёт о пропусках: %s (%d записей)",
-            skipped_path, len(skipped),
-        )
+        log.info("Отчёт о пропусках: %s (%d записей)", skipped_path, len(skipped))
 
-    log.info(
-        "Готово. Всего в файле: %d (новых: %d), пропусков: %d, ошибок: %d",
-        len(results), new_count, len(skipped), errors,
-    )
+    log.info("Готово. Всего в файле: %d (новых: %d), пропусков: %d, ошибок: %d",
+             len(results), new_count, len(skipped), errors)
 
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="Fandom → normalised JSON parser")
-    ap.add_argument(
-        "--config", type=Path, required=True,
-        help="Путь к dle-конфигу (configs/onepiece.dle.json)",
-    )
-    ap.add_argument(
-        "--out", type=Path, default=Path("out/characters.json"),
-        help="Куда сохранить результат",
-    )
-    ap.add_argument(
-        "--delay", type=float, default=1.0,
-        help="Пауза между запросами в секундах (default: 1.0)",
-    )
-    ap.add_argument(
-        "--limit", type=int, default=None,
-        help="Ограничить число страниц (для отладки)",
-    )
-    ap.add_argument(
-        "--skip-existing", action="store_true",
-        help="Не парсить повторно уже сохранённых",
-    )
-    ap.add_argument(
-        "--verbose", "-v", action="store_true",
-        help="DEBUG-логи",
-    )
+    ap.add_argument("--config", type=Path, required=True)
+    ap.add_argument("--out", type=Path, default=Path("out/characters.json"))
+    ap.add_argument("--delay", type=float, default=1.0)
+    ap.add_argument("--limit", type=int, default=None)
+    ap.add_argument("--skip-existing", action="store_true")
+    ap.add_argument("--verbose", "-v", action="store_true")
     args = ap.parse_args()
 
-    logging.basicConfig(
-        level=logging.DEBUG if args.verbose else logging.INFO,
-        format="%(asctime)s %(levelname)-7s %(message)s",
-        datefmt="%H:%M:%S",
-    )
+    logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO,
+                        format="%(asctime)s %(levelname)-7s %(message)s", datefmt="%H:%M:%S")
 
     if not args.config.exists():
         log.error("Конфиг не найден: %s", args.config)
@@ -173,26 +159,14 @@ def main() -> int:
 
     log.info("DLE: %s (%s)", config["dle_id"], config["title"])
     log.info("Wiki: %s.fandom.com", wiki)
-    log.info("Категорий: %d", len(categories))
 
     with make_client() as client:
         titles = collect_pages(client, wiki, categories)
-        log.info("Всего уникальных страниц: %d", len(titles))
-
         if not titles:
-            log.error("Пустой список — проверь названия категорий.")
+            log.error("Пустой список — проверь категории.")
             return 2
 
-        parse_all(
-            client=client,
-            wiki=wiki,
-            titles=titles,
-            config=config,
-            delay=args.delay,
-            out_path=args.out,
-            limit=args.limit,
-            skip_existing=args.skip_existing,
-        )
+        parse_all(client, wiki, titles, config, args.delay, args.out, args.limit, args.skip_existing)
 
     return 0
 

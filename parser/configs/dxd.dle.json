@@ -1,0 +1,55 @@
+{
+  "dle_id": "dxd",
+  "title": "High School DxD",
+  "version": 1,
+  "source": {
+    "type": "fandom",
+    "wiki": "highschooldxd",
+    "language": "en",
+    "categories": ["Characters", "Devils", "Fallen Angels", "Angels", "Youkai"]
+  },
+  "guess": {
+    "source": "name",
+    "fallback": "name",
+    "label": "Персонаж",
+    "colorize": false
+  },
+  "columns": [
+    {
+      "key": "race",
+      "label": "Раса",
+      "source": "race",
+      "type": "list",
+      "compare": { "kind": "list_priority" }
+    },
+    {
+      "key": "hair",
+      "label": "Цвет волос",
+      "source": "hair color",
+      "type": "string",
+      "compare": { "kind": "exact" }
+    },
+    {
+      "key": "equipment",
+      "label": "Снаряжение",
+      "source": "equipment",
+      "type": "list",
+      "compare": { "kind": "list_priority" }
+    },
+    {
+      "key": "status",
+      "label": "Статус",
+      "source": "status",
+      "type": "enum",
+      "values": ["Alive", "Deceased", "Unknown"],
+      "compare": { "kind": "exact" }
+    },
+    {
+      "key": "ranking",
+      "label": "Ранг",
+      "source": "ranking",
+      "type": "string",
+      "compare": { "kind": "exact" }
+    }
+  ]
+}

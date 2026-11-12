@@ -186,7 +186,7 @@ export default function App() {
             <Search size={22} className="search-icon"/>
             <input ref={inputRef} role="combobox" aria-label="Имя персонажа" aria-autocomplete="list" aria-expanded={listOpen} aria-controls="character-options" aria-activedescendant={listOpen && available[selected] ? `option-${selected}` : undefined}
               placeholder={loading ? 'Готовим новую загадку…' : 'Введите имя персонажа…'} value={query} maxLength={80} autoComplete="off" disabled={!canSearch}
-              onFocus={() => setFocused(true)} onBlur={() => setTimeout(() => setFocused(false),150)} onChange={e => { setResults([]); setQuery(e.target.value); }}
+              onFocus={() => setFocused(true)} onBlur={() => setFocused(false)} onChange={e => { setFocused(true); setResults([]); setQuery(e.target.value); }}
               onKeyDown={e => { if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); setFocused(true); setSelected(i => Math.max(0,Math.min(available.length-1,i+(e.key === 'ArrowDown' ? 1 : -1)))); } if (e.key === 'Escape') setFocused(false); }}/>
             <span className="enter-hint">↵ ENTER</span><button className="guess-button" type="submit" disabled={!canSearch || !available[selected]} aria-label="Проверить выбранного персонажа">{busy || loading ? <LoaderCircle size={20} className="spin"/> : <ArrowRight size={21}/>}</button>
           </form>

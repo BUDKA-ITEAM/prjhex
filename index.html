@@ -1,63 +1,12 @@
 <!doctype html>
 <html lang="ru">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>AnimeDle — угадай персонажа дня</title>
-  <meta name="description" content="Ежедневная игра: угадай аниме-персонажа по характеристикам.">
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-<main id="main-content">
-  <h1 class="sr-only">AnimeDle: угадай персонажа дня</h1>
-
-  <section class="quote" aria-labelledby="quote-h">
-    <h2 id="quote-h">Цитата дня</h2>
-    <p id="quote-locked" class="dim">Цитата скрыта до разблокировки</p>
-    <p id="wrong-counter" class="dim" role="status" aria-live="polite">Сделано неверных: <b id="wrong-n">0</b> из <span id="wrong-need">3</span></p>
-    <button id="quote-btn" class="btn" type="button" disabled>Открыть полную цитату</button>
-    <blockquote id="quote-text" hidden></blockquote>
-  </section>
-
-  <form id="guess-form" autocomplete="off">
-    <div class="ac-wrap">
-      <label class="sr-only" for="guess-input">Имя персонажа</label>
-      <img id="sel-ico" class="sel-ico" alt="" referrerpolicy="no-referrer" hidden>
-      <input id="guess-input" type="text" placeholder="Имя персонажа…" role="combobox"
-             aria-autocomplete="list" aria-expanded="false" aria-controls="ac-list" disabled>
-      <ul id="ac-list" class="ac-list" role="listbox" aria-label="Подсказки" hidden></ul>
-    </div>
-    <button id="guess-btn" class="btn" type="submit" disabled>Угадать</button>
-  </form>
-  <p id="form-error" class="form-error" role="alert"></p>
-
-  <div class="status-row">
-    <span>Попыток: <b id="attempts-n">0</b></span>
-  </div>
-
-  <div id="win" class="win" role="status" aria-live="polite" hidden>
-    <b>Угадал!</b> Это <b id="win-name"></b>.
-    <div class="dim">Следующий персонаж через <span class="countdown">--:--:--</span></div>
-  </div>
-
-  <div id="lose" class="lose" role="status" aria-live="polite" hidden>
-    <img id="lose-img" class="lose-img" alt="" referrerpolicy="no-referrer" hidden>
-    <div>
-      <b>Попытки закончились.</b> Сегодня был <b id="lose-name"></b>.
-      <div class="dim">Следующий персонаж через <span class="countdown">--:--:--</span></div>
-    </div>
-  </div>
-
-  <div class="table-wrap">
-    <table>
-      <caption class="sr-only">Твои попытки</caption>
-      <thead><tr id="thead-row"></tr></thead>
-      <tbody id="tbody"></tbody>
-    </table>
-  </div>
-</main>
-
-<script type="module" src="js/common.js"></script>
-<script type="module" src="js/game.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0c0f18" />
+    <meta name="description" content=".........." />
+    <title>лешаде6ил</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body><div id="root"></div><script type="module" src="/src/main.tsx"></script></body>
 </html>

@@ -330,3 +330,139 @@ h1 { font-family:'Arial Black','Segoe UI',Arial,sans-serif; font-size:clamp(42px
  [data-world="naruto"] .stat strong { font-size:21px; }
  [data-world="naruto"] .stat>span { font-size:9px; }
 }
+
+/* One Piece: ivory sea charts, sunlit water and an illustrated pirate scroll. */
+.app-shell[data-world="one-piece"] {
+  --accent:#4cb9d6!important;
+  --world-base:#081d30;
+  --world-backdrop:url('/art/onepiece-wano.png');
+  color:#dceef7;
+  color-scheme:dark;
+}
+[data-world="one-piece"] .site-header { background:#0b263eea; border-bottom:1px solid #3d7d9d70; }
+[data-world="one-piece"] .wordmark-soft { color:#80c6df; }
+[data-world="one-piece"] .brand-icon { background:#176080; color:#fff8df; }
+[data-world="one-piece"] .beta { border-color:#376a88; color:#9abdd0; }
+[data-world="one-piece"] .header-divider { background:#538ca34d; }
+[data-world="one-piece"] .text-button { color:#a5cfe2; }
+[data-world="one-piece"] .text-button:hover { color:#e3f7ff; }
+[data-world="one-piece"] .world-tab { background:#102f47; border-color:#35627c; color:#a5c7da; box-shadow:0 3px 8px #020e1d40; }
+[data-world="one-piece"] .world-tab.active { background:#176185; border-color:#4eabc7; color:#e5f6ff; }
+[data-world="one-piece"] .world-tab.active svg { color:#b3e6f5; }
+[data-world="one-piece"] .tab-dot { background:#8ce1ef; }
+.app-shell .onepiece-scroll { position:relative; width:700px; max-width:calc(100% - 20px); height:calc(360px + clamp(25px,3.5vw,38px) * 2.32); margin:26px auto; background:url('/art/onepiece-scroll-ocean.png') center/100% 100% no-repeat; border-radius:9px; filter:drop-shadow(0 8px 12px #214d6530); }
+.onepiece-scroll h1 { position:absolute; top:26%; left:5%; width:90%; margin:0; text-align:center; font-family:Georgia,'Times New Roman',serif; font-size:clamp(25px,3.5vw,38px); font-weight:600; line-height:1.12; letter-spacing:-1px; color:#102f42; text-shadow:0 1px 0 #fff4d8,0 0 9px #fff1d4; }
+.onepiece-cards { position:absolute; top:52%; left:5.5%; right:4%; bottom:8%; display:grid; grid-template-columns:1fr 1fr; gap:8%; }
+.onepiece-card { position:relative; border:0; border-radius:14px; padding:0 5px 10%; background:transparent; color:#172f36; display:flex; align-items:flex-end; justify-content:center; text-align:center; }
+.onepiece-card:disabled { opacity:1; cursor:default; }
+.onepiece-card:not(:disabled):hover { background:#fff8d735; box-shadow:inset 0 0 22px #b3e6f5aa; }
+.onepiece-card:focus-visible { outline:3px solid #087aab; outline-offset:2px; }
+.onepiece-card span { font-family:Georgia,'Times New Roman',serif; font-size:clamp(14px,1.8vw,19px); line-height:1.15; font-weight:600; text-shadow:0 1px 3px #fff0d6; }
+.onepiece-card strong { font-size:.95em; font-weight:500; }
+[data-world="one-piece"] .guess-form { background:#0e2b43; border:3px solid #347b9b; border-radius:6px; box-shadow:0 4px 12px #020d2138,inset 0 0 0 2px #224760; }
+[data-world="one-piece"] .guess-form.is-focused { border-color:#65c9e5; box-shadow:0 0 0 4px #4fbad530; }
+[data-world="one-piece"] .guess-form input { color:#e3f3fa; }
+[data-world="one-piece"] .guess-form input::placeholder { color:#92b6cc; }
+[data-world="one-piece"] .guess-button { background:#226e93; color:white; }
+[data-world="one-piece"] .restart-button { background:#102f47e8; }
+[data-world="one-piece"] .search-dropdown { background:#102f47; border-color:#3d728f; box-shadow:0 14px 30px #020b2166; }
+[data-world="one-piece"] .character-option { color:#dceef7; border-color:#2e536d; }
+[data-world="one-piece"] .character-option.selected,[data-world="one-piece"] .character-option:hover { background:#1b4763; }
+[data-world="one-piece"] .character-option small,[data-world="one-piece"] .search-message { color:#91bbd1; }
+[data-world="one-piece"] .table-section { padding:14px; border:1px solid #366783; border-radius:8px; background:#0b263ee8; }
+[data-world="one-piece"] .table-scroll { border-color:#315c78; }
+[data-world="one-piece"] th { color:#a7d4e8; }
+[data-world="one-piece"] .character-cell { background:#102f47; border-color:#35627c; color:#dceef7; }
+[data-world="one-piece"] .avatar { background:#173d57; color:#a4d5e8; border-color:#3d728f; }
+[data-world="one-piece"] .empty-history { background:radial-gradient(ellipse at center,#19557133,transparent 70%); border-color:#315c78; }
+[data-world="one-piece"] .empty-history strong { color:#b6d8e9; }
+[data-world="one-piece"] .empty-target { background:#1b4560; border-color:#3a6984; color:#8ccde4; }
+[data-world="one-piece"] .bottom-strip { color:#a9cbdc; }
+[data-world="one-piece"] .stats-section { background:#0b263ee8; border:1px solid #35647e; border-top:3px solid #3693b3; color:#163d58; box-shadow:0 5px 15px #020d2140; }
+[data-world="one-piece"] .stats-icon { background:#173f58; color:#78c4de; }
+[data-world="one-piece"] .stats-intro p,[data-world="one-piece"] .stat>span { color:#9cbfd3; }
+[data-world="one-piece"] .stat { border-color:#4c7c974d; }
+[data-world="one-piece"] .stat strong svg { color:#e4c27b; }
+[data-world="one-piece"] .debut-hint { background:#11374f; border:1px solid #4c95ae; color:#d5edf8; }
+[data-world="one-piece"] .victory,[data-world="one-piece"] .surrender-result { background:#103b48; border-color:#3e8d9e; color:#e0f2f6; }
+[data-world="one-piece"] .victory p,[data-world="one-piece"] .surrender-result p { color:#a6ccd6; }
+[data-world="one-piece"] .secondary-button { color:#c5e4f2; border-color:#4b809c; }
+[data-world="one-piece"] .site-footer { color:#a8c9dd; border-color:#36617c; }
+[data-world="one-piece"] .footer-brand { color:#acd9ec; }
+@media(max-width:760px) {
+  .app-shell .onepiece-scroll { margin:22px auto; }
+}
+@media(max-width:600px) {
+  .app-shell .onepiece-scroll { height:360px; }
+  .onepiece-scroll h1 { top:27%; font-size:clamp(18px,4.7vw,27px); letter-spacing:-.5px; }
+  .onepiece-card { padding-bottom:12%; }
+  .onepiece-card span { font-size:clamp(10px,2.7vw,15px); }
+  [data-world="one-piece"] .table-section { padding:10px 5px; }
+}
+
+/* Match Naruto's comparison board, keeping long values inside their columns. */
+[data-world="one-piece"] .table-section { padding:12px 5px 6px; border:0; border-radius:3px; background:#0b263eeb; backdrop-filter:blur(4px); }
+[data-world="one-piece"] .table-scroll { border:0; }
+[data-world="one-piece"] .comparison-table { border-spacing:0 6px; }
+[data-world="one-piece"] .comparison-table .character-column { width:12%; }
+[data-world="one-piece"] .comparison-table th { position:relative; height:72px; padding:5px 5px 17px; font-size:16px; font-weight:400; line-height:1.35; letter-spacing:0; text-align:center; }
+[data-world="one-piece"] .comparison-table th::after { content:''; position:absolute; bottom:6px; left:6px; right:6px; height:3px; background:#a7d4e8; }
+[data-world="one-piece"] .comparison-table td { height:1px; padding:0 2px; vertical-align:top; }
+[data-world="one-piece"] .comparison-table .character-cell { position:relative; display:flex; flex-direction:column; flex-wrap:nowrap; align-items:center; justify-content:center; gap:0; width:fit-content; max-width:100%; min-height:144px; margin-inline:auto; padding:0; border:1px solid #417e9c; border-radius:0; }
+[data-world="one-piece"] .comparison-table .attempt-index { display:none; }
+[data-world="one-piece"] .comparison-table .character-cell .avatar { display:grid; place-items:center; position:relative; flex:none; width:auto; max-width:100%; height:120px; min-width:32px; border:0; border-radius:0; background:transparent; overflow:hidden; }
+[data-world="one-piece"] .comparison-table .character-cell .avatar img { position:static; display:block; width:auto; max-width:100%; height:120px; max-height:120px; object-fit:contain; }
+[data-world="one-piece"] .comparison-table .character-cell .character-name { position:static; flex:none; width:0; min-width:100%; max-width:100%; padding:3px; font-size:10px; text-align:center; background:#163d58; color:#fff; overflow-wrap:anywhere; }
+[data-world="one-piece"] .comparison-table .trait-cell { height:100%; min-height:144px; padding:12px 3px 6px; border-width:2px; border-radius:9px; font-size:15px; font-weight:700; line-height:1.18; }
+[data-world="one-piece"] .comparison-table .cell-mark { display:none; }
+[data-world="one-piece"] .comparison-table .direction { width:24px; height:24px; stroke-width:4; }
+.app-shell:is([data-world="naruto"],[data-world="one-piece"]) .comparison-table { table-layout:fixed; }
+.app-shell:is([data-world="naruto"],[data-world="one-piece"]) .comparison-table :is(th,td,.character-cell,.trait-cell,.trait-value) { min-width:0; max-width:100%; overflow-wrap:anywhere; }
+.app-shell:is([data-world="naruto"],[data-world="one-piece"]) .comparison-table .character-cell { overflow:hidden; }
+.app-shell:is([data-world="naruto"],[data-world="one-piece"]) .comparison-table .character-name small { flex-wrap:wrap; justify-content:center; }
+.app-shell:is([data-world="naruto"],[data-world="one-piece"]) .comparison-table .trait-cell { height:100%; }
+[data-world="one-piece"] .empty-history { min-height:120px; }
+[data-world="one-piece"] .bottom-strip { width:fit-content; max-width:100%; padding:7px 10px; border-radius:4px; background:#102e46ed; color:#b8d9ea; }
+@media(max-width:1000px) and (min-width:761px) {
+  [data-world="one-piece"] .comparison-table th { font-size:13px; }
+  [data-world="one-piece"] .comparison-table .trait-cell { font-size:12px; }
+}
+@media(max-width:760px) {
+  [data-world="one-piece"] .table-section { padding:6px 2px; }
+  [data-world="one-piece"] .comparison-table { min-width:900px; }
+  [data-world="one-piece"] .comparison-table th { font-size:14px; }
+  [data-world="one-piece"] .comparison-table .trait-cell { font-size:13px; }
+}
+
+/* Both illustrated game banners use one explicit outer size at every breakpoint. */
+.app-shell .game-banner:is(.illustrated-scroll,.onepiece-scroll) { width:700px; max-width:calc(100% - 20px); height:476px; min-height:0; margin:26px auto; }
+.app-shell[data-world="naruto"] .game-banner { display:grid; grid-template-rows:minmax(0,1fr) 186px; gap:24px; padding:88px 26px 38px; }
+.app-shell[data-world="naruto"] .game-banner h1 { align-self:center; margin:0 -5px; }
+.app-shell[data-world="naruto"] .game-banner .scroll-cards { min-height:0; }
+[data-world="one-piece"] .stats-section { color:#d5edf8; }
+[data-world="one-piece"] .comparison-table .character-cell { background:#12334c; color:#dceef7; }
+[data-world="one-piece"] .comparison-table .character-cell .character-name { background:#163d58; color:#edf8ff; }
+[data-world="one-piece"] .table-scroll { scrollbar-color:#487d98 #0b263e; }
+[data-world="one-piece"] .site-footer { background:#0b263ed9; }
+@media(max-width:760px) {
+  .app-shell .game-banner:is(.illustrated-scroll,.onepiece-scroll) { height:440px; margin:22px auto; }
+}
+@media(max-width:600px) {
+  .app-shell .game-banner:is(.illustrated-scroll,.onepiece-scroll) { height:360px; }
+  .app-shell[data-world="naruto"] .game-banner { grid-template-rows:minmax(0,1fr) 165px; gap:16px; padding:64px 13px 27px; }
+  .app-shell[data-world="naruto"] .game-banner h1 { margin:0; }
+}
+
+/* Portraits share a 120px height; cards follow the image's natural width. */
+.app-shell:is([data-world="naruto"],[data-world="one-piece"]) .comparison-table .character-cell { width:fit-content; max-width:100%; margin-inline:auto; justify-content:flex-start; }
+.app-shell:is([data-world="naruto"],[data-world="one-piece"]) .comparison-table .character-cell .avatar { position:relative; display:block; flex:none; align-self:center; width:fit-content; min-width:0; max-width:100%; height:auto; min-height:0; max-height:120px; overflow:hidden; }
+.app-shell:is([data-world="naruto"],[data-world="one-piece"]) .comparison-table .character-cell .avatar img { position:static; display:block; width:auto; height:120px; min-width:0; min-height:0; max-width:100%; max-height:120px; object-fit:contain; object-position:center; }
+.app-shell:is([data-world="naruto"],[data-world="one-piece"]) .comparison-table .character-cell .character-name { width:0; min-width:100%; max-width:100%; }
+/* Reframe the live labels for the expanded scroll artwork. */
+.onepiece-scroll h1 { top:4.8%; left:35.5%; width:28%; height:10.5%; display:flex; align-items:center; justify-content:center; flex-direction:column; font-size:clamp(9px,1.6vw,14px); line-height:1.05; letter-spacing:0; color:#102f42; text-shadow:0 1px 0 #fff2d6; }
+.onepiece-cards { top:48%; left:12%; right:12%; bottom:18%; gap:8%; }
+.onepiece-card { padding-bottom:8%; }
+@media(max-width:600px) {
+  .onepiece-scroll h1 { top:4.8%; font-size:clamp(9px,2.3vw,12px); }
+  .onepiece-card { padding-bottom:8%; }
+}

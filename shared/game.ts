@@ -27,18 +27,19 @@ const allWorlds: World[] = [
     { key: 'debut', label: 'Первое появление', kind: 'text' }] },  { id: 'fairy-tail', name: 'Хвост феи', title: 'FAIRY TAIL', japanese: 'フェアリーテイル', subtitle: 'Узнай мага по следам его магии', symbol: '03', accent: '#f29bc1', criteria: [gender, species,
     { key: 'guild', label: 'Принадлежность', kind: 'set' }, { key: 'magic', label: 'Магия', kind: 'set' },
     { key: 'slayer', label: 'Убийца', kind: 'text' }, { key: 'origin', label: 'Происхождение', kind: 'text' }] },
-  { id: 'dxd', name: 'High School DxD', title: 'HIGH SCHOOL DxD', japanese: 'ハイスクールD×D', subtitle: 'Загадка клуба оккультных исследований', symbol: '04', accent: '#f18d91', criteria: [gender, species,
-    { key: 'faction', label: 'Сторона', kind: 'set' }, { key: 'peerage', label: 'Свита', kind: 'text' },
-    { key: 'piece', label: 'Фигура', kind: 'text' }, { key: 'gear', label: 'Святой механизм', kind: 'text' }] },
-  { id: 'girls-und-panzer', name: 'Девушки и танки', title: 'GIRLS UND PANZER', japanese: 'ガールズ＆パンツァー', subtitle: 'Кто сегодня выйдет на поле сэнся-до?', symbol: '05', accent: '#97cfb1', criteria: [gender,
-    { key: 'school', label: 'Школа', kind: 'text' }, { key: 'team', label: 'Экипаж', kind: 'text' },
-    { key: 'position', label: 'Роль в танке', kind: 'text' }, { key: 'tank', label: 'Танк', kind: 'text' },
-    { key: 'schoolYear', label: 'Год обучения', kind: 'number' }] },
+  { id: 'dxd', name: 'High School DxD', title: 'HIGH SCHOOL DxD', japanese: 'ハイスクールD×D', subtitle: 'Загадка клуба оккультных исследований', symbol: '04', accent: '#f18d91', criteria: [
+    { key:'race', label:'Раса', kind:'set' }, { key:'hair', label:'Цвет волос', kind:'text' },
+    { key:'equipment', label:'Снаряжение / способности', kind:'set' },
+    { key:'status', label:'Статус', kind:'text' }, { key:'ranking', label:'Ранг', kind:'text' }] },
+  { id: 'girls-und-panzer', name: 'Девушки и танки', title: 'GIRLS UND PANZER', japanese: 'ガールズ＆パンツァー', subtitle: 'Кто сегодня выйдет на поле сэнся-до?', symbol: '05', accent: '#97cfb1', criteria: [
+    { key:'height', label:'Рост', kind:'number', unit:'см' },
+    { key:'affiliation', label:'Школа / принадлежность', kind:'set' }, { key:'team', label:'Команда', kind:'set' },
+    { key:'role', label:'Роль', kind:'set' }, { key:'tank', label:'Танк', kind:'set' }] },
 ];
-export const worlds = allWorlds.filter(w=>w.id === 'one-piece' || w.id === 'naruto');
+export const worlds = allWorlds.filter(w=>w.id !== 'fairy-tail');
 for (const world of worlds) {
   if(world.id==='naruto')world.criteria=world.criteria.map(c=>({...c,unknownCategory:true}));
-  else world.criteria = [...world.criteria, ...biographicalCriteria];
+  else if(world.id==='one-piece') world.criteria = [...world.criteria, ...biographicalCriteria];
 }
 export function legacyCriteria(id: string): Criterion[] {
  if(id!=='naruto')return worldById(id).criteria.filter(c=>!['age','height','debut'].includes(c.key));

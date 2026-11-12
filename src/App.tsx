@@ -1,5 +1,6 @@
 import { CharacterCatalog } from './CharacterCatalog.js';
 import { OnePieceBanner } from './OnePieceBanner.js';
+import { WorldBanner } from './WorldBanner.js';
 import { NarutoBanner } from './NarutoBanner.js';
 import { NatureIcons } from './NatureIcons.js';
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
@@ -36,8 +37,6 @@ function Modal({ title, children, onClose, wide = false }: { title: string; chil
   useEffect(() => {
     const dialog = ref.current!;
     if (!dialog.open) dialog.showModal();
-    // StrictMode replays effects. Its cleanup queues a native close event,
-    // which must not dismiss the freshly reopened dialog.
     return () => { if (dialog.open) dialog.close(); };
   }, []);
   return <dialog ref={ref} className={`modal${wide ? ' modal-catalog' : ''}`} aria-labelledby="modal-title" onCancel={e => { e.preventDefault(); onClose(); }} onClick={e => { if (e.target !== e.currentTarget) return; const bounds = e.currentTarget.getBoundingClientRect(); if (e.clientX < bounds.left || e.clientX > bounds.right || e.clientY < bounds.top || e.clientY > bounds.bottom) onClose(); }}>
@@ -46,7 +45,7 @@ function Modal({ title, children, onClose, wide = false }: { title: string; chil
 }
 export default function App() {
   const [worldId,setWorldId] = useState<FranchiseId>(initialWorld);
-  const world = worldById(worldId), Symbol = symbols[worldId];
+  const world = worldById(worldId);
   const [bootstrap,setBootstrap] = useState<Bootstrap | null>(null);
   const [storedGame,setGame] = useState<GameView | null>(null);
   const game = storedGame?.worldId === worldId ? storedGame : null;
@@ -156,7 +155,6 @@ export default function App() {
   }
   const closeModal = useRef(() => setModal(null)).current;
   const failedAttempts = game?.guesses.filter(g => !g.won).length ?? 0;
-  const canSurrender = Boolean(game?.status === 'playing' && failedAttempts >= 10 && !busy && !loading);
   const canSearch = Boolean(game && game.status === 'playing' && !busy && !loading);
   const listOpen = focused && Boolean(query.trim()) && canSearch;
   return <div className="app-shell relative isolate min-h-screen overflow-hidden" data-world={worldId} style={{'--accent':world.accent} as CSSProperties}>
@@ -170,22 +168,15 @@ export default function App() {
       </nav>
     </header>
     <main className="main-content">
-      <div className="intro-line"><span className="tiny-label"><span className="pulse-dot"/> ПЯТЬ МИРОВ. ТЫСЯЧИ ИСТОРИЙ.</span><span className="intro-right">Один загаданный герой.</span></div>
+      <div className="intro-line"><span className="tiny-label"><span className="pulse-dot"/> ЧЕТЫРЕ МИРА. ТЫСЯЧИ ИСТОРИЙ.</span><span className="intro-right">Один загаданный герой.</span></div>
       <section className="world-selector" aria-label="Выберите аниме">
         {worlds.map(w => { const Icon = symbols[w.id]; return <button key={w.id} className={`world-tab ${w.id === worldId ? 'active' : ''}`} style={{'--tab-accent':w.accent} as CSSProperties} aria-pressed={w.id === worldId} disabled={busy} onClick={() => setWorldId(w.id)}>
           <Icon size={21}/><span>{w.name}</span>{w.id === worldId ? <span className="tab-dot"/> : <span className="tab-number">{w.symbol}</span>}
         </button>; })}
       </section>
-      {worldId === 'naruto' ? <NarutoBanner failedAttempts={failedAttempts} playing={game?.status === 'playing'} busy={busy || loading} hintRevealed={Boolean(game?.debutHint)} onHint={()=>void revealHint()} onSurrender={()=>void surrender()}/> : worldId === 'one-piece' ? <OnePieceBanner failedAttempts={failedAttempts} playing={game?.status === 'playing'} busy={busy || loading} hintRevealed={Boolean(game?.debutHint)} onHint={()=>void revealHint()} onSurrender={()=>void surrender()}/> : (      <section className="hero" aria-labelledby="game-title">
-        <div className="hero-art" aria-hidden="true"><div className="orbit orbit-one"/><div className="orbit orbit-two"/><div className="orbit orbit-three"/><Symbol className="world-symbol" strokeWidth={0.75}/><span className="art-coordinate">EAST / {world.symbol}°</span><span className="art-star star-one">✦</span><span className="art-star star-two">✧</span></div>
-        <div className="hero-content">
-          <div className="hero-eyebrow"><span className="chapter-number">МИР {world.symbol}</span><span className="japanese">{world.japanese}</span><button className="surrender-button" disabled={!canSurrender} onClick={() => void surrender()}>Сдаться</button></div>
-          <h1 id="game-title" className={world.title.length > 15 ? 'long-title' : ''}>{world.title}<span className="title-period">.</span></h1>
-        </div>
-        <div className="hero-side"><span className="outline-number">{world.symbol}</span><span>GUESS THE CHARACTER</span></div>
-      </section>)}
+      {worldId === 'naruto' ? <NarutoBanner failedAttempts={failedAttempts} playing={game?.status === 'playing'} busy={busy || loading} hintRevealed={Boolean(game?.debutHint)} onHint={()=>void revealHint()} onSurrender={()=>void surrender()}/> : worldId === 'one-piece' ? <OnePieceBanner failedAttempts={failedAttempts} playing={game?.status === 'playing'} busy={busy || loading} hintRevealed={Boolean(game?.debutHint)} onHint={()=>void revealHint()} onSurrender={()=>void surrender()}/> : <WorldBanner name={world.name} failedAttempts={failedAttempts} playing={game?.status === 'playing'} busy={busy || loading} hintRevealed={Boolean(game?.debutHint)} onHint={()=>void revealHint()} onSurrender={()=>void surrender()}/>}
+
       <section className="play-area" aria-label="Игра">
-        {worldId!=='naruto'&&worldId!=='one-piece'&&game?.status==='playing'&&!game.debutHint&&<button className="hint-button" disabled={!game.debutHintAvailable||busy||loading} onClick={()=>void revealHint()}><Sparkles size={17}/>{game.debutHintAvailable?'Показать подсказку: первое появление':`Первое появление · ещё ${Math.max(0,5-game.guesses.filter(g=>!g.won).length)} неверных попыток`}</button>}
         {game?.debutHint&&<div className="debut-hint" role="status"><Sparkles size={18}/><div><strong>Подсказка: первое появление</strong><p>{game.debutHint}</p></div></div>}
         <div className="game-toolbar"><div className="section-label"><span className="accent-line"/> ТВОЯ СЛЕДУЮЩАЯ ДОГАДКА</div>
           <div className="toolbar-right flex items-center gap-4"><button className="text-button restart-button" disabled={busy || loading} onClick={() => game?.status === 'playing' && game.guesses.length ? setModal('restart') : void restart()}><RotateCcw size={14}/><span>Новая партия</span></button></div>

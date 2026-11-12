@@ -5,7 +5,15 @@ export const readSaved=(key:string)=>{try{return localStorage.getItem('prjhex-ui
 export const save=(key:string,value:string)=>{try{localStorage.setItem('prjhex-ui:'+key,value);}catch{}};
 type Profile={id:string;name:string;aliases?:string[];image_url?:string;fields:Record<string,any>};
 type Stored={view:GameView;target:string};
-const configuration=(world:string)=>world==='naruto'?GAMES.naruto:GAMES.onepiece;
+const configuration=(world:string)=>{
+ switch(world){
+ case 'one-piece': return GAMES.onepiece;
+ case 'naruto': return GAMES.naruto;
+ case 'dxd': return GAMES.dxd;
+ case 'girls-und-panzer': return GAMES.gup;
+ default: throw new RequestError('NO_PROFILES','Неизвестный мир.');
+ }
+};
 const mappedKey=(key:string)=>({nature_type:'nature',kekkei_genkai:'kekkei',debut_arc:'debut',affiliation:'village'} as Record<string,string>)[key]??key;
 const gameCriteria=(world:string):Criterion[]=>configuration(world).columns.map(c=>({key:world==='naruto'?mappedKey(c.key):c.key,label:c.label,kind:c.key==='nature_type'?'set':'text'}));
 const summary=(c:Profile):CharacterSummary=>({id:c.id,name:c.name,aliases:c.aliases??[],imageUrl:c.image_url??null});
@@ -17,7 +25,7 @@ async function catalog(world='one-piece'){
 function stats(world:string):Stats{try{return JSON.parse(readSaved('stats:'+world)||'null')??{played:0,won:0,currentStreak:0,bestStreak:0};}catch{return {played:0,won:0,currentStreak:0,bestStreak:0};}}
 function finish(won:boolean,world:string){const s=stats(world);s.played++;s.won+=Number(won);s.currentStreak=won?s.currentStreak+1:0;s.bestStreak=Math.max(s.bestStreak,s.currentStreak);save('stats:'+world,JSON.stringify(s));}
 function store(g:Stored){save('game:'+g.view.worldId,JSON.stringify(g));return structuredClone(g.view);}
-function active(id?:string):Stored{try{const g=['one-piece','naruto'].map(w=>{try{return JSON.parse(readSaved('game:'+w)||'null');}catch{return null;}}).find(g=>g&&(!id||g.view.id===id));if(!g||id&&g.view.id!==id)throw Error();return g;}catch{throw new RequestError('NOT_FOUND','Партия не найдена. Начните новую.');}}
+function active(id?:string):Stored{try{const g=worlds.map(({id:w})=>{try{return JSON.parse(readSaved('game:'+w)||'null');}catch{return null;}}).find(g=>g&&(!id||g.view.id===id));if(!g||id&&g.view.id!==id)throw Error();return g;}catch{throw new RequestError('NOT_FOUND','Партия не найдена. Начните новую.');}}
 function activeForWorld(world:string):Stored{const raw=readSaved('game:'+world);if(!raw)throw new RequestError('NOT_FOUND','Нет партии');return JSON.parse(raw);}
 function normalizeNature(value:unknown):string[]{const names:Record<string,string>={'fire release':'Огонь','water release':'Вода','wind release':'Ветер','earth release':'Земля','lightning release':'Молния','wood release':'Дерево'};return Array.isArray(value)?value.map(v=>names[String(v).toLowerCase()]??String(v)):[];}
 export async function api<T>(path:string,options:RequestInit={}):Promise<T>{
@@ -44,7 +52,7 @@ export async function api<T>(path:string,options:RequestInit={}):Promise<T>{
  if(match[2]){
  if(g.view.status!=='playing')throw new RequestError('GAME_FINISHED','Партия завершена.');
  const failed=g.view.guesses.filter(x=>!x.won).length;
- if(match[2]==='hint'){if(failed<5)throw new RequestError('HINT_LOCKED','Нужно 5 неверных попыток.');g.view.debutHint=world==='naruto'?(target.fields.debut_arc||'Дебютная арка не указана в каталоге.'):formatField(cols[0],target.fields.first,true);}
+ if(match[2]==='hint'){if(failed<5)throw new RequestError('HINT_LOCKED','Нужно 5 неверных попыток.');g.view.debutHint=world==='naruto'?(target.fields.debut_arc||'Дебютная арка не указана в каталоге.'):world==='one-piece'?formatField(cols[0],target.fields.first,true):'Первое появление не указано в каталоге.';}
  if(match[2]==='surrender'){if(failed<10)throw new RequestError('SURRENDER_LOCKED','Нужно 10 неверных попыток.');g.view.status='surrendered';g.view.answer=summary(target);finish(false,world);}
  if(match[2]==='guesses'){
  const c=data.find(c=>c.id===body.characterId);if(!c)throw new RequestError('NOT_FOUND','Персонаж не найден.');if(g.view.guesses.some(x=>x.character.id===c.id))throw new RequestError('DUPLICATE','Персонаж уже выбран.');

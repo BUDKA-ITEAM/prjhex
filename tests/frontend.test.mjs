@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {createServer} from 'vite';
-const folders={'one-piece':'dataop',naruto:'datanar',dxd:'datadxd','girls-und-panzer':'datagup'};
+const folders={'fairy-tail':'dataft','prison-school':'dataps','one-piece':'dataop',naruto:'datanar',dxd:'datadxd','girls-und-panzer':'datagup'};
 const catalogs=Object.fromEntries(await Promise.all(Object.values(folders).map(async folder=>[folder,JSON.parse(await readFile(folder+'/characters-full.json','utf8'))])));
 // The real Naruto export currently has no episodes: fixtures exercise the new schema without modifying it.
 const actualNarutoEpisodeCount=catalogs.datanar.filter(c=>Number.isInteger((c.fields.debut??c.fields.first)?.episode)&&(c.fields.debut??c.fields.first).episode>0).length;
@@ -49,7 +49,7 @@ try {
  console.log('PASS: library world isolation, complete pagination, name and alias search, empty results, cancellation, no game mutation');
  for(const world of Object.keys(folders)){
  const data=playable(world,catalogs[folders[world]]);memory.set('prjhex-ui:anidle-world',world);
- const boot=await api('/bootstrap');assert.equal(boot.worlds.length,4);assert(boot.worlds.some(w=>w.id==='naruto'));assert.equal(boot.coverage.find(c=>c.worldId===world).playable,data.length);
+ const boot=await api('/bootstrap');assert.equal(boot.worlds.length,6);assert(boot.worlds.some(w=>w.id==='naruto'));assert.equal(boot.coverage.find(c=>c.worldId===world).playable,data.length);
  let game=await api('/games',{method:'POST',body:JSON.stringify({worldId:world,restart:true})});
  const id=game.id,target=JSON.parse(readSaved('game:'+world)).target;
  if(['one-piece','naruto'].includes(world)){
@@ -73,7 +73,7 @@ try {
   memory.set('prjhex-ui:anidle-world','naruto');
   assert.equal((await api('/games/'+saved.view.id)).worldId,world);
  }
- assert.equal(ids.size,4);
+ assert.equal(ids.size,6);
  const op=JSON.parse(readSaved('game:one-piece'));const nar=JSON.parse(readSaved('game:naruto'));assert.notEqual(op.view.id,nar.view.id);assert.equal((await api('/games/'+op.view.id)).worldId,'one-piece');assert.equal((await api('/games/'+nar.view.id)).worldId,'naruto');
  console.log('PASS: catalog, guesses, duplicate protection, hint, surrender, win, restore, statistics');
 }finally{await server.close();}

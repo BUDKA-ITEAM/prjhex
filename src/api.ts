@@ -48,6 +48,10 @@ const configuration = (world: string) => {
       return GAMES.onepiece;
     case 'naruto':
       return GAMES.naruto;
+    case 'fairy-tail':
+      return GAMES.ft;
+    case 'prison-school':
+      return GAMES.ps;
     case 'dxd':
       return GAMES.dxd;
     case 'girls-und-panzer':
@@ -290,7 +294,7 @@ export async function api<T>(path: string, options: RequestInit = {}): Promise<T
 
       if (match[2] === 'hint') {
         if (failed < 5) throw new RequestError('HINT_LOCKED', 'Нужно 5 неверных попыток.');
-        g.view.debutHint = episodeWorld(world) ? formatField(configuration(world).columns.find(c=>c.key==='first')!,target.fields.first,true) : 'Первое появление не указано в каталоге.';
+        g.view.debutHint = world==='fairy-tail' ? formatField(GAMES.ft.columns.find(c=>c.key==='debut')!,target.fields.debut,true) : episodeWorld(world) ? formatField(configuration(world).columns.find(c=>c.key==='first')!,target.fields.first,true) : 'Первое появление не указано в каталоге.';
       }
 
       if (match[2] === 'surrender') {

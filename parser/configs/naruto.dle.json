@@ -59,11 +59,11 @@
       "compare": { "kind": "list_priority" }
     },
     {
-      "key": "debut_arc",
-      "label": "Дебютная дуга",
-      "source": "arc",
-      "type": "string",
-      "compare": { "kind": "exact" }
+      "key": "debut",
+      "label": "Дебют",
+      "source": "debut",
+      "type": "appearance",
+      "compare": { "kind": "appearance_number", "exact": 5, "close": 20 }
     }
   ]
 }

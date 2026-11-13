@@ -21,12 +21,10 @@ def parse_infobox(html: str) -> dict[str, str]:
         src = img.get("data-src") or img.get("src")
         if not src:
             continue
-        # Пропускаем data:image, .svg и системные иконки
         if src.startswith("data:image") or ".svg" in src.lower():
             continue
         if "Camera_font" in src or "Browse_Information" in src:
             continue
-            
         img_url = src
         break
             
@@ -59,6 +57,16 @@ def parse_infobox(html: str) -> dict[str, str]:
         if key and val and key not in data:
             data[key] = val
 
+    # 3. СКЛЕИВАЕМ дебют из полей manga и anime
+    debut_parts = []
+    if "manga" in data:
+        debut_parts.append(data["manga"])
+    if "anime" in data:
+        debut_parts.append(data["anime"])
+        
+    if debut_parts:
+        data["debut"] = ", ".join(debut_parts)
+
     return data
 
 
@@ -66,11 +74,23 @@ def parse_infobox(html: str) -> dict[str, str]:
 # НОРМАЛИЗАТОРЫ
 # ============================================================
 
+def _appearance(raw: str | None) -> dict | None:
+    if not raw: return None
+    raw = _clean(raw)
+    # Добавлена поддержка # (например, "Chapter #129")
+    chapters = [int(n) for n in re.findall(r"Chapter\s*#?\s*(\d+)", raw)]
+    episodes = [int(n) for n in re.findall(r"Episode\s*#?\s*(\d+)", raw)]
+    if not chapters and not episodes:
+        return None
+    return {
+        "chapter": min(chapters) if chapters else None,
+        "episode": min(episodes) if episodes else None,
+    }
+
 def _list(raw: str | None) -> list[str]:
     if not raw: return []
     raw = _clean(raw)
     raw = re.sub(r"\([^)]*\)", "", raw)
-    # Разбиваем по запятым, переносам и союзу "and"
     parts = re.split(r"[;,\n]| and ", raw)
     out: list[str] = []
     seen: set[str] = set()
@@ -97,8 +117,51 @@ def _normalize_field(col: dict, raw: str | None):
     kind = col["type"]
     if kind == "list": return _list(raw)
     if kind == "enum": return _enum(raw, col["values"])
+    if kind == "appearance": return _appearance(raw)
     return _string(raw)
 
+
+# ============================================================
+# ФИЛЬТР КАНОНА (отсеиваем Боруто и фильмы)
+# ============================================================
+
+def _is_valid_canon(fields: dict, raw_fields: dict) -> tuple[bool, str]:
+    """
+    Проверяет, подходит ли персонаж.
+    Возвращает (True, "") если подходит, иначе (False, "причина").
+    """
+    debut = fields.get("debut")
+    raw_debut = raw_fields.get("debut", "").lower()
+
+    # 1. Отсеиваем тех, кто появился только в фильмах/играх/OVA (нет глав и серий)
+    if not debut:
+        if "movie" in raw_debut or "film" in raw_debut:
+            return False, "movie_only"
+        if "game" in raw_debut or "ova" in raw_debut or "special" in raw_debut:
+            return False, "non-canon_only"
+        return False, "no_valid_debut"
+
+    # 2. Отсеиваем Боруто (по сырому тексту дебюта)
+    if "boruto" in raw_debut:
+        return False, "boruto"
+
+    chapter = debut.get("chapter")
+    episode = debut.get("episode")
+
+    # 3. Отсеиваем поздние главы (Наруто закончился на 700)
+    if chapter and chapter > 699:
+        return False, f"late_chapter_{chapter}"
+
+    # 4. Отсеиваем поздние серии (Наруто: Шиппуден закончился на 500)
+    if episode and episode > 499:
+        return False, f"late_episode_{episode}"
+
+    return True, ""
+
+
+# ============================================================
+# ГЛАВНАЯ
+# ============================================================
 
 def normalize_character(
     page_title: str,
@@ -133,6 +196,11 @@ def normalize_character(
     # Безопасная проверка на пустоту
     if isinstance(fields, dict) and not any(fields.values()):
         return None, "no_data"
+
+    # ПРИМЕНЯЕМ ФИЛЬТР
+    is_valid, reason = _is_valid_canon(fields, raw_fields)
+    if not is_valid:
+        return None, reason
 
     aliases = []
     if page_title: aliases.append(page_title)

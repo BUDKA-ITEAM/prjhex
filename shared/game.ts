@@ -1,7 +1,7 @@
 export type TraitValue = string | number | string[] | null;
 export type Traits = Record<string, TraitValue>;
 export type Criterion = { key: string; label: string; kind: 'text' | 'number' | 'set'; unit?: string; unknownCategory?: boolean };
-export type FranchiseId = 'one-piece' | 'naruto' | 'fairy-tail' | 'dxd' | 'girls-und-panzer';
+export type FranchiseId = 'one-piece' | 'naruto' | 'fairy-tail' | 'dxd' | 'girls-und-panzer' | 'prison-school';
 export interface World {
   id: FranchiseId; name: string; title: string; japanese: string; subtitle: string;
   symbol: string; accent: string; criteria: Criterion[];
@@ -14,6 +14,7 @@ export const biographicalCriteria: Criterion[] = [
   { key: 'debut', label: 'Первое появление', kind: 'text' },
 ];
 const allWorlds: World[] = [
+ {id:'prison-school',name:'Prison School',title:'PRISON SCHOOL',japanese:'監獄学園',subtitle:'',symbol:'06',accent:'#a6b4c8',criteria:[gender,{key:'hair_color',label:'Цвет волос',kind:'text'},{key:'school',label:'Школа',kind:'set'},{key:'occupation',label:'Занятие',kind:'set'}]},
   { id: 'one-piece', name: 'Ван-Пис', title: 'ONE PIECE', japanese: 'ワンピース', subtitle: 'Найди своего героя на Гранд-Лайн', symbol: '01', accent: '#b5a0ff', criteria: [gender, species,
     { key: 'faction', label: 'Принадлежность', kind: 'set' }, { key: 'fruit', label: 'Тип плода', kind: 'text' },
     { key: 'haki', label: 'Хаки', kind: 'set' }, { key: 'bounty', label: 'Награда', kind: 'number', unit: '฿' }] },
@@ -36,7 +37,7 @@ const allWorlds: World[] = [
     { key:'affiliation', label:'Школа / принадлежность', kind:'set' }, { key:'team', label:'Команда', kind:'set' },
     { key:'role', label:'Роль', kind:'set' }, { key:'tank', label:'Танк', kind:'set' }] },
 ];
-export const worlds = allWorlds.filter(w=>w.id !== 'fairy-tail');
+export const worlds = allWorlds;
 for (const world of worlds) {
   if(world.id==='naruto')world.criteria=world.criteria.map(c=>({...c,unknownCategory:true}));
   else if(world.id==='one-piece') world.criteria = [...world.criteria, ...biographicalCriteria];

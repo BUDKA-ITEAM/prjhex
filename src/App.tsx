@@ -9,7 +9,7 @@ import { worlds, worldById, type Bootstrap, type Cell, type CharacterSummary, ty
 import { api, readSaved, save, RequestError } from './api.js';
 
 
-const symbols: Record<FranchiseId, typeof Anchor> = { 'one-piece':Anchor,naruto:Leaf,'fairy-tail':Flame,dxd:Zap,'girls-und-panzer':Shield };
+const symbols: Record<FranchiseId, typeof Anchor> = { 'one-piece':Anchor,naruto:Leaf,'fairy-tail':Flame,dxd:Zap,'girls-und-panzer':Shield,'prison-school':Shield };
 const matchLabel = { correct:'Совпадение',partial:'Частично',wrong:'Не совпадает',unknown:'Неизвестно' };
 const initialWorld = (): FranchiseId => { const saved = readSaved('anidle-world'); return worlds.find(w => w.id === saved)?.id ?? 'one-piece'; };
 function Avatar({ character, large = false }: { character: CharacterSummary; large?: boolean }) {

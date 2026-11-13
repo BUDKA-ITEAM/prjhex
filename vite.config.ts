@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import { cp } from 'node:fs/promises';
 
-const staticPaths = ['datanar', 'dataop', 'datadxd', 'datagup', 'js', 'how-to-play.html', 'profile.html', 'styles.css'];
+const staticPaths = ['dataft', 'dataps', 'datanar', 'dataop', 'datadxd', 'datagup', 'js', 'how-to-play.html', 'profile.html', 'styles.css'];
 
 export default defineConfig({
   base: process.env.VITE_BASE_PATH || '/',

@@ -13,6 +13,10 @@ const empty = v => v == null || (Array.isArray(v) && !v.length);
 const cap = s => (s ? String(s)[0].toUpperCase() + String(s).slice(1) : s);
 
 const TYPES = {
+ episode: {
+  format:v=>debutEpisode(v)===null?'Не указано':'Серия '+debutEpisode(v),
+  compare(g,a){const x=debutEpisode(g),y=debutEpisode(a);return x===y?'correct':x===null||y===null?'wrong':x<y?'up':'down';}
+ },
   appearance: {
     format: v => typeof v?.arc==='string' && v.arc.trim() ? v.arc : 'Арка не указана',
     compare(g, a) {
@@ -58,6 +62,13 @@ const TYPES = {
 };
 
 export const GAMES = {
+ ft:{name:'Fairy Tail',title:'AnimeDle — Fairy Tail',dataDir:'dataft',columns:[
+ {key:'gender',label:'Пол',type:'enum'},{key:'affiliation',label:'Гильдия',type:'list'},
+ {key:'occupation',label:'Занятие',type:'list'},{key:'magic',label:'Магия',type:'list'},
+ {key:'debut',label:'Первое появление',type:'episode'}]},
+ ps:{name:'Prison School',title:'AnimeDle — Prison School',dataDir:'dataps',columns:[
+ {key:'gender',label:'Пол',type:'enum'},{key:'hair_color',label:'Цвет волос',type:'enum'},
+ {key:'school',label:'Школа',type:'list'},{key:'occupation',label:'Занятие',type:'list'}]},
   // ДХД
  dxd:{name:'High School DxD',title:'AnimeDle — High School DxD',dataDir:'datadxd',columns:[
  {key:'race',label:'Раса',type:'list'},{key:'hair',label:'Цвет волос',type:'enum'},

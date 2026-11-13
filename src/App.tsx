@@ -27,7 +27,7 @@ function TraitCell({ cell, criterion }: { cell: Cell; criterion: Criterion }) {
   else label = typeof cell.value === 'number' ? new Intl.NumberFormat('ru-RU').format(cell.value) : cell.value;
   return <td><div className={`trait-cell ${cell.match}`} title={`${criterion.label}: ${label}. ${matchLabel[cell.match]}${cell.direction === 'up' ? '. У загаданного больше' : cell.direction === 'down' ? '. У загаданного меньше' : ''}${criterion.unknownCategory && cell.value===null ? '. В импортированных источниках значение не установлено; это игровая категория.' : ''}${cell.note ? '\n'+cell.note : ''}`}>
     <span className="cell-mark" aria-hidden="true">{cell.match === 'correct' ? <Check size={12}/> : cell.match === 'partial' ? '≈' : cell.match === 'unknown' ? '?' : '×'}</span>
-    <span className="trait-value">{cell.key==='nature' && Array.isArray(cell.value) && cell.value.length ? <NatureIcons value={cell.value}/> : label}{typeof cell.value === 'number' && criterion.unit ? <small> {criterion.unit}</small> : ''}</span>
+    <span className="trait-value">{cell.key==='nature' && Array.isArray(cell.value) ? <NatureIcons value={cell.value}/> : label}{typeof cell.value === 'number' && criterion.unit ? <small> {criterion.unit}</small> : ''}</span>
     {cell.direction && (cell.direction === 'up' ? <ArrowUp className="direction" size={16}/> : <ArrowDown className="direction" size={16}/>)}
     <span className="sr-only">{matchLabel[cell.match]}{cell.direction === 'up' ? ', у загаданного больше' : cell.direction === 'down' ? ', у загаданного меньше' : ''}</span>
   </div></td>;

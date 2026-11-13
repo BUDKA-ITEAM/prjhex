@@ -1,4 +1,5 @@
-import { GAMES, compareField, formatField } from '../js/columns.js';
+import { normalizeDebut } from '../js/debut-arcs.js';
+import { GAMES, compareField, formatField, debutEpisode, numericDirection } from '../js/columns.js';
 import {
   worlds,
   type GameView,
@@ -36,6 +37,7 @@ type Profile = {
 };
 
 type Stored = {
+  presentationVersion?: number;
   view: GameView;
   target: string
 };
@@ -79,6 +81,9 @@ const summary = (c: Profile): CharacterSummary => ({
 
 const pending = new Map<string, Promise<Profile[]>>();
 
+const episodeWorld=(world:string)=>world==='naruto'||world==='one-piece';
+const eligible=(world:string,rows:Profile[])=>episodeWorld(world)?rows.filter(c=>debutEpisode(c.fields.first)!==null):rows;
+
 async function catalog(world = 'one-piece') {
   if (!pending.has(world))
     pending.set(
@@ -95,7 +100,7 @@ async function catalog(world = 'one-piece') {
 
         return data.filter(
           c => typeof c.id === 'string' && typeof c.name === 'string' && c.fields
-        ) as Profile[];
+        ).map(c=>normalizeDebut(c,world)) as Profile[];
       })().catch(e => {
         pending.delete(world);
         throw e;
@@ -157,7 +162,7 @@ function activeForWorld(world: string): Stored {
   return JSON.parse(raw);
 }
 
-function normalizeNature(value: unknown): string[] {
+export function normalizeNature(value: unknown): string[] {
   const names: Record<string, string> = {
     'fire release': 'Огонь',
     'water release': 'Вода',
@@ -168,7 +173,7 @@ function normalizeNature(value: unknown): string[] {
   };
 
   return Array.isArray(value)
-    ? value.map(v => names[String(v).toLowerCase()] ?? String(v))
+    ? [...new Set(value.map(v => names[String(v).trim().toLowerCase()] ?? (Object.values(names).includes(String(v)) ? String(v) : null)).filter((v): v is string => v !== null))]
     : [];
 }
 
@@ -187,7 +192,8 @@ export async function api<T>(path: string, options: RequestInit = {}): Promise<T
 
   const cols = configuration(world).columns,
     criteria = gameCriteria(world);
-  const data = await catalog(world);
+  const allData = await catalog(world);
+  const data = url.pathname==='/catalog'?allData:eligible(world,allData);
   options.signal?.throwIfAborted();
 
   let result: unknown;
@@ -201,7 +207,7 @@ export async function api<T>(path: string, options: RequestInit = {}): Promise<T
           return {
             worldId: w.id,
             catalog: rows.length,
-            playable: rows.length,
+            playable: eligible(w.id,rows).length,
             reviewed: 0,
             drafts: 0,
             importedWorks: 0
@@ -233,16 +239,17 @@ export async function api<T>(path: string, options: RequestInit = {}): Promise<T
     const q = (url.searchParams.get('q') || '').trim().toLocaleLowerCase();
     result = {
       characters: data
-        .filter(c => [c.name, ...c.aliases ?? []].some(n => n.toLocaleLowerCase().includes(q)))
+        .filter(c => world==='one-piece' ? c.name.toLocaleLowerCase().startsWith(q) : [c.name, ...c.aliases ?? []].some(n => n.toLocaleLowerCase().includes(q)))
+        .sort((a,b)=>world==='one-piece'?a.name.localeCompare(b.name,'en',{sensitivity:'base'})||a.id.localeCompare(b.id):0)
         .slice(0, 30)
         .map(summary)
     };
   } else if (url.pathname === '/games' && options.method === 'POST') {
-    if (!data.length) throw new RequestError('NO_PROFILES', 'Каталог пуст.');
+    if (!data.length) throw new RequestError('NO_PROFILES', 'Нет персонажей с указанной серией появления. Добавьте fields.debut.episode или fields.first.episode в JSON этого мира.');
 
     try {
       const old = activeForWorld(world);
-      if (old.view.status === 'playing') {
+      if (old.view.status === 'playing' && (!episodeWorld(world) || old.presentationVersion===5 && old.view.criteria.some(c=>c.key==='first') && data.some(c=>c.id===old.target))) {
         if (!body.restart) return structuredClone(old.view) as T;
         finish(false, world);
       }
@@ -253,6 +260,7 @@ export async function api<T>(path: string, options: RequestInit = {}): Promise<T
     const number = crypto.getRandomValues(new Uint32Array(1))[0];
     const target = data[Math.floor(number / 4294967296 * data.length)];
     result = store({
+      presentationVersion:5,
       target: target.id,
       view: {
         id: crypto.randomUUID(),
@@ -269,6 +277,7 @@ export async function api<T>(path: string, options: RequestInit = {}): Promise<T
     if (!match) throw new RequestError('NOT_FOUND', 'Действие не найдено.');
 
     const g = active(decodeURIComponent(match[1]));
+    if(episodeWorld(world)&&(g.presentationVersion!==5||!g.view.criteria.some(c=>c.key==='first')))throw new RequestError('GAME_NEEDS_RESTART','Правила дебюта обновлены. Начните новую партию.');
     const target = data.find(c => c.id === g.target);
     if (!target)
       throw new RequestError('GAME_NEEDS_RESTART', 'Каталог обновлён. Начните новую партию.');
@@ -281,11 +290,7 @@ export async function api<T>(path: string, options: RequestInit = {}): Promise<T
 
       if (match[2] === 'hint') {
         if (failed < 5) throw new RequestError('HINT_LOCKED', 'Нужно 5 неверных попыток.');
-        g.view.debutHint = world === 'naruto'
-          ? (target.fields.debut_arc || 'Дебютная арка не указана в каталоге.')
-          : world === 'one-piece'
-            ? formatField(cols[0], target.fields.first, true)
-            : 'Первое появление не указано в каталоге.';
+        g.view.debutHint = episodeWorld(world) ? formatField(configuration(world).columns.find(c=>c.key==='first')!,target.fields.first,true) : 'Первое появление не указано в каталоге.';
       }
 
       if (match[2] === 'surrender') {
@@ -307,7 +312,7 @@ export async function api<T>(path: string, options: RequestInit = {}): Promise<T
           character: summary(c),
           won,
           cells: cols.map(col => {
-            const status = compareField(col, c, target);
+            const status = world==='naruto'&&col.key==='nature_type' ? compareField(col,{fields:{nature_type:normalizeNature(c.fields.nature_type)}},{fields:{nature_type:normalizeNature(target.fields.nature_type)}}) : compareField(col, c, target);
             return {
               key: world === 'naruto' ? mappedKey(col.key) : col.key,
               value: world === 'naruto' && col.key === 'nature_type'
@@ -318,7 +323,7 @@ export async function api<T>(path: string, options: RequestInit = {}): Promise<T
                 : status === 'close'
                   ? 'partial'
                   : 'wrong',
-              ...(status === 'up' || status === 'down' ? { direction: status } : {})
+              ...(col.key==='age' ? (numericDirection(c.fields.age,target.fields.age)?{direction:numericDirection(c.fields.age,target.fields.age)}:{}) : status === 'up' || status === 'down' ? { direction: status } : {})
             };
           })
         });
@@ -330,6 +335,8 @@ export async function api<T>(path: string, options: RequestInit = {}): Promise<T
         g.view.debutHintAvailable = g.view.guesses.filter(x => !x.won).length >= 5;
       }
     }
+    for(const guess of g.view.guesses){const profile=data.find(c=>c.id===guess.character.id);for(const cell of guess.cells){if(cell.key==='age'){const arrow=numericDirection(profile?.fields.age,target.fields.age);if(arrow)cell.direction=arrow;else delete cell.direction;}}}
+    if(world==='naruto')for(const guess of g.view.guesses){const profile=data.find(c=>c.id===guess.character.id);for(const cell of guess.cells)if(cell.key==='nature'){cell.value=normalizeNature(profile?.fields.nature_type??cell.value);const col=configuration(world).columns.find(c=>c.key==='nature_type')!;const status=compareField(col,{fields:{nature_type:cell.value}},{fields:{nature_type:normalizeNature(target.fields.nature_type)}});cell.match=status==='correct'?'correct':status==='close'?'partial':'wrong';}}
     result = store(g);
   }
 

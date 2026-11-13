@@ -13,11 +13,8 @@ from dle_parser.api_async import (
     fetch_category_members_async,
     fetch_infobox_html_async,
 )
-from dle_parser.parse import (
-    normalize_character as normalize_base,
-    parse_infobox as parse_infobox_base,
-)
-from dle_parser import parse_naruto, parse_gup, parse_dxd
+
+from dle_parser.registry import get_parser
 
 log = logging.getLogger("dle_async")
 
@@ -44,18 +41,6 @@ async def collect_pages(client, wiki: str, categories: list[str]) -> list[str]:
                 seen.add(t)
                 ordered.append(t)
     return ordered
-
-
-def get_parser(dle_id: str):
-    """Возвращает (parse_infobox, normalize_character)."""
-    if dle_id == "naruto":
-        return parse_naruto.parse_infobox, parse_naruto.normalize_character
-    if dle_id == "gup":
-        return parse_gup.parse_infobox, parse_gup.normalize_character
-    if dle_id == "dxd":
-        return parse_dxd.parse_infobox, parse_dxd.normalize_character
-    return parse_infobox_base, normalize_base
-
 
 async def parse_one(
     client,
@@ -114,8 +99,15 @@ async def parse_all(
         except Exception as e:
             log.warning("Не смог прочитать %s: %s", out_path, e)
 
-    # Фильтруем уже обработанных
-    done_ids = set(existing.keys())
+    done_ids: set[str] = set()
+    for _item in existing.values():
+        _rid = _item.get("id") or ""
+        if not _rid:
+            continue
+        done_ids.add(_rid)
+        done_ids.add(_rid.replace(" ", "_"))
+
+
     todo = [t for t in titles if t.replace(" ", "_") not in done_ids]
 
     total = len(todo) if limit is None else min(len(todo), limit)
@@ -124,8 +116,7 @@ async def parse_all(
     log.info("К обработке: %d (параллельно: %d, delay: %.2f)",
              total, concurrency, delay)
 
-    dle_id = config.get("dle_id", "onepiece")
-    parse_infobox, normalize_character = get_parser(dle_id)
+    parse_infobox, normalize_character = get_parser(config.get("dle_id", "onepiece"))
 
     semaphore = asyncio.Semaphore(concurrency)
     started = time.monotonic()
@@ -150,8 +141,11 @@ async def parse_all(
 
         if record:
             results.append(record)
+            done_ids.add(record["id"])
+            done_ids.add(record["id"].replace(" ", "_"))
         if skip_info:
             skipped.append(skip_info)
+            log.warning("  ⚠ skip: %s — %s", skip_info["title"], skip_info["reason"])
 
         if processed % 20 == 0 or processed == total:
             elapsed = time.monotonic() - started
@@ -162,9 +156,11 @@ async def parse_all(
     # Сохраняем
     out_path.parent.mkdir(parents=True, exist_ok=True)
     with out_path.open("w", encoding="utf-8") as f:
+        results.sort(key=lambda r: r.get("id", ""))
         json.dump(results, f, ensure_ascii=False, indent=2)
 
     if skipped:
+        skipped.sort(key=lambda s: s.get("title", ""))
         skipped_path = out_path.with_name(out_path.stem + ".skipped.json")
         with skipped_path.open("w", encoding="utf-8") as f:
             json.dump(skipped, f, ensure_ascii=False, indent=2)

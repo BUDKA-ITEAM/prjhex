@@ -416,11 +416,11 @@ h1 { font-family:'Arial Black','Segoe UI',Arial,sans-serif; font-size:clamp(42px
 [data-world="one-piece"] .comparison-table .trait-cell { height:100%; min-height:144px; padding:12px 3px 6px; border-width:2px; border-radius:9px; font-size:15px; font-weight:700; line-height:1.18; }
 [data-world="one-piece"] .comparison-table .cell-mark { display:none; }
 [data-world="one-piece"] .comparison-table .direction { width:24px; height:24px; stroke-width:4; }
-.app-shell:is([data-world="naruto"],[data-world="one-piece"]) .comparison-table { table-layout:fixed; }
-.app-shell:is([data-world="naruto"],[data-world="one-piece"]) .comparison-table :is(th,td,.character-cell,.trait-cell,.trait-value) { min-width:0; max-width:100%; overflow-wrap:anywhere; }
-.app-shell:is([data-world="naruto"],[data-world="one-piece"]) .comparison-table .character-cell { overflow:hidden; }
-.app-shell:is([data-world="naruto"],[data-world="one-piece"]) .comparison-table .character-name small { flex-wrap:wrap; justify-content:center; }
-.app-shell:is([data-world="naruto"],[data-world="one-piece"]) .comparison-table .trait-cell { height:100%; }
+.app-shell .comparison-table { table-layout:fixed; }
+.app-shell .comparison-table :is(th,td,.character-cell,.trait-cell,.trait-value) { min-width:0; max-width:100%; overflow-wrap:anywhere; }
+.app-shell .comparison-table .character-cell { overflow:hidden; }
+.app-shell .comparison-table .character-name small { flex-wrap:wrap; justify-content:center; }
+.app-shell .comparison-table .trait-cell { height:100%; }
 [data-world="one-piece"] .empty-history { min-height:120px; }
 [data-world="one-piece"] .bottom-strip { width:fit-content; max-width:100%; padding:7px 10px; border-radius:4px; background:#102e46ed; color:#b8d9ea; }
 @media(max-width:1000px) and (min-width:761px) {
@@ -435,7 +435,7 @@ h1 { font-family:'Arial Black','Segoe UI',Arial,sans-serif; font-size:clamp(42px
 }
 
 /* Both illustrated game banners use one explicit outer size at every breakpoint. */
-.app-shell .game-banner:is(.illustrated-scroll,.onepiece-scroll) { width:700px; max-width:calc(100% - 20px); height:476px; min-height:0; margin:26px auto; }
+.app-shell .game-banner:is(.illustrated-scroll,.onepiece-scroll,.world-banner) { width:700px; max-width:calc(100% - 20px); height:476px; min-height:0; margin:26px auto; }
 .app-shell[data-world="naruto"] .game-banner { display:grid; grid-template-rows:minmax(0,1fr) 186px; gap:24px; padding:88px 26px 38px; }
 .app-shell[data-world="naruto"] .game-banner h1 { align-self:center; margin:0 -5px; }
 .app-shell[data-world="naruto"] .game-banner .scroll-cards { min-height:0; }
@@ -445,19 +445,19 @@ h1 { font-family:'Arial Black','Segoe UI',Arial,sans-serif; font-size:clamp(42px
 [data-world="one-piece"] .table-scroll { scrollbar-color:#487d98 #0b263e; }
 [data-world="one-piece"] .site-footer { background:#0b263ed9; }
 @media(max-width:760px) {
-  .app-shell .game-banner:is(.illustrated-scroll,.onepiece-scroll) { height:440px; margin:22px auto; }
+  .app-shell .game-banner:is(.illustrated-scroll,.onepiece-scroll,.world-banner) { height:440px; margin:22px auto; }
 }
 @media(max-width:600px) {
-  .app-shell .game-banner:is(.illustrated-scroll,.onepiece-scroll) { height:360px; }
+  .app-shell .game-banner:is(.illustrated-scroll,.onepiece-scroll,.world-banner) { height:360px; }
   .app-shell[data-world="naruto"] .game-banner { grid-template-rows:minmax(0,1fr) 165px; gap:16px; padding:64px 13px 27px; }
   .app-shell[data-world="naruto"] .game-banner h1 { margin:0; }
 }
 
 /* Portraits share a 120px height; cards follow the image's natural width. */
-.app-shell:is([data-world="naruto"],[data-world="one-piece"]) .comparison-table .character-cell { width:fit-content; max-width:100%; margin-inline:auto; justify-content:flex-start; }
-.app-shell:is([data-world="naruto"],[data-world="one-piece"]) .comparison-table .character-cell .avatar { position:relative; display:block; flex:none; align-self:center; width:fit-content; min-width:0; max-width:100%; height:auto; min-height:0; max-height:120px; overflow:hidden; }
-.app-shell:is([data-world="naruto"],[data-world="one-piece"]) .comparison-table .character-cell .avatar img { position:static; display:block; width:auto; height:120px; min-width:0; min-height:0; max-width:100%; max-height:120px; object-fit:contain; object-position:center; }
-.app-shell:is([data-world="naruto"],[data-world="one-piece"]) .comparison-table .character-cell .character-name { width:0; min-width:100%; max-width:100%; }
+.app-shell .comparison-table .character-cell { width:fit-content; max-width:100%; margin-inline:auto; justify-content:flex-start; }
+.app-shell .comparison-table .character-cell .avatar { position:relative; display:block; flex:none; align-self:center; width:fit-content; min-width:0; max-width:100%; height:auto; min-height:0; max-height:120px; overflow:hidden; }
+.app-shell .comparison-table .character-cell .avatar img { position:static; display:block; width:auto; height:120px; min-width:0; min-height:0; max-width:100%; max-height:120px; object-fit:contain; object-position:center; }
+.app-shell .comparison-table .character-cell .character-name { width:0; min-width:100%; max-width:100%; }
 /* Reframe the live labels for the expanded scroll artwork. */
 .onepiece-scroll h1 { top:4.8%; left:35.5%; width:28%; height:10.5%; display:flex; align-items:center; justify-content:center; flex-direction:column; font-size:clamp(9px,1.6vw,14px); line-height:1.05; letter-spacing:0; color:#102f42; text-shadow:0 1px 0 #fff2d6; }
 .onepiece-cards { top:48%; left:12%; right:12%; bottom:18%; gap:8%; }
@@ -492,7 +492,65 @@ h1 { font-family:'Arial Black','Segoe UI',Arial,sans-serif; font-size:clamp(42px
 
 /* Missing photos retain a readable card width instead of shrinking to initials. */
 .avatar.avatar-placeholder { display:grid; place-items:center; }
-.app-shell:is([data-world="naruto"],[data-world="one-piece"]) .comparison-table .character-cell:has(.avatar-placeholder) { width:120px; max-width:100%; }
-.app-shell:is([data-world="naruto"],[data-world="one-piece"]) .comparison-table .character-cell .avatar.avatar-placeholder { display:grid; place-items:center; width:120px; max-width:100%; height:120px; min-height:120px; background:linear-gradient(145deg,#f0e6cc,#d5c39c); color:#7b6a4a; }
-.app-shell:is([data-world="naruto"],[data-world="one-piece"]) .comparison-table .avatar-placeholder svg { width:40px; height:40px; opacity:.75; }
+.app-shell .comparison-table .character-cell:has(.avatar-placeholder) { width:120px; max-width:100%; }
+.app-shell .comparison-table .character-cell .avatar.avatar-placeholder { display:grid; place-items:center; width:120px; max-width:100%; height:120px; min-height:120px; background:linear-gradient(145deg,#f0e6cc,#d5c39c); color:#7b6a4a; }
+.app-shell .comparison-table .avatar-placeholder svg { width:40px; height:40px; opacity:.75; }
 .app-shell[data-world="one-piece"] .comparison-table .character-cell .avatar.avatar-placeholder { background:linear-gradient(145deg,#1a425c,#102d43); color:#9fc9de; }
+
+/* New worlds share banner geometry; artwork can be configured separately. */
+.app-shell .world-banner { display:grid; grid-template-rows:minmax(0,1fr) 186px; gap:24px; padding:88px 26px 38px; border:1px solid #ffffff20; border-radius:9px; background:#171c29; }
+.world-banner h1 { align-self:center; margin:0; text-align:center; font-family:Georgia,'Times New Roman',serif; font-size:clamp(25px,3.5vw,38px); line-height:1.16; letter-spacing:-1px; }
+.world-banner-cards { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:36px; }
+.world-banner-cards button { min-width:0; border:1px solid #ffffff30; border-radius:6px; background:#ffffff05; color:inherit; padding:12px; font-size:clamp(13px,1.8vw,18px); line-height:1.4; }
+.world-banner-cards button:not(:disabled):hover { background:#ffffff12; }
+.world-banner-cards strong { display:inline-block; margin-top:8px; }
+@media(max-width:600px) {
+ .app-shell .world-banner { grid-template-rows:minmax(0,1fr) 165px; gap:16px; padding:64px 13px 27px; }
+ .world-banner h1 { font-size:24px; }
+ .world-banner-cards { gap:14px; }
+}
+
+/* Keep new comparison boards aligned with the existing portrait and cell sizes. */
+:is([data-world="dxd"],[data-world="girls-und-panzer"]) .comparison-table { border-spacing:0 6px; }
+:is([data-world="dxd"],[data-world="girls-und-panzer"]) .comparison-table .character-column { width:12%; }
+:is([data-world="dxd"],[data-world="girls-und-panzer"]) .comparison-table th { height:72px; padding:5px 5px 17px; font-size:16px; line-height:1.35; }
+:is([data-world="dxd"],[data-world="girls-und-panzer"]) .comparison-table td { height:1px; padding:0 2px; }
+:is([data-world="dxd"],[data-world="girls-und-panzer"]) .comparison-table .character-cell { flex-direction:column; flex-wrap:nowrap; min-height:144px; gap:0; padding:0; }
+:is([data-world="dxd"],[data-world="girls-und-panzer"]) .comparison-table .attempt-index { display:none; }
+:is([data-world="dxd"],[data-world="girls-und-panzer"]) .comparison-table .character-name { flex:none; padding:3px; font-size:10px; text-align:center; }
+:is([data-world="dxd"],[data-world="girls-und-panzer"]) .comparison-table .trait-cell { min-height:144px; padding:12px 3px 6px; font-size:15px; font-weight:700; line-height:1.18; }
+@media(max-width:760px) {
+ :is([data-world="dxd"],[data-world="girls-und-panzer"]) .comparison-table { min-width:800px; }
+ :is([data-world="dxd"],[data-world="girls-und-panzer"]) .comparison-table th { font-size:14px; }
+ :is([data-world="dxd"],[data-world="girls-und-panzer"]) .comparison-table .trait-cell { font-size:13px; }
+}
+
+/* DxD artwork keeps the common banner size and live text/button overlays. */
+.app-shell[data-world="dxd"] .world-banner { position:relative; display:block; padding:0; border:0; background:url('/art/dxd-banner-v1.png') center/100% 100% no-repeat; border-radius:9px; }
+[data-world="dxd"] .world-banner h1 { position:absolute; top:6%; left:22%; width:56%; height:13.5%; display:flex; flex-direction:column; justify-content:center; margin:0; color:#301d2b; font-size:clamp(11px,2.7vw,21px); line-height:1.12; letter-spacing:0; text-shadow:0 1px 0 #fff7e2; }
+[data-world="dxd"] .world-banner-cards { position:absolute; top:65%; bottom:10%; left:6%; right:6%; gap:7%; }
+[data-world="dxd"] .world-banner-cards button { display:grid; place-items:center; padding:10px 4px 0; border:0; border-radius:8px; background:transparent; color:#301d2b; font-family:Georgia,'Times New Roman',serif; font-size:clamp(11px,2.1vw,16px); font-weight:700; line-height:1.25; }
+[data-world="dxd"] .world-banner-cards button:disabled { opacity:1; }
+[data-world="dxd"] .world-banner-cards button:not(:disabled):hover { background:#fff0cf30; box-shadow:inset 0 0 18px #b0284540; }
+[data-world="dxd"] .world-banner-cards button:focus-visible { outline:3px solid #b92850; outline-offset:-3px; }
+[data-world="dxd"] .world-banner-cards strong { margin-top:6px; }
+
+/* Keep the character heading on the same row and alignment as the trait headings. */
+.app-shell .comparison-table .character-column { width:max(12%,120px); }
+.app-shell .comparison-table .character-heading { text-align:center; vertical-align:middle; padding:5px 5px 17px; white-space:nowrap; overflow-wrap:normal; hyphens:none; }
+
+/* Hint cards retain the normal cursor both before and after unlocking. */
+.app-shell .game-banner button,
+.app-shell .game-banner button:disabled,
+.app-shell .hint-button,
+.app-shell .hint-button:disabled { cursor:default; }
+
+/* Girls und Panzer: tank-armor frame with live labels in the enamel panels. */
+.app-shell[data-world="girls-und-panzer"] .world-banner { position:relative; display:block; padding:0; border:0; background:url('/art/gup-banner-v1.png') center/100% 100% no-repeat; border-radius:3px; }
+[data-world="girls-und-panzer"] .world-banner h1 { position:absolute; top:4.5%; left:20%; width:60%; height:12%; display:flex; flex-direction:column; justify-content:center; margin:0; color:#283620; font-family:Georgia,'Times New Roman',serif; font-size:clamp(11px,2.7vw,21px); line-height:1.12; letter-spacing:0; text-shadow:0 1px 0 #fff8e4; }
+[data-world="girls-und-panzer"] .world-banner-cards { position:absolute; top:71%; bottom:9%; left:5%; right:5%; gap:7%; }
+[data-world="girls-und-panzer"] .world-banner-cards button { display:grid; place-items:center; padding:4px; border:0; border-radius:4px; background:transparent; color:#283620; font-family:Georgia,'Times New Roman',serif; font-size:clamp(11px,2.1vw,16px); font-weight:700; line-height:1.25; }
+[data-world="girls-und-panzer"] .world-banner-cards button:disabled { opacity:1; }
+[data-world="girls-und-panzer"] .world-banner-cards button:not(:disabled):hover { background:#e6edbb38; box-shadow:inset 0 0 18px #52652e35; }
+[data-world="girls-und-panzer"] .world-banner-cards button:focus-visible { outline:3px solid #57742e; outline-offset:-3px; }
+[data-world="girls-und-panzer"] .world-banner-cards strong { margin-top:6px; }

@@ -1,0 +1,88 @@
+/* Girls und Panzer: dark forest-green surfaces and olive armor accents. */
+.app-shell[data-world="girls-und-panzer"] {
+  --accent:#96b671 !important;
+  --world-base:#1e291b;
+  --world-backdrop:linear-gradient(100deg,#1e291bb8,#202c1d94 55%,#1e291b66),url('/art/gup-background-v1.png');
+  --gup-paper:#263423ef;
+  --gup-border:#657354;
+  --gup-ink:#eaede7;
+  --gup-muted:#b7bdb1;
+  color:var(--gup-ink);
+  color-scheme:dark;
+
+  &::before { background-position:center center; }
+  & .ambient { opacity:.025; }
+  & .site-header { max-width:none; background:#222f1ff2; border-bottom:2px solid #6f8259; box-shadow:0 3px 16px #0003; }
+  & .brand-icon { color:#1d281a; }
+  & .wordmark-soft { color:#a7bd8e; }
+  & .beta { color:#c5d1b8; border-color:#657354; background:#2e3e2a; }
+  & .header-divider { background:#566249; }
+  & .text-button { color:#c0d0ad; }
+  & .text-button:hover { color:#f3faea; }
+  & .world-tab { background:#283624ed; border-color:#5a654d; color:#d2d7cc; box-shadow:0 2px 5px #0003; }
+  & .world-tab svg { color:#a6b991; }
+  & .world-tab:hover { background:#2f402b; border-color:#87a169; }
+  & .world-tab.active { background:#688349; border-color:#a0bc80; color:#f8fcf3; box-shadow:0 3px 0 #273823; }
+  & .world-tab.active svg,& .world-tab.active .tab-number { color:#f1fae7; }
+  & .world-tab.active .tab-dot { background:#eaf7dc; }
+  & .tab-number { color:#9fae8e; }
+  & .restart-button { background:#273523ed; border-color:#819965; }
+  & .restart-button:hover { background:#33462f; }
+  & .guess-form { background:var(--gup-paper); border:2px solid #819767; box-shadow:0 5px 18px #0004; }
+  & .guess-form.is-focused { border-color:#afc497; box-shadow:0 0 0 3px #8bac6533,0 5px 18px #0004; }
+  & .guess-form input { color:var(--gup-ink); }
+  & .guess-form input::placeholder { color:#acb2a5; }
+  & .guess-button { background:#7fa05a; color:#f8fcf3; }
+  & .search-dropdown { background:#273523; border-color:#7b8f64; box-shadow:0 12px 35px #0007; }
+  & .character-option { color:var(--gup-ink); }
+  & .character-option.selected,& .character-option:hover { background:#374b32; }
+  & .character-option small,& .search-message,& .search-caption { color:var(--gup-muted); }
+  & .avatar { background:#2f402b; border-color:#637054; color:#bccaab; }
+  & .table-section { background:#243121eF; padding:12px 5px 6px; border:1px solid #687658; border-radius:7px; box-shadow:0 6px 24px #0004; }
+  & .table-scroll { border-color:#5a654d; scrollbar-color:#82976a #233020; }
+  & .comparison-table th { color:#cdd9bf; }
+  & .comparison-table .character-cell { background:#293826; border-color:#73855f; }
+  & .comparison-table .character-name { background:#3a5334; color:#eff5e8; }
+  & .comparison-table .character-name small { color:#a6d6b3; }
+  & .comparison-table .avatar.avatar-placeholder { background:linear-gradient(145deg,#32442d,#33462e); color:#b0bea0; }
+  & .trait-cell.correct { background:#293d33; border-color:#66997a; color:#d0eddb; }
+  & .trait-cell.partial,& .trait-cell.unknown { background:#443b29; border-color:#a58b4d; color:#f0dfb1; }
+  & .trait-cell.wrong { background:#4a2c3b; border-color:#a36b83; color:#f1c6d7; }
+  & .empty-history { background:none; border-color:#556048; }
+  & .empty-history strong,& .empty-history p { color:#c0c7b8; }
+  & .empty-target { background:#32442e; border-color:#677655; color:#b3c69e; }
+  & .bottom-strip { width:fit-content; max-width:100%; padding:7px 10px; border-radius:4px; background:#263422ed; color:#bfc7b5; }
+  & .stats-section { background:linear-gradient(110deg,#273523f5,#2b3a27f5); border-color:#6e7d5c; box-shadow:0 6px 22px #0004; }
+  & .stats-icon { background:#395133; color:#c4d6af; }
+  & .stats-intro h2,& .stat strong { color:#e2ebd8; }
+  & .stats-intro p,& .stat>span { color:#b4bbab; }
+  & .stats-intro,& .stat { border-color:#5e6b4f; }
+  & .stat strong svg { color:#afc399; }
+  & .debut-hint { background:var(--gup-paper); border-color:#7f9269; color:#d6e2c9; }
+  & .victory,& .surrender-result { background:var(--gup-paper); border-color:#7b8e66; color:#dce6d1; }
+  & .victory p,& .surrender-result p { color:#b8bfaf; }
+  & .victory-icon { background:#293d33; color:#acd7ba; }
+  & .primary-button { background:#809f5d; border-color:#9cb87c; color:#f8fdf3; }
+  & .secondary-button,& .character-catalog .secondary-button { background:#2f402a; border-color:#758761; color:#d2dec5; }
+  & .secondary-button:hover { background:#3d5337; }
+  & .icon-button { background:#2d3e29; border-color:#667455; color:#c4d1b6; }
+  & .error-message { background:#482c39; border-color:#a06a80; color:#f0b9cf; }
+  & .error-message button { color:#ffd8e8; }
+  & .modal { background:#253322; border-color:#879d6e; color:#e3eada; box-shadow:0 25px 90px #0009; }
+  & .modal::backdrop { background:#111710a6; }
+  & .modal p,& .modal li,& .modal .muted { color:#bbc3b2; }
+  & .catalog-worlds button { background:#2e3f2a; border-color:#6e7d5c; color:#c2d1b1; }
+  & .catalog-worlds button[aria-pressed="true"] { background:#738d55; border-color:#a4bd87; color:#f8fcf3; }
+  & .catalog-search { background:#212e1e; border-color:#7a8e64; color:#b5c7a1; }
+  & .catalog-search input { color:#e7ece1; }
+  & .catalog-search input::placeholder { color:#acb4a3; }
+  & .catalog-summary,& .catalog-message,& .catalog-pagination span { color:#bfc7b5; }
+  & .catalog-card { background:#2b3a27; border-color:#687657; }
+  & .catalog-card small { color:#b5bfaa; }
+  & .catalog-portrait { color:#b6c4a5; }
+  & .toast { background:#2a3926; border-color:#879d6e; color:#e0ead5; }
+  & .site-footer { background:#243121ed; border-color:#667456; color:#b8c1ae; }
+}
+@media(max-width:760px) {
+  .app-shell[data-world="girls-und-panzer"] .table-section { padding:6px 2px; }
+}

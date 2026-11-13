@@ -1,0 +1,48 @@
+{
+  "dle_id": "ps",
+  "title": "Prison School",
+  "version": 1,
+  "source": {
+    "type": "fandom",
+    "wiki": "prison-school",
+    "language": "en",
+    "categories": ["Characters"]
+  },
+  "guess": {
+    "source": "name",
+    "fallback": "name",
+    "label": "Персонаж",
+    "colorize": false
+  },
+  "columns": [
+    {
+      "key": "gender",
+      "label": "Пол",
+      "source": "gender",
+      "type": "enum",
+      "values": ["Male", "Female", "Unknown"],
+      "compare": { "kind": "exact" }
+    },
+    {
+      "key": "hair_color",
+      "label": "Цвет волос",
+      "source": "hair_color",
+      "type": "string",
+      "compare": { "kind": "exact" }
+    },
+    {
+      "key": "school",
+      "label": "Школа",
+      "source": "school",
+      "type": "list",
+      "compare": { "kind": "list_priority" }
+    },
+    {
+      "key": "occupation",
+      "label": "Занятие",
+      "source": "occupation",
+      "type": "list",
+      "compare": { "kind": "list_priority" }
+    }
+  ]
+}

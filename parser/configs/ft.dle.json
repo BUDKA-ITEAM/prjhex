@@ -1,0 +1,55 @@
+{
+  "dle_id": "ft",
+  "title": "Fairy Tail",
+  "version": 1,
+  "source": {
+    "type": "fandom",
+    "wiki": "fairy-tail",
+    "language": "en",
+    "categories": ["Characters", "Mages", "Fairy Tail Guild"]
+  },
+  "guess": {
+    "source": "name",
+    "fallback": "name",
+    "label": "Персонаж",
+    "colorize": false
+  },
+  "columns": [
+    {
+      "key": "gender",
+      "label": "Пол",
+      "source": "gender",
+      "type": "enum",
+      "values": ["Male", "Female", "Unknown"],
+      "compare": { "kind": "exact" }
+    },
+    {
+      "key": "affiliation",
+      "label": "Гильдия",
+      "source": "affiliation",
+      "type": "list",
+      "compare": { "kind": "list_priority" }
+    },
+    {
+      "key": "occupation",
+      "label": "Занятие",
+      "source": "occupation",
+      "type": "list",
+      "compare": { "kind": "list_priority" }
+    },
+    {
+      "key": "magic",
+      "label": "Магия",
+      "source": "magic",
+      "type": "list",
+      "compare": { "kind": "list_priority" }
+    },
+    {
+      "key": "debut",
+      "label": "Дебют",
+      "source": "debut",
+      "type": "appearance",
+      "compare": { "kind": "appearance_number", "exact": 5, "close": 20 }
+    }
+  ]
+}

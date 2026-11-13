@@ -2,21 +2,18 @@
   "dle_id": "onepiece",
   "title": "One Piece",
   "version": 1,
-
   "source": {
     "type": "fandom",
     "wiki": "onepiece",
     "language": "en",
     "categories": ["Characters", "Male Characters", "Female Characters"]
   },
-
   "guess": {
     "source": "ename",
     "fallback": "name",
     "label": "Персонаж",
     "colorize": false
   },
-
   "columns": [
     {
       "key": "first",
@@ -36,8 +33,8 @@
       "key": "occupation",
       "label": "Занятие",
       "source": "occupation",
-      "type": "list",
-      "compare": { "kind": "list_priority" }
+      "type": "occupation_type",
+      "compare": { "kind": "exact" }
     },
     {
       "key": "origin",
@@ -47,12 +44,11 @@
       "compare": { "kind": "region" }
     },
     {
-      "key": "status",
-      "label": "Статус",
-      "source": "status",
-      "type": "enum",
-      "values": ["Alive", "Deceased", "Unknown"],
-      "compare": { "kind": "exact" }
+      "key": "haki",
+      "label": "Хаки",
+      "source": "haki",
+      "type": "list",
+      "compare": { "kind": "list_priority" }
     },
     {
       "key": "age",
@@ -68,7 +64,7 @@
       "source": "bounty",
       "type": "number",
       "unit": "belly",
-      "hint": "Для моряков сумма пересчитана в бели (Cross Guild: 1 звезда = 100 000 000).",
+      "hint": "Для моряков сумма пересчитана в бели.",
       "compare": { "kind": "numeric_order", "tolerance_percent": 10 }
     },
     {
@@ -76,15 +72,7 @@
       "label": "Тип фрукта",
       "source": "dftype",
       "type": "enum",
-      "values": [
-        "Paramecia",
-        "Zoan",
-        "Logia",
-        "Mythical Zoan",
-        "Ancient Zoan",
-        "Artificial Zoan",
-        "None"
-      ],
+      "values": ["Paramecia", "Zoan", "Logia", "Mythical Zoan", "Ancient Zoan", "Artificial Zoan", "None"],
       "compare": { "kind": "exact" }
     }
   ]

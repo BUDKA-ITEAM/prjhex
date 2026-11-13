@@ -14,11 +14,8 @@ from dle_parser.api import (
     fetch_infobox_html,
     make_client,
 )
-from dle_parser.parse import (
-    normalize_character as normalize_base,
-    parse_infobox as parse_infobox_base,
-)
-from dle_parser import parse_naruto, parse_gup, parse_dxd
+
+from dle_parser.registry import get_parser
 
 log = logging.getLogger("dle_parser")
 
@@ -74,16 +71,20 @@ def parse_all(
 
     total = len(titles) if limit is None else min(len(titles), limit)
     results: list[dict] = list(existing.values())
-    done_ids = set(existing.keys())
-    
+
+    done_ids: set[str] = set()
+    for _item in existing.values():
+        _rid = _item.get("id") or ""
+        if not _rid:
+            continue
+        done_ids.add(_rid)
+        done_ids.add(_rid.replace(" ", "_"))
+
     new_count = 0
     errors = 0
     skipped: list[dict] = []
 
-    dle_id = config.get("dle_id", "onepiece")
-    is_naruto = dle_id == "naruto"
-    is_gup = dle_id == "gup"
-    is_dxd = dle_id == "dxd"
+    parse_infobox, normalize_character = get_parser(config.get("dle_id", "onepiece"))
 
     for i, title in enumerate(titles[:total], 1):
         page_id = title.replace(" ", "_")
@@ -94,19 +95,8 @@ def parse_all(
         log.info("[%d/%d] %s", i, total, title)
         try:
             html = fetch_infobox_html(client, wiki, title)
-            
-            if is_naruto:
-                infobox = parse_naruto.parse_infobox(html)
-                record, reason = parse_naruto.normalize_character(title, infobox, config, wiki)
-            elif is_gup:
-                infobox = parse_gup.parse_infobox(html)
-                record, reason = parse_gup.normalize_character(title, infobox, config, wiki)
-            elif is_dxd:
-                infobox = parse_dxd.parse_infobox(html)
-                record, reason = parse_dxd.normalize_character(title, infobox, config, wiki)
-            else:
-                infobox = parse_infobox_base(html)
-                record, reason = normalize_base(title, infobox, config, wiki)
+            infobox = parse_infobox(html)
+            record, reason = normalize_character(title, infobox, config, wiki)
 
             if record is None:
                 skipped.append({
@@ -118,6 +108,7 @@ def parse_all(
             else:
                 results.append(record)
                 done_ids.add(record["id"])
+                done_ids.add(record["id"].replace(" ", "_"))
                 new_count += 1
         except Exception as e:
             skipped.append({
@@ -132,9 +123,11 @@ def parse_all(
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
     with out_path.open("w", encoding="utf-8") as f:
+        results.sort(key=lambda r: r.get("id", ""))
         json.dump(results, f, ensure_ascii=False, indent=2)
 
     if skipped:
+        skipped.sort(key=lambda s: s.get("title", ""))
         skipped_path = out_path.with_name(out_path.stem + ".skipped.json")
         with skipped_path.open("w", encoding="utf-8") as f:
             json.dump(skipped, f, ensure_ascii=False, indent=2)

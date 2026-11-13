@@ -20,3 +20,4 @@ input.json
 normalize.py
 prepare_naruto.py
 fix_ids.py
+registry.py

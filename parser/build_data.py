@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Превращает out/characters.json в оптимизированные файлы для GitHub Pages.
 

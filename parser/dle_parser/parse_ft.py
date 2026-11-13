@@ -30,24 +30,41 @@ def parse_infobox(html: str) -> dict[str, str]:
         if not source:
             continue
 
-        # Извлекаем значение
         value_el = item.select_one(".pi-data-value")
         if value_el is not None:
-            # Для списков (магия, аффилиации) собираем текст из ссылок
-            links = value_el.select("a")
-            if links:
-                link_texts = [a.get_text(strip=True) for a in links if a.get_text(strip=True)]
-                raw = ", ".join(list(dict.fromkeys(link_texts)))
-            else:
+            # Для "простых" полей (gender/hair color/school/occupation) берём
+            # весь текст значения, а не только ссылки: иначе символы-иконки
+            # и ссылки-картинки дают пустой raw.
+            if source in ("gender", "hair color", "school", "occupation"):
                 raw = value_el.get_text(" ", strip=True)
+            else:
+                links = value_el.select("a")
+                if links:
+                    link_texts = [a.get_text(strip=True) for a in links if a.get_text(strip=True)]
+                    raw = ", ".join(list(dict.fromkeys(link_texts)))
+                else:
+                    raw = value_el.get_text(" ", strip=True)
+
+            # Fallback: если значение — чистая картинка, берём alt
+            if not raw:
+                img = value_el.select_one("img")
+                if img:
+                    raw = img.get("alt", "")
         else:
             raw = item.get_text(" ", strip=True)
 
         raw = _clean(raw)
-        
-        # Очистка пола от значков ♂/♀
+
+        # Очистка пола от значков ♂/♀ — но с маппингом на случай,
+        # если после очистки ничего не осталось (был только символ).
         if source == "gender":
+            original = raw
             raw = re.sub(r"[^\w\s]", "", raw).strip()
+            if not raw:
+                if "♂" in original:
+                    raw = "Male"
+                elif "♀" in original:
+                    raw = "Female"
 
         if raw and source not in data:
             data[source] = raw
@@ -152,8 +169,9 @@ def normalize_character(
         except Exception:
             fields[col["key"]] = None
 
-    if isinstance(fields, dict) and not any(fields.values()):
-        return None, "no_data"
+    important_fields = ["affiliation", "occupation", "magic", "debut"]
+    if not any(fields.get(k) for k in important_fields):
+        return None, "no_important_data"
 
     aliases = []
     if page_title: aliases.append(page_title)

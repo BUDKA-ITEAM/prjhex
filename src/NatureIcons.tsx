@@ -5,7 +5,7 @@ const elements:Record<string,{symbol:string;color:string}>={
 };
 export function NatureIcons({value}:{value:TraitValue}){
  if(!Array.isArray(value)||!value.length)return null;
- return <span className="nature-icons" role="list" aria-label="Стихии">{value.map(name=>{
+ return <span className="nature-icons" role="list" aria-label="Стихии">{value.filter(name=>Boolean(elements[name])).map(name=>{
   const element=elements[name];
   return <span className="nature-icon" role="listitem" key={name} title={name}>{element?<svg viewBox="0 0 100 100" role="img" aria-label={name}>
    <polygon points="29,2 71,2 98,29 98,71 71,98 29,98 2,71 2,29" fill="#111"/>

@@ -1,0 +1,1138 @@
+{
+  "source": "https://naruto.fandom.com/wiki/Plot_of_Naruto?oldid=1467575",
+  "arcs": [
+    {
+      "series": "naruto",
+      "name": "Отдельная история: ценный артефакт",
+      "episodes": [
+        [
+          208,
+          208
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "series": "naruto",
+      "name": "Отдельная история: замок с привидениями",
+      "episodes": [
+        [
+          194,
+          194
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "series": "naruto",
+      "name": "Отдельная история: додзё",
+      "episodes": [
+        [
+          193,
+          193
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "series": "naruto",
+      "name": "Отдельная история: Ино и принцесса",
+      "episodes": [
+        [
+          192,
+          192
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "series": "naruto",
+      "name": "Отдельная история: смеющийся Шино",
+      "episodes": [
+        [
+          186,
+          186
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "series": "naruto",
+      "name": "Отдельная история: Онбаа",
+      "episodes": [
+        [
+          185,
+          185
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "series": "naruto",
+      "name": "Отдельная история: почтовая служба",
+      "episodes": [
+        [
+          177,
+          177
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "series": "naruto",
+      "name": "Отдельная история: Кунихиса",
+      "episodes": [
+        [
+          174,
+          174
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "series": "naruto",
+      "name": "Отдельная история: кулинарное состязание",
+      "episodes": [
+        [
+          168,
+          168
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "series": "naruto",
+      "name": "Отдельная история: странные гости",
+      "episodes": [
+        [
+          161,
+          161
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "series": "naruto",
+      "name": "Отдельная история: лицо Какаши",
+      "episodes": [
+        [
+          101,
+          101
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "series": "shippuden",
+      "name": "Меха-Наруто",
+      "episodes": [
+        [
+          376,
+          377
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "series": "shippuden",
+      "name": "Какаши гайден",
+      "episodes": [
+        [
+          119,
+          120
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Prologue — Land of Waves",
+      "series": "naruto",
+      "episodes": [
+        [
+          1,
+          19
+        ]
+      ],
+      "chapters": [
+        [
+          1,
+          33
+        ]
+      ]
+    },
+    {
+      "name": "Chūnin Exams",
+      "series": "naruto",
+      "episodes": [
+        [
+          20,
+          67
+        ]
+      ],
+      "chapters": [
+        [
+          34,
+          115
+        ]
+      ]
+    },
+    {
+      "name": "Konoha Crush",
+      "series": "naruto",
+      "episodes": [
+        [
+          68,
+          80
+        ]
+      ],
+      "chapters": [
+        [
+          116,
+          138
+        ]
+      ]
+    },
+    {
+      "name": "Search for Tsunade",
+      "series": "naruto",
+      "episodes": [
+        [
+          81,
+          100
+        ]
+      ],
+      "chapters": [
+        [
+          139,
+          171
+        ]
+      ]
+    },
+    {
+      "name": "Land of Tea Escort Mission",
+      "series": "naruto",
+      "episodes": [
+        [
+          102,
+          106
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Sasuke Recovery Mission",
+      "series": "naruto",
+      "episodes": [
+        [
+          107,
+          135
+        ]
+      ],
+      "chapters": [
+        [
+          172,
+          238
+        ]
+      ]
+    },
+    {
+      "name": "Land of Rice Fields Investigation Mission",
+      "series": "naruto",
+      "episodes": [
+        [
+          136,
+          141
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Mizuki Tracking Mission",
+      "series": "naruto",
+      "episodes": [
+        [
+          142,
+          147
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Bikōchū Search Mission",
+      "series": "naruto",
+      "episodes": [
+        [
+          148,
+          151
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Kurosuki Family Removal Mission",
+      "series": "naruto",
+      "episodes": [
+        [
+          152,
+          157
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Gosunkugi Capture Mission",
+      "series": "naruto",
+      "episodes": [
+        [
+          159,
+          160
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Cursed Warrior Extermination Mission",
+      "series": "naruto",
+      "episodes": [
+        [
+          162,
+          167
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Kaima Capture Mission",
+      "series": "naruto",
+      "episodes": [
+        [
+          169,
+          173
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Buried Gold Excavation Mission",
+      "series": "naruto",
+      "episodes": [
+        [
+          175,
+          176
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Star Guard Mission",
+      "series": "naruto",
+      "episodes": [
+        [
+          178,
+          183
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Peddlers Escort Mission",
+      "series": "naruto",
+      "episodes": [
+        [
+          187,
+          191
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Third Great Beast Arc",
+      "series": "naruto",
+      "episodes": [
+        [
+          195,
+          196
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Konoha Plans Recapture Mission",
+      "series": "naruto",
+      "episodes": [
+        [
+          197,
+          201
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Yakumo Kurama Rescue Mission",
+      "series": "naruto",
+      "episodes": [
+        [
+          203,
+          207
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Gantetsu Escort Mission",
+      "series": "naruto",
+      "episodes": [
+        [
+          209,
+          212
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Menma Memory Search Mission",
+      "series": "naruto",
+      "episodes": [
+        [
+          213,
+          215
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Sunagakure Support Mission",
+      "series": "naruto",
+      "episodes": [
+        [
+          216,
+          220
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Kazekage Rescue Mission",
+      "series": "shippuden",
+      "episodes": [
+        [
+          1,
+          32
+        ]
+      ],
+      "chapters": [
+        [
+          245,
+          281
+        ]
+      ]
+    },
+    {
+      "name": "Tenchi Bridge Reconnaissance Mission",
+      "series": "shippuden",
+      "episodes": [
+        [
+          33,
+          53
+        ]
+      ],
+      "chapters": [
+        [
+          282,
+          310
+        ]
+      ]
+    },
+    {
+      "name": "Twelve Guardian Ninja",
+      "series": "shippuden",
+      "episodes": [
+        [
+          54,
+          71
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Akatsuki Suppression Mission",
+      "series": "shippuden",
+      "episodes": [
+        [
+          72,
+          88
+        ]
+      ],
+      "chapters": [
+        [
+          311,
+          342
+        ]
+      ]
+    },
+    {
+      "name": "Three-Tails' Appearance",
+      "series": "shippuden",
+      "episodes": [
+        [
+          89,
+          112
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Itachi Pursuit Mission",
+      "series": "shippuden",
+      "episodes": [
+        [
+          113,
+          118
+        ],
+        [
+          121,
+          126
+        ]
+      ],
+      "chapters": [
+        [
+          343,
+          367
+        ]
+      ]
+    },
+    {
+      "name": "Tale of Jiraiya the Gallant",
+      "series": "shippuden",
+      "episodes": [
+        [
+          127,
+          133
+        ]
+      ],
+      "chapters": [
+        [
+          368,
+          383
+        ]
+      ]
+    },
+    {
+      "name": "Fated Battle Between Brothers",
+      "series": "shippuden",
+      "episodes": [
+        [
+          134,
+          143
+        ]
+      ],
+      "chapters": [
+        [
+          384,
+          412
+        ]
+      ]
+    },
+    {
+      "name": "Six-Tails Unleashed",
+      "series": "shippuden",
+      "episodes": [
+        [
+          144,
+          151
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Pain's Assault",
+      "series": "shippuden",
+      "episodes": [
+        [
+          152,
+          175
+        ]
+      ],
+      "chapters": [
+        [
+          413,
+          453
+        ]
+      ]
+    },
+    {
+      "name": "Past Arc: The Locus of Konoha",
+      "series": "shippuden",
+      "episodes": [
+        [
+          176,
+          196
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Five Kage Summit",
+      "series": "shippuden",
+      "episodes": [
+        [
+          197,
+          214
+        ]
+      ],
+      "chapters": [
+        [
+          454,
+          483
+        ]
+      ]
+    },
+    {
+      "name": "Fourth Shinobi World War: Countdown",
+      "series": "shippuden",
+      "episodes": [
+        [
+          215,
+          222
+        ],
+        [
+          243,
+          256
+        ]
+      ],
+      "chapters": [
+        [
+          484,
+          515
+        ]
+      ]
+    },
+    {
+      "name": "Paradise Life on a Boat",
+      "series": "shippuden",
+      "episodes": [
+        [
+          223,
+          242
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Fourth Shinobi World War: Confrontation",
+      "series": "shippuden",
+      "episodes": [
+        [
+          261,
+          289
+        ],
+        [
+          296,
+          321
+        ]
+      ],
+      "chapters": [
+        [
+          516,
+          559
+        ]
+      ]
+    },
+    {
+      "name": "Power",
+      "series": "shippuden",
+      "episodes": [
+        [
+          290,
+          295
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Fourth Shinobi World War: Climax",
+      "series": "shippuden",
+      "episodes": [
+        [
+          322,
+          348
+        ],
+        [
+          362,
+          375
+        ]
+      ],
+      "chapters": [
+        [
+          560,
+          639
+        ]
+      ]
+    },
+    {
+      "name": "Kakashi's Anbu Arc: The Shinobi That Lives in the Darkness",
+      "series": "shippuden",
+      "episodes": [
+        [
+          349,
+          361
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Birth of the Ten-Tails' Jinchūriki",
+      "series": "shippuden",
+      "episodes": [
+        [
+          378,
+          393
+        ],
+        [
+          414,
+          431
+        ]
+      ],
+      "chapters": [
+        [
+          640,
+          677
+        ]
+      ]
+    },
+    {
+      "name": "In Naruto's Footsteps: The Friends' Paths",
+      "series": "shippuden",
+      "episodes": [
+        [
+          394,
+          413
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Jiraiya Shinobi Handbook: The Tale of Naruto the Hero",
+      "series": "shippuden",
+      "episodes": [
+        [
+          432,
+          450
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Itachi Shinden Book: Light and Darkness",
+      "series": "shippuden",
+      "episodes": [
+        [
+          451,
+          458
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Kaguya Ōtsutsuki Strikes",
+      "series": "shippuden",
+      "episodes": [
+        [
+          458,
+          479
+        ]
+      ],
+      "chapters": [
+        [
+          678,
+          699
+        ]
+      ]
+    },
+    {
+      "name": "Childhood",
+      "series": "shippuden",
+      "episodes": [
+        [
+          480,
+          483
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Shikamaru Hiden: A Cloud Drifting in Silent Darkness",
+      "series": "shippuden",
+      "episodes": [
+        [
+          489,
+          493
+        ]
+      ],
+      "chapters": [
+        [
+          489,
+          493
+        ]
+      ]
+    },
+    {
+      "name": "Konoha Hiden: The Perfect Day for a Wedding",
+      "series": "shippuden",
+      "episodes": [
+        [
+          494,
+          500
+        ]
+      ],
+      "chapters": [
+        [
+          494,
+          500
+        ]
+      ]
+    },
+    {
+      "name": "Sasuke Shinden: Book of Sunrise",
+      "series": "shippuden",
+      "episodes": [
+        [
+          484,
+          488
+        ]
+      ],
+      "chapters": [
+        [
+          484,
+          488
+        ]
+      ]
+    },
+    {
+      "name": "Academy Entrance Arc",
+      "series": "boruto",
+      "episodes": [
+        [
+          1,
+          15
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Sarada Uchiha Arc",
+      "series": "boruto",
+      "episodes": [
+        [
+          19,
+          24
+        ]
+      ],
+      "chapters": [
+        [
+          701,
+          710
+        ]
+      ]
+    },
+    {
+      "name": "Konoha Shinden: Steam Ninja Scrolls",
+      "series": "boruto",
+      "episodes": [
+        [
+          106,
+          111
+        ]
+      ],
+      "chapters": [
+        [
+          1,
+          15
+        ]
+      ]
+    },
+    {
+      "name": "School Trip Arc",
+      "series": "boruto",
+      "episodes": [
+        [
+          25,
+          32
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Graduation Exams Arc",
+      "series": "boruto",
+      "episodes": [
+        [
+          34,
+          37
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Genin Mission Arc",
+      "series": "boruto",
+      "episodes": [
+        [
+          40,
+          42
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Byakuya Gang Arc",
+      "series": "boruto",
+      "episodes": [
+        [
+          43,
+          47
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Naruto Shinden: Parent and Child Day",
+      "series": "boruto",
+      "episodes": [
+        [
+          93,
+          95
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Versus Momoshiki Arc",
+      "series": "boruto",
+      "episodes": [
+        [
+          51,
+          66
+        ]
+      ],
+      "chapters": [
+        [
+          1,
+          10
+        ]
+      ]
+    },
+    {
+      "name": "Chōchō Arc",
+      "series": "boruto",
+      "episodes": [
+        [
+          67,
+          69
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Mitsuki's Disappearance Arc",
+      "series": "boruto",
+      "episodes": [
+        [
+          71,
+          92
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Jūgo Arc",
+      "series": "boruto",
+      "episodes": [
+        [
+          98,
+          103
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Konohamaru's Love Arc",
+      "series": "boruto",
+      "episodes": [
+        [
+          116,
+          119
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "One-Tail Escort Arc",
+      "series": "boruto",
+      "episodes": [
+        [
+          120,
+          126
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Time Slip Arc",
+      "series": "boruto",
+      "episodes": [
+        [
+          128,
+          136
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Mujina Bandits Arc",
+      "series": "boruto",
+      "episodes": [
+        [
+          141,
+          151
+        ]
+      ],
+      "chapters": [
+        [
+          11,
+          15
+        ]
+      ]
+    },
+    {
+      "name": "Kara Actuation Arc",
+      "series": "boruto",
+      "episodes": [
+        [
+          157,
+          175
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Sasuke Retsuden: The Uchiha Descendants and the Heavenly Stardust",
+      "series": "boruto",
+      "episodes": [
+        [
+          282,
+          286
+        ]
+      ],
+      "chapters": [
+        [
+          1,
+          10
+        ]
+      ]
+    },
+    {
+      "name": "Ao Arc",
+      "series": "boruto",
+      "episodes": [
+        [
+          178,
+          187
+        ]
+      ],
+      "chapters": [
+        [
+          16,
+          23
+        ]
+      ]
+    },
+    {
+      "name": "Kawaki Arc",
+      "series": "boruto",
+      "episodes": [
+        [
+          188,
+          220
+        ]
+      ],
+      "chapters": [
+        [
+          24,
+          55
+        ]
+      ]
+    },
+    {
+      "name": "Chūnin Re-Examination Arc",
+      "series": "boruto",
+      "episodes": [
+        [
+          221,
+          230
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Great Sea Battle of Kirigakure Arc",
+      "series": "boruto",
+      "episodes": [
+        [
+          233,
+          255
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Kawaki & Himawari Academy Arc",
+      "series": "boruto",
+      "episodes": [
+        [
+          261,
+          273
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Labyrinth Game Arc",
+      "series": "boruto",
+      "episodes": [
+        [
+          274,
+          281
+        ]
+      ],
+      "chapters": []
+    },
+    {
+      "name": "Code's Assault Arc",
+      "series": "boruto",
+      "episodes": [
+        [
+          287,
+          293
+        ]
+      ],
+      "chapters": [
+        [
+          56,
+          67
+        ]
+      ]
+    },
+    {
+      "name": "Omnipotence Arc",
+      "series": "boruto",
+      "episodes": [],
+      "chapters": [
+        [
+          68,
+          80
+        ]
+      ]
+    }
+  ]
+}

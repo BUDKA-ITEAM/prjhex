@@ -644,3 +644,80 @@ h1 { font-family:'Arial Black','Segoe UI',Arial,sans-serif; font-size:clamp(42px
 .app-shell .catalog-portrait img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; object-position:center; }
 .app-shell .character-option .avatar { width:40px; height:40px; aspect-ratio:1; }
 .app-shell .avatar.avatar-large { width:80px; height:80px; aspect-ratio:1; }
+
+/* Prison School: academy detention dossier with live heading and actions. */
+.app-shell[data-world="prison-school"] .world-banner { position:relative; display:block; padding:0; border:0; border-radius:4px; background:url('/art/prison-school-banner-v1.png') center/100% 100% no-repeat; box-shadow:0 12px 28px #10080b66; }
+[data-world="prison-school"] .world-banner h1 { position:absolute; top:5%; left:19%; width:62%; height:17%; display:flex; flex-direction:column; justify-content:center; margin:0; color:#3b2228; font-family:Georgia,'Times New Roman',serif; font-size:clamp(10px,2.3vw,18px); line-height:1.2; letter-spacing:0; text-shadow:0 1px 0 #fff7e2; }
+[data-world="prison-school"] .world-banner-cards { position:absolute; top:77%; bottom:8%; left:6%; right:6%; gap:7%; }
+[data-world="prison-school"] .world-banner-cards button { display:grid; place-items:center; padding:2px; border:0; border-radius:3px; background:transparent; color:#3b2228; font-family:Georgia,'Times New Roman',serif; font-size:clamp(10px,2vw,15px); font-weight:700; line-height:1.2; }
+[data-world="prison-school"] .world-banner-cards button:disabled { opacity:1; }
+[data-world="prison-school"] .world-banner-cards button:not(:disabled):hover { background:#9e243126; box-shadow:inset 0 0 18px #9e243125; }
+[data-world="prison-school"] .world-banner-cards button:focus-visible { outline:3px solid #942337; outline-offset:-3px; }
+[data-world="prison-school"] .world-banner-cards strong { margin-top:4px; }
+
+/* Prison School: moonlit academy, graphite steel and burgundy council seals. */
+.app-shell[data-world="prison-school"] { --accent:#d98696!important; --world-base:#20232c; --world-backdrop:linear-gradient(#17171f24,#17171f60),url('/art/prison-school-background-v1.png'); color:#f0e5d6; color-scheme:dark; }
+[data-world="prison-school"] .ambient { display:none; }
+[data-world="prison-school"] .site-header { background:#202129ed; border-color:#b38a7959; }
+[data-world="prison-school"] .brand-icon { background:#842d40; color:#fff1dd; }
+[data-world="prison-school"] .wordmark-soft { color:#e0adba; }
+[data-world="prison-school"] .beta { border-color:#a08c865e; color:#c4b7b1; }
+[data-world="prison-school"] .header-divider { background:#a08c865e; }
+[data-world="prison-school"] .text-button { color:#e1c8c3; }
+[data-world="prison-school"] .text-button:hover { color:#fff1dd; }
+[data-world="prison-school"] .world-tab { background:#25252eed; border-color:#74646b; color:#e6d8d1; }
+[data-world="prison-school"] .world-tab svg { color:#cfafb6; }
+[data-world="prison-school"] .world-tab:hover { background:#39303c; border-color:#d3acb5; }
+[data-world="prison-school"] .world-tab.active { background:#842d40; border-color:#d2939f; color:#fff1dd; }
+[data-world="prison-school"] .world-tab.active svg,[data-world="prison-school"] .tab-number { color:#ead5d3; }
+[data-world="prison-school"] .tab-dot { background:#fff1dd; }
+[data-world="prison-school"] .restart-button { background:#25252ef5; color:#f0d4d9; }
+[data-world="prison-school"] .guess-form { background:#272832f5; border:3px solid #ad6475; border-radius:6px; box-shadow:inset 0 0 0 2px #161922,0 4px 12px #10080b40; }
+[data-world="prison-school"] .guess-form.is-focused { border-color:#e0a5b0; box-shadow:0 0 0 4px #d9869628; }
+[data-world="prison-school"] .guess-form input { color:#fff1dd; }
+[data-world="prison-school"] .guess-form input::placeholder { color:#c2b4b8; }
+[data-world="prison-school"] .guess-button { background:#842d40; color:#fff1dd; }
+[data-world="prison-school"] .search-caption { color:#f0ded7; text-shadow:0 1px 4px #000; }
+[data-world="prison-school"] .search-dropdown { background:#272832; border-color:#ad6475; }
+[data-world="prison-school"] .character-option { color:#f0e5d6; }
+[data-world="prison-school"] .character-option.selected,[data-world="prison-school"] .character-option:hover { background:#a7506533; }
+[data-world="prison-school"] .character-option small,[data-world="prison-school"] .search-message { color:#cbbac1; }
+[data-world="prison-school"] .table-section { padding:14px; border:1px solid #8b6e78; border-radius:8px; background:#24252ef2; box-shadow:inset 0 2px #ffffff12; }
+[data-world="prison-school"] .table-toolbar h2,[data-world="prison-school"] .empty-history strong { color:#f0e5d6; }
+[data-world="prison-school"] .count-badge { border-color:#86717a; color:#e6c8cf; }
+[data-world="prison-school"] .legend>span,[data-world="prison-school"] .empty-history p,[data-world="prison-school"] .empty-keys small { color:#c8b9bf; }
+[data-world="prison-school"] .empty-target { background:#3c2935; color:#df9bac; border-color:#9d6273; }
+[data-world="prison-school"] .empty-keys>span { color:#e3c9ce; border-color:#86717a; }
+[data-world="prison-school"] .table-scroll { border-color:#74616d; scrollbar-color:#b5677d #24252e; }
+[data-world="prison-school"] .comparison-table { border-spacing:0 6px; }
+[data-world="prison-school"] .comparison-table th { height:72px; padding:5px 5px 17px; color:#e4b3bf; font-size:16px; line-height:1.35; }
+[data-world="prison-school"] .comparison-table td { height:1px; padding:0 2px; }
+[data-world="prison-school"] .comparison-table .character-cell { border-color:#86717a; border-radius:4px; background:#34343f; color:#f0e5d6; }
+[data-world="prison-school"] .comparison-table .character-name { background:#432c38; }
+[data-world="prison-school"] .comparison-table .character-cell .avatar.avatar-placeholder { background:linear-gradient(145deg,#45424c,#292c36); color:#d5bdc5; }
+[data-world="prison-school"] .comparison-table .trait-cell { min-height:144px; padding:12px 3px 6px; border-width:2px; font-size:15px; font-weight:700; line-height:1.18; }
+[data-world="prison-school"] .trait-cell.correct { background:#315a47; border-color:#86b69a; color:#f0ffe8; }
+[data-world="prison-school"] .trait-cell.wrong { background:#842d40; border-color:#d2939f; color:#fff1dd; }
+[data-world="prison-school"] .trait-cell.partial { background:#765a2e; border-color:#d1ae68; color:#fff1ce; }
+[data-world="prison-school"] .trait-cell.unknown { background:#3b4253; border-color:#a0a7bc; color:#edf0fa; }
+[data-world="prison-school"] .comparison-table .direction { width:24px; height:24px; stroke-width:4; }
+[data-world="prison-school"] .stats-section { border:1px solid #8b6e78; border-top:3px solid #ad6475; border-radius:6px; background:linear-gradient(110deg,#292a34f5,#332530f5,#292a34f5); color:#f0e5d6; }
+[data-world="prison-school"] .stats-icon { background:#b5677d24; color:#e2a6b6; }
+[data-world="prison-school"] .stats-intro p,[data-world="prison-school"] .stat>span { color:#c8b9bf; }
+[data-world="prison-school"] .stat { border-color:#86717a; }
+[data-world="prison-school"] .stat strong { color:#f1c2ce; }
+[data-world="prison-school"] .bottom-strip { color:#f0ded7; padding:7px 10px; border-radius:4px; background:#24252ef2; }
+[data-world="prison-school"] .site-footer { background:#202129ed; border-color:#8b6e78; color:#c8b9bf; }
+[data-world="prison-school"] .footer-brand { color:#e1c8c3; }
+[data-world="prison-school"] .debut-hint { border-color:#b59a66; background:#332d27; color:#fff1ce; }
+[data-world="prison-school"] .victory,[data-world="prison-school"] .surrender-result { background:#272832f5; color:#f0e5d6; border-color:#8b6e78; }
+[data-world="prison-school"] .modal { background:#272832; color:#f0e5d6; border-color:#ad6475; }
+[data-world="prison-school"] .modal p,[data-world="prison-school"] .modal li { color:#d5c5cb; }
+[data-world="prison-school"] .primary-button { background:#842d40; color:#fff1dd; }
+[data-world="prison-school"] .secondary-button,[data-world="prison-school"] .icon-button { background:#39303c; color:#f0d4d9; border-color:#86717a; }
+@media(max-width:760px) {
+ [data-world="prison-school"] .table-section { padding:6px 2px; }
+ [data-world="prison-school"] .comparison-table { min-width:800px; }
+ [data-world="prison-school"] .comparison-table th { font-size:14px; }
+ [data-world="prison-school"] .comparison-table .trait-cell { font-size:13px; }
+}

@@ -1,3 +1,5 @@
+import { normalizeFairyTailDebut } from '../js/fairy-tail-arcs.js';
+import { normalizeFairyTailMagic } from '../js/fairy-tail-magic.js';
 import { normalizeDebut } from '../js/debut-arcs.js';
 import { GAMES, compareField, formatField, debutEpisode, numericDirection } from '../js/columns.js';
 import {
@@ -104,7 +106,7 @@ async function catalog(world = 'one-piece') {
 
         return data.filter(
           c => typeof c.id === 'string' && typeof c.name === 'string' && c.fields
-        ).map(c=>normalizeDebut(c,world)) as Profile[];
+        ).map(c=>normalizeDebut(world === 'fairy-tail' ? normalizeFairyTailDebut(normalizeFairyTailMagic(c)) : c,world)) as Profile[];
       })().catch(e => {
         pending.delete(world);
         throw e;
@@ -157,6 +159,31 @@ function active(id?: string): Stored {
     return g;
   } catch {
     throw new RequestError('NOT_FOUND', 'Партия не найдена. Начните новую.');
+  }
+}
+
+function refreshFairyTailFields(game: Stored, data: Profile[]) {
+  if (game.view.worldId !== 'fairy-tail') return;
+  const byId = new Map(data.map(profile => [profile.id, profile]));
+  const target = byId.get(game.target);
+  if (!target) return;
+  if (game.view.answer) game.view.answer = summary(target);
+  const cols = GAMES.ft.columns;
+  game.view.criteria = gameCriteria('fairy-tail');
+  if (game.view.debutHint) game.view.debutHint = formatField(cols.find(col => col.key === 'debut')!, target.fields.debut, true);
+  for (const guess of game.view.guesses) {
+    const profile = byId.get(guess.character.id);
+    if (!profile) continue;
+    guess.character = summary(profile);
+    for (const col of cols) {
+      const cell = guess.cells.find(cell => cell.key === col.key);
+      if (!cell) continue;
+      cell.value = formatField(col, profile.fields[col.key], true);
+      const status = compareField(col, profile, target);
+      cell.match = status === 'correct' ? 'correct' : status === 'close' ? 'partial' : 'wrong';
+      if (status === 'up' || status === 'down') cell.direction = status;
+      else delete cell.direction;
+    }
   }
 }
 
@@ -253,8 +280,11 @@ export async function api<T>(path: string, options: RequestInit = {}): Promise<T
 
     try {
       const old = activeForWorld(world);
-      if (old.view.status === 'playing' && (!episodeWorld(world) || old.presentationVersion===5 && old.view.criteria.some(c=>c.key==='first') && data.some(c=>c.id===old.target))) {
-        if (!body.restart) return structuredClone(old.view) as T;
+      if (old.view.status === 'playing' && (world !== 'fairy-tail' || data.some(c => c.id === old.target)) && (!episodeWorld(world) || old.presentationVersion===5 && old.view.criteria.some(c=>c.key==='first') && data.some(c=>c.id===old.target))) {
+        if (!body.restart) {
+          refreshFairyTailFields(old, data);
+          return store(old) as T;
+        }
         finish(false, world);
       }
     } catch (e) {
@@ -341,6 +371,7 @@ export async function api<T>(path: string, options: RequestInit = {}): Promise<T
     }
     for(const guess of g.view.guesses){const profile=data.find(c=>c.id===guess.character.id);for(const cell of guess.cells){if(cell.key==='age'){const arrow=numericDirection(profile?.fields.age,target.fields.age);if(arrow)cell.direction=arrow;else delete cell.direction;}}}
     if(world==='naruto')for(const guess of g.view.guesses){const profile=data.find(c=>c.id===guess.character.id);for(const cell of guess.cells)if(cell.key==='nature'){cell.value=normalizeNature(profile?.fields.nature_type??cell.value);const col=configuration(world).columns.find(c=>c.key==='nature_type')!;const status=compareField(col,{fields:{nature_type:cell.value}},{fields:{nature_type:normalizeNature(target.fields.nature_type)}});cell.match=status==='correct'?'correct':status==='close'?'partial':'wrong';}}
+    refreshFairyTailFields(g, data);
     result = store(g);
   }
 

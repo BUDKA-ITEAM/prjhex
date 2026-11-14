@@ -12,7 +12,6 @@ def parse_infobox(html: str) -> dict[str, str]:
     if not aside:
         return {}
 
-    # Сносим служебные элементы
     for sel in (
         "sup.reference",
         ".mw-editsection",
@@ -30,29 +29,39 @@ def parse_infobox(html: str) -> dict[str, str]:
         if not source:
             continue
 
-        # Извлекаем значение
         value_el = item.select_one(".pi-data-value")
         if value_el is not None:
-            # Для списков (магия, аффилиации) собираем текст из ссылок
-            links = value_el.select("a")
-            if links:
-                link_texts = [a.get_text(strip=True) for a in links if a.get_text(strip=True)]
-                raw = ", ".join(list(dict.fromkeys(link_texts)))
-            else:
+            if source in ("gender", "hair color", "school", "occupation"):
                 raw = value_el.get_text(" ", strip=True)
+            else:
+                links = value_el.select("a")
+                if links:
+                    link_texts = [a.get_text(strip=True) for a in links if a.get_text(strip=True)]
+                    raw = ", ".join(list(dict.fromkeys(link_texts)))
+                else:
+                    raw = value_el.get_text(" ", strip=True)
+
+            if not raw:
+                img = value_el.select_one("img")
+                if img:
+                    raw = img.get("alt", "")
         else:
             raw = item.get_text(" ", strip=True)
 
         raw = _clean(raw)
-        
-        # Очистка пола от значков ♂/♀
+
         if source == "gender":
+            original = raw
             raw = re.sub(r"[^\w\s]", "", raw).strip()
+            if not raw:
+                if "♂" in original:
+                    raw = "Male"
+                elif "♀" in original:
+                    raw = "Female"
 
         if raw and source not in data:
             data[source] = raw
 
-    # Склеиваем дебют (в викитексте они разделены)
     debut_parts = []
     if "manga debut" in data:
         debut_parts.append(data["manga debut"])
@@ -62,7 +71,6 @@ def parse_infobox(html: str) -> dict[str, str]:
     if debut_parts:
         data["debut"] = ", ".join(debut_parts)
 
-    # Картинка
     img = aside.select_one("figure.pi-image img")
     if img is not None:
         url = img.get("data-src") or img.get("src")
@@ -71,11 +79,6 @@ def parse_infobox(html: str) -> dict[str, str]:
             data["image_url"] = url
 
     return data
-
-
-# ============================================================
-# НОРМАЛИЗАТОРЫ
-# ============================================================
 
 def _appearance(raw: str | None) -> dict | None:
     if not raw: return None
@@ -152,8 +155,9 @@ def normalize_character(
         except Exception:
             fields[col["key"]] = None
 
-    if isinstance(fields, dict) and not any(fields.values()):
-        return None, "no_data"
+    important_fields = ["affiliation", "occupation", "magic", "debut"]
+    if not any(fields.get(k) for k in important_fields):
+        return None, "no_important_data"
 
     aliases = []
     if page_title: aliases.append(page_title)

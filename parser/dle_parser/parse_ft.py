@@ -32,10 +32,15 @@ def parse_infobox(html: str) -> dict[str, str]:
 
         value_el = item.select_one(".pi-data-value")
         if value_el is not None:
-            # Для "простых" полей (gender/hair color/school/occupation) берём
-            # весь текст значения, а не только ссылки: иначе символы-иконки
-            # и ссылки-картинки дают пустой raw.
-            if source in ("gender", "hair color", "school", "occupation"):
+            for br in value_el.find_all("br"):
+                br.replace_with(", ")
+
+            if source in (
+                "gender", "hair color", "school",
+                "occupation", "previous occupation",
+                "affiliation", "previous affiliation",
+                "magic",
+                            ):
                 raw = value_el.get_text(" ", strip=True)
             else:
                 links = value_el.select("a")
@@ -68,6 +73,11 @@ def parse_infobox(html: str) -> dict[str, str]:
 
         if raw and source not in data:
             data[source] = raw
+
+    if "affiliation" not in data and "previous affiliation" in data:
+        data["affiliation"] = data["previous affiliation"]
+    if "occupation" not in data and "previous occupation" in data:
+        data["occupation"] = data["previous occupation"]
 
     # Склеиваем дебют (в викитексте они разделены)
     debut_parts = []

@@ -25,7 +25,7 @@ export function WorldSelection({ lastWorld, onSelect }: { lastWorld: FranchiseId
         {worlds.map(world => {
           const { icon: Icon, art, description } = visuals[world.id];
           const hasProgress = Boolean(readSaved(`anidle-game:${world.id}`));
-          return <button key={world.id} className="world-card" style={{ '--world-accent': world.accent, '--card-art': `url('/art/${art}')` } as CSSProperties} onClick={() => onSelect(world.id)} aria-label={`Открыть мир: ${world.name}`}>
+          return <button key={world.id} className="world-card" style={{ '--world-accent': world.accent, '--card-art': `url('${import.meta.env.BASE_URL}art/${art}')` } as CSSProperties} onClick={() => onSelect(world.id)} aria-label={`Открыть мир: ${world.name}`}>
             <span className="world-card-art" aria-hidden="true"/>
             <span className="world-card-top"><span className="world-card-icon"><Icon size={22}/></span><span className="world-card-tag">{hasProgress && world.id === lastWorld ? 'ПОСЛЕДНИЙ МИР' : world.japanese}</span></span>
             <span className="world-card-content"><span className="world-card-title">{world.name}</span><span className="world-card-description">{description}</span><span className="world-card-action">{hasProgress ? 'Вернуться в мир' : 'Войти в мир'}<ArrowRight size={18}/></span></span>

@@ -1,0 +1,39 @@
+.world-home { display:flex; flex-direction:column; min-height:100vh; background:radial-gradient(ellipse at 50% 0,#35353588,transparent 65%),#181818; --accent:#d0d0d0; }
+.world-home .site-header { width:100%; border-bottom-color:#ffffff12; }
+.world-home-main { max-width:1184px; width:calc(100% - 96px); margin:0 auto; padding:36px 0; }
+.world-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; scroll-margin-top:24px; }
+.world-card { --card-accent:#d0d0d0; position:relative; isolation:isolate; overflow:hidden; min-height:285px; border:1px solid #ffffff1c; border-radius:12px; padding:23px; background:#292929; color:#f0f0f0; text-align:left; display:flex; flex-direction:column; justify-content:space-between; box-shadow:0 8px 25px #0002; transition:border-color .2s,box-shadow .2s; }
+.world-card:hover,.world-card:focus-visible { --card-accent:var(--world-accent); border-color:var(--card-accent); box-shadow:0 8px 35px color-mix(in srgb,var(--card-accent) 15%,transparent); }
+.world-card:focus-visible { outline-color:var(--card-accent); }
+.world-card-art { position:absolute; z-index:-1; inset:0; background-image:linear-gradient(0deg,#202020fa 0%,#242424d9 40%,#24242466 100%),var(--card-art); background-size:cover; background-position:center; filter:grayscale(1); transition:transform .3s,filter .35s; }
+.world-card:is(:hover,:focus-visible) .world-card-art { transform:scale(1.035); filter:grayscale(0); }
+.world-card-top { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:37px; }
+.world-card-icon { display:grid; place-items:center; width:43px; height:43px; color:var(--card-accent); background:#242424e6; border:1px solid color-mix(in srgb,var(--card-accent) 40%,transparent); border-radius:12px; }
+.world-card-tag { padding:6px 8px; border-radius:5px; background:#202020cc; color:#d4d4d4; font-size:9px; letter-spacing:1px; }
+.world-card-content { display:flex; flex-direction:column; align-items:flex-start; }
+.world-card-title { font-weight:700; font-size:23px; letter-spacing:-.5px; }
+.world-card-description { color:#b8b8b8; font-size:12px; line-height:1.7; margin-top:8px; min-height:42px; }
+.world-card-action { display:flex; align-items:center; justify-content:space-between; width:100%; padding-top:16px; margin-top:16px; border-top:1px solid #ffffff20; color:var(--card-accent); font-size:12px; font-weight:650; }
+.world-navigation { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:20px; }
+.world-navigation>span { color:#aab6cb; font-size:11px; }
+@media(max-width:1000px) { .world-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .world-home-main { width:calc(100% - 48px); } }
+@media(max-width:600px) { .world-home-main { width:calc(100% - 32px); padding-top:32px; } .world-grid { grid-template-columns:1fr; gap:14px; } .world-card { min-height:265px; } .world-navigation { align-items:flex-start; flex-direction:column; gap:10px; } }
+
+/* The graphite palette reveals each world on hover or keyboard focus. */
+.world-card::after { content:''; position:absolute; inset:0; z-index:-1; pointer-events:none; background:linear-gradient(0deg,color-mix(in srgb,var(--world-accent) 22%,transparent),transparent 75%); opacity:0; transition:opacity .35s; }
+.world-card:is(:hover,:focus-visible)::after { opacity:1; }
+.world-card-icon { transition:color .3s,border-color .3s,background .3s; }
+.world-card-action,.world-card-title { transition:color .3s; }
+.world-card:is(:hover,:focus-visible) .world-card-title { color:var(--world-accent); }
+.world-card:is(:hover,:focus-visible) .world-card-icon { background:color-mix(in srgb,var(--world-accent) 16%,#242424); }
+
+/* Lime and olive branding without glow. */
+.world-home .wordmark { color:#c3dc58; text-shadow:none; }
+.world-home .wordmark-soft { color:#8c9d47; text-shadow:none; }
+.world-home .brand-icon { background:linear-gradient(135deg,#c3dc58,#798b3e); color:#263017; border:1px solid #9eb34a; box-shadow:none; }
+.world-home .beta { background:#8c9d4712; border-color:#7c8b4655; color:#a4b65c; text-shadow:none; }
+
+.home-footer { display:flex; align-items:center; justify-content:center; gap:12px; margin-top:auto; padding:24px 16px; border-top:1px solid #ffffff12; background:#141414; color:#a5a5a5; font-size:13px; }
+.telegram-group-link { display:inline-flex; align-items:center; gap:8px; color:#d4d4d4; padding:6px 8px; border-radius:8px; transition:color .2s,background .2s; }
+.telegram-group-link:hover { color:#62c4f5; background:#2aabee12; }
+.telegram-logo { width:28px; height:28px; flex-shrink:0; }

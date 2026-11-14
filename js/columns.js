@@ -1,3 +1,4 @@
+import { translateFairyTailValue } from './fairy-tail-localization.js';
 export function debutEpisode(first) { const raw=first?.episode; const value=typeof raw==='number'?raw:typeof raw==='string'&&/^\d+$/.test(raw.trim())?Number(raw):NaN; return Number.isSafeInteger(value)&&value>0?value:null; }
 
 export const ICON = { correct: '✔', close: '≈', wrong: '✖', up: '↑', down: '↓' };
@@ -13,6 +14,22 @@ const empty = v => v == null || (Array.isArray(v) && !v.length);
 const cap = s => (s ? String(s)[0].toUpperCase() + String(s).slice(1) : s);
 
 const TYPES = {
+  ftEnum: {
+    format: (v, o) => translateFairyTailValue(o.key, v),
+    compare: (g, a) => TYPES.enum.compare(g, a),
+  },
+  ftList: {
+    format: (v, o) => empty(v) ? 'Не указано' : values(v).map(value => translateFairyTailValue(o.key, value)).join(', '),
+    compare: (g, a) => TYPES.list.compare(g, a),
+  },
+  ftArc: {
+    format: v => v?.arc || 'Арка не указана',
+    compare(g, a) {
+      const left = g?.arcOrder, right = a?.arcOrder;
+      if (left == null || right == null) return left == null && right == null ? 'correct' : 'wrong';
+      return left === right ? 'correct' : left < right ? 'up' : 'down';
+    },
+  },
  episode: {
   format:v=>debutEpisode(v)===null?'Не указано':'Серия '+debutEpisode(v),
   compare(g,a){const x=debutEpisode(g),y=debutEpisode(a);return x===y?'correct':x===null||y===null?'wrong':x<y?'up':'down';}
@@ -62,10 +79,12 @@ const TYPES = {
 };
 
 export const GAMES = {
+  // ХВОСТИК
  ft:{name:'Fairy Tail',title:'AnimeDle — Fairy Tail',dataDir:'dataft',columns:[
- {key:'gender',label:'Пол',type:'enum'},{key:'affiliation',label:'Гильдия',type:'list'},
- {key:'occupation',label:'Занятие',type:'list'},{key:'magic',label:'Магия',type:'list'},
- {key:'debut',label:'Первое появление',type:'episode'}]},
+ {key:'gender',label:'Пол',type:'ftEnum'},{key:'affiliation',label:'Гильдия',type:'ftList'},
+ {key:'occupation',label:'Занятие',type:'ftList'},{key:'magic',label:'Магия',type:'ftList'},
+ {key:'debut',label:'Арка появления',type:'ftArc'}]},
+//  ПРИЗОНСКУЛ
  ps:{name:'Prison School',title:'AnimeDle — Prison School',dataDir:'dataps',columns:[
  {key:'gender',label:'Пол',type:'enum'},{key:'hair_color',label:'Цвет волос',type:'enum'},
  {key:'school',label:'Школа',type:'list'},{key:'occupation',label:'Занятие',type:'list'}]},

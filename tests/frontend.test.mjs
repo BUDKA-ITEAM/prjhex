@@ -67,6 +67,121 @@ try {
  assert.equal((await api(`/games/${game.id}`)).status,'won');
  const final=await api('/bootstrap');assert.equal(final.stats.played,2);assert.equal(final.stats.won,1);
  }
+ // Saved gender cells must follow the updated export without resetting progress or statistics.
+ const {normalizeFairyTailMagic}=await import('../js/fairy-tail-magic.js');
+ const natsu=catalogs.dataft.find(c=>c.id==='Natsu_Dragneel');
+ const originalMagic=[...natsu.fields.magic];
+ assert.deepEqual(normalizeFairyTailMagic(natsu).fields.magic,['dragon slayer magic','transformation magic']);
+ assert.deepEqual(natsu.fields.magic,originalMagic);
+ for(const profile of catalogs.dataft){
+   const normalized=normalizeFairyTailMagic(profile);
+   assert(normalized.fields.magic.length<=3);
+   assert.equal(normalized.fields.magic.length===0,!profile.fields.magic?.length,profile.id+': magic presence changed');
+   if(/_\([^)]+\)$/.test(profile.id))assert(normalized.name.endsWith(profile.id.slice(profile.id.lastIndexOf('(')).replaceAll('_',' ')),profile.id);
+   assert.equal(new Set(normalized.fields.magic).size,normalized.fields.magic.length);
+   assert.deepEqual(normalizeFairyTailMagic(normalized),normalized);
+ }
+ const gajeel=normalizeFairyTailMagic(catalogs.dataft.find(c=>c.id==='Gajeel_Redfox'));
+ assert.deepEqual(gajeel.fields.magic,['dragon slayer magic']);
+ const edolasGajeel=normalizeFairyTailMagic(catalogs.dataft.find(c=>c.id==='Gajeel_(Edolas)'));
+ assert.equal(edolasGajeel.name,'Gajeel (Edolas)');assert.deepEqual(edolasGajeel.fields.magic,[]);
+ const ftSearch=await api('/characters?worldId=fairy-tail&q=Gajeel');
+ assert.equal(ftSearch.characters.find(c=>c.id==='Gajeel_(Edolas)').name,'Gajeel (Edolas)');
+ assert.equal(ftSearch.characters.find(c=>c.id==='Gajeel_Redfox').name,'Gajeel Redfox');
+ const magicCol=GAMES.ft.columns.find(c=>c.key==='magic');
+ const normalizedNatsu=normalizeFairyTailMagic(natsu);
+ const mixedDragons=normalizeFairyTailMagic({id:'test',name:'Test',fields:{magic:['fire dragon slayer magic','iron dragon slayer magic','lightning dragon mode','sky dragon slayer magic','transformation magic']}});
+ assert.deepEqual(mixedDragons.fields.magic,['dragon slayer magic','transformation magic']);
+ assert.equal(compareField(magicCol,normalizedNatsu,gajeel),'close');
+ const wendy=normalizeFairyTailMagic(catalogs.dataft.find(c=>c.id==='Wendy_Marvell'));
+ assert(wendy.fields.magic.includes('dragon slayer magic'));
+ assert.equal(compareField(magicCol,gajeel,{fields:{magic:['dragon slayer magic']}}),'correct');
+ for(const profile of catalogs.dataft)assert(normalizeFairyTailMagic(profile).fields.magic.every(m=>!m.includes('dragon slayer magic')||m==='dragon slayer magic'),profile.id);
+ assert.equal(compareField(magicCol,normalizedNatsu,{fields:{magic:['transformation magic']}}),'close');
+ assert.equal(compareField(magicCol,normalizedNatsu,{fields:{magic:['dragon slayer magic']}}),'close');
+ assert.equal(compareField(magicCol,normalizedNatsu,{fields:{magic:['water magic']}}),'wrong');
+ assert.deepEqual(normalizeFairyTailMagic({id:'test',fields:{magic:['ice-make','molding magic','thought projection']}}).fields.magic,['molding magic']);
+ const {fairyTailTranslations,translateFairyTailValue}=await import('../js/fairy-tail-localization.js');
+ const {normalizeFairyTailDebut,fairyTailArcs,fairyTailQuestArcs}=await import('../js/fairy-tail-arcs.js');
+ for(const row of catalogs.dataft){
+   const profile=normalizeFairyTailDebut(normalizeFairyTailMagic(row));
+   for(const key of ['gender','affiliation','occupation','magic']){
+     const values=Array.isArray(profile.fields[key])?profile.fields[key]:[profile.fields[key]];
+     for(const value of values.filter(Boolean)){
+       assert(fairyTailTranslations[key][String(value).toLowerCase()],key+': '+value);
+       assert.match(translateFairyTailValue(key,value),/[А-Яа-яЁё]/);
+     }
+   }
+   assert.deepEqual(normalizeFairyTailDebut(profile),profile);
+   const debutCol=GAMES.ft.columns.find(c=>c.key==='debut');
+   assert.doesNotMatch(formatField(debutCol,profile.fields.debut,true),/Серия|Episode|chapter|гл\./i);
+   if(profile.fields.debut?.episode)assert(profile.fields.debut.arc,row.id+': unmapped episode');
+ }
+ const debutCol=GAMES.ft.columns.find(c=>c.key==='debut');
+ const ftProfile=id=>normalizeFairyTailDebut(normalizeFairyTailMagic(catalogs.dataft.find(c=>c.id===id)));
+ assert.equal(ftProfile('Natsu_Dragneel').fields.debut.arc,'Макао');
+ assert.equal(ftProfile('Gajeel_Redfox').fields.debut.arc,'Фантом Лорд');
+ assert.equal(ftProfile('Gajeel_(Edolas)').fields.debut.arc,'Эдолас');
+ assert.equal(ftProfile('Mercphobia').fields.debut.arc,'Столетний квест: Бог-дракон Воды');
+ assert.equal(ftProfile('Wraith').fields.debut.arc,'Столетний квест: Бог-дракон Древа');
+ assert.equal(ftProfile('Yoko').fields.debut.arc,'Столетний квест: Бог-дракон Луны');
+ assert.equal(ftProfile('Kirin').fields.debut.arc,'Столетний квест: Великий лабиринт');
+ assert.equal(ftProfile('Athena_II').fields.debut.arc,'Столетний квест: Золотая Сова');
+ assert.equal(ftProfile('Faris_(Earth_Land)').fields.debut.arc,'Столетний квест: Истинный фестиваль Короля драконов');
+ assert.equal(ftProfile('Zera').fields.debut.arc,'Хвост Феи: Начало');
+ assert.equal(compareField(debutCol,ftProfile('Natsu_Dragneel'),ftProfile('Gray_Fullbuster')),'correct');
+ assert.equal(compareField(debutCol,ftProfile('Natsu_Dragneel'),ftProfile('Mercphobia')),'up');
+ assert.equal(compareField(debutCol,ftProfile('Mercphobia'),ftProfile('Natsu_Dragneel')),'down');
+ for(const arc of [...fairyTailArcs,...fairyTailQuestArcs]){
+   if(arc.start!==null)for(const episode of [arc.start,arc.end])assert.equal(normalizeFairyTailDebut({id:'boundary',fields:{debut:{episode,series:arc.series}}}).fields.debut.arc,arc.name);
+   if(arc.chapterStart!==null)for(const chapter of [arc.chapterStart,arc.chapterEnd])assert.equal(normalizeFairyTailDebut({id:'boundary',fields:{debut:{chapter,series:arc.series}}}).fields.debut.arc,arc.name);
+ }
+ console.log('PASS: complete Russian Fairy Tail attribute coverage, arc boundaries and separate sequel numbering');
+ const ftGender=GAMES.ft.columns.find(c=>c.key==='gender');
+ for(const [id,gender] of [['Natsu_Dragneel','Male'],['Lucy_Heartfilia','Female'],['Erza_Scarlet','Female']]){
+   assert.equal(catalogs.dataft.find(c=>c.id===id).fields.gender,gender);
+ }
+ let ftGame=await api('/games',{method:'POST',body:JSON.stringify({worldId:'fairy-tail',restart:true})});
+ let ftSaved=JSON.parse(readSaved('game:fairy-tail'));
+ ftSaved.target='Natsu_Dragneel';memory.set('prjhex-ui:game:fairy-tail',JSON.stringify(ftSaved));
+ ftGame=await api('/games/'+ftGame.id+'/guesses',{method:'POST',body:JSON.stringify({characterId:'Lucy_Heartfilia'})});
+ const ftStats=readSaved('stats:fairy-tail');
+ for(const route of ['/games/'+ftGame.id,'/games']){
+   ftSaved=JSON.parse(readSaved('game:fairy-tail'));
+   ftSaved.view.guesses[0].character.name='outdated display name';
+   ftSaved.view.debutHint='Серия 1';
+   Object.assign(ftSaved.view.guesses[0].cells.find(c=>c.key==='debut'),{value:'Серия 1',match:'wrong',direction:'down'});
+   Object.assign(ftSaved.view.guesses[0].cells.find(c=>c.key==='affiliation'),{value:'Fairy tail'});
+   Object.assign(ftSaved.view.guesses[0].cells.find(c=>c.key==='occupation'),{value:'Mage'});
+   Object.assign(ftSaved.view.guesses[0].cells.find(c=>c.key==='gender'),{value:'—',match:'correct'});
+   Object.assign(ftSaved.view.guesses[0].cells.find(c=>c.key==='magic'),{value:'old detailed magic',match:'correct'});
+   memory.set('prjhex-ui:game:fairy-tail',JSON.stringify(ftSaved));
+   const restored=await api(route,route==='/games'?{method:'POST',body:JSON.stringify({worldId:'fairy-tail'})}:{});
+   assert.equal(restored.id,ftGame.id);assert.equal(restored.guesses.length,1);assert.equal(restored.status,'playing');
+   const cell=restored.guesses[0].cells.find(c=>c.key==='gender');
+   assert.equal(cell.value,formatField(ftGender,'Female',true));assert.equal(cell.match,'wrong');
+   assert.equal(restored.guesses[0].character.name,'Lucy Heartfilia');
+   assert.equal(restored.debutHint,'Макао');
+   assert.equal(restored.criteria.find(c=>c.key==='debut').label,'Арка появления');
+   const debutCell=restored.guesses[0].cells.find(c=>c.key==='debut');
+   assert.equal(debutCell.value,'Макао');assert.equal(debutCell.match,'correct');assert.equal(debutCell.direction,undefined);
+   assert.equal(restored.guesses[0].cells.find(c=>c.key==='affiliation').value,'Хвост Феи');
+   assert.equal(restored.guesses[0].cells.find(c=>c.key==='occupation').value,'Маг, писатель');
+   const lucy=normalizeFairyTailMagic(catalogs.dataft.find(c=>c.id==='Lucy_Heartfilia'));
+   const magicCell=restored.guesses[0].cells.find(c=>c.key==='magic');
+   assert.equal(magicCell.value,formatField(magicCol,lucy.fields.magic,true));
+   const expectedMatch=compareField(magicCol,lucy,normalizedNatsu);
+   assert.equal(magicCell.match,expectedMatch==='close'?'partial':expectedMatch);
+   assert.equal(readSaved('stats:fairy-tail'),ftStats);
+   assert.equal(JSON.parse(readSaved('game:fairy-tail')).view.guesses[0].cells.find(c=>c.key==='gender').value,cell.value);
+ }
+ ftSaved=JSON.parse(readSaved('game:fairy-tail'));ftSaved.target='__removed_character__';
+ memory.set('prjhex-ui:game:fairy-tail',JSON.stringify(ftSaved));
+ await assert.rejects(api('/games/'+ftGame.id),e=>e.code==='GAME_NEEDS_RESTART');
+ const replacement=await api('/games',{method:'POST',body:JSON.stringify({worldId:'fairy-tail'})});
+ assert.notEqual(replacement.id,ftGame.id);assert.equal(replacement.guesses.length,0);
+ assert.equal(readSaved('stats:fairy-tail'),ftStats);
+ console.log('PASS: updated Fairy Tail genders, saved attempt refresh, removed target recovery');
  const ids=new Set();
  for(const world of Object.keys(folders)){
   const saved=JSON.parse(readSaved('game:'+world));ids.add(saved.view.id);

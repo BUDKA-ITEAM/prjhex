@@ -4,12 +4,12 @@ import { WorldBanner } from './WorldBanner.js';
 import { NarutoBanner } from './NarutoBanner.js';
 import { NatureIcons } from './NatureIcons.js';
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
-import { Anchor, ArrowDown, ArrowRight, ArrowUp, Check, CircleHelp, Copy, Database, Flame, Leaf, LoaderCircle, RotateCcw, Search, Shield, Sparkles, Target, Trophy, UserRound, X, Zap } from 'lucide-react';
+import { ArrowLeft, ArrowDown, ArrowRight, ArrowUp, Check, CircleHelp, Copy, Database, Flame, LoaderCircle, RotateCcw, Search, Shield, Sparkles, Target, Trophy, UserRound, X } from 'lucide-react';
 import { worlds, worldById, type Bootstrap, type Cell, type CharacterSummary, type Criterion, type FranchiseId, type GameView } from '../shared/game.js';
 import { api, readSaved, save, RequestError } from './api.js';
+import { WorldSelection } from './WorldSelection.js';
 
 
-const symbols: Record<FranchiseId, typeof Anchor> = { 'one-piece':Anchor,naruto:Leaf,'fairy-tail':Flame,dxd:Zap,'girls-und-panzer':Shield,'prison-school':Shield };
 const matchLabel = { correct:'Совпадение',partial:'Частично',wrong:'Не совпадает',unknown:'Неизвестно' };
 const initialWorld = (): FranchiseId => { const saved = readSaved('anidle-world'); return worlds.find(w => w.id === saved)?.id ?? 'one-piece'; };
 function Avatar({ character, large = false }: { character: CharacterSummary; large?: boolean }) {
@@ -44,7 +44,13 @@ function Modal({ title, children, onClose, wide = false }: { title: string; chil
   </dialog>;
 }
 export default function App() {
-  const [worldId,setWorldId] = useState<FranchiseId>(initialWorld);
+  const [worldId, setWorldId] = useState<FranchiseId | null>(null);
+  return worldId
+    ? <WorldGame key={worldId} worldId={worldId} onLeave={() => setWorldId(null)}/>
+    : <WorldSelection lastWorld={initialWorld()} onSelect={setWorldId}/>;
+}
+
+function WorldGame({ worldId, onLeave }: { worldId: FranchiseId; onLeave: () => void }) {
   const world = worldById(worldId);
   const [bootstrap,setBootstrap] = useState<Bootstrap | null>(null);
   const [storedGame,setGame] = useState<GameView | null>(null);
@@ -160,7 +166,7 @@ export default function App() {
   return <div className="app-shell relative isolate min-h-screen overflow-hidden" data-world={worldId} style={{'--accent':world.accent} as CSSProperties}>
     <div className="ambient ambient-one"/><div className="ambient ambient-two"/>
     <header className="site-header">
-      <a className="wordmark" href="#" aria-label="ANIDLE, главная" onClick={e => e.preventDefault()}><span className="brand-icon"><Sparkles size={19}/></span>ANI<span className="wordmark-soft">DLE</span><span className="beta">BETA</span></a>
+      <a className="wordmark" href="#" aria-label="ANIDLE, главная" onClick={e => { e.preventDefault(); if (!mutation.current) onLeave(); }}><span className="brand-icon"><Sparkles size={19}/></span>ANI<span className="wordmark-soft">DLE</span><span className="beta">BETA</span></a>
       <nav className="header-actions flex items-center gap-6" aria-label="Информация об игре">
         <button className="text-button" aria-label="База персонажей" onClick={() => setModal('catalog')}><Database size={16}/><span>База персонажей</span></button>
         <span className="header-divider"/>
@@ -168,12 +174,10 @@ export default function App() {
       </nav>
     </header>
     <main className="main-content">
-      <div className="intro-line"><span className="tiny-label"><span className="pulse-dot"/> ЧЕТЫРЕ МИРА. ТЫСЯЧИ ИСТОРИЙ.</span><span className="intro-right">Один загаданный герой.</span></div>
-      <section className="world-selector" aria-label="Выберите аниме">
-        {worlds.map(w => { const Icon = symbols[w.id]; return <button key={w.id} className={`world-tab ${w.id === worldId ? 'active' : ''}`} style={{'--tab-accent':w.accent} as CSSProperties} aria-pressed={w.id === worldId} disabled={busy} onClick={() => setWorldId(w.id)}>
-          <Icon size={21}/><span>{w.name}</span>{w.id === worldId ? <span className="tab-dot"/> : <span className="tab-number">{w.symbol}</span>}
-        </button>; })}
-      </section>
+      <div className="world-navigation">
+        <button className="secondary-button" onClick={onLeave} disabled={busy}><ArrowLeft size={17}/> К выбору мира</button>
+        <span>Прогресс этого мира сохраняется в браузере</span>
+      </div>
       {worldId === 'naruto' ? <NarutoBanner failedAttempts={failedAttempts} playing={game?.status === 'playing'} busy={busy || loading} hintRevealed={Boolean(game?.debutHint)} onHint={()=>void revealHint()} onSurrender={()=>void surrender()}/> : worldId === 'one-piece' ? <OnePieceBanner failedAttempts={failedAttempts} playing={game?.status === 'playing'} busy={busy || loading} hintRevealed={Boolean(game?.debutHint)} onHint={()=>void revealHint()} onSurrender={()=>void surrender()}/> : <WorldBanner name={world.name} failedAttempts={failedAttempts} playing={game?.status === 'playing'} busy={busy || loading} hintRevealed={Boolean(game?.debutHint)} onHint={()=>void revealHint()} onSurrender={()=>void surrender()}/>}
 
       <section className="play-area" aria-label="Игра">

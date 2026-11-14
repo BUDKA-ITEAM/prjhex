@@ -1,3 +1,5 @@
+import { normalizeFairyTailDebut } from './fairy-tail-arcs.js';
+import { normalizeFairyTailMagic } from './fairy-tail-magic.js';
 import { currentGame, compareField, formatField, ICON, STATUS_TEXT } from './columns.js';
 import { mskDate, msToMidnight, recordFirstAttempt, recordWin } from './stats.js';
 
@@ -21,8 +23,8 @@ const getJSON = async (u, opts) => {
 };
 
 async function loadChars() {
-  // ':s2' — версия набора полей в кэше (в s2 появился image_url). Меняй при изменении map ниже.
-  const v = (await getJSON(`${GAME.dataDir}/version.json`, { cache: 'no-cache' })).version + ':s2';
+  // s6 includes the debut arc and work metadata for Fairy Tail.
+  const v = (await getJSON(`${GAME.dataDir}/version.json`, { cache: 'no-cache' })).version + ':s6';
   try {
     if (localStorage.getItem('animedle:characters-version') === v) {
       const c = localStorage.getItem('animedle:characters');
@@ -31,7 +33,8 @@ async function loadChars() {
   } catch {}
   // url / raw игре не нужны — не тащим их в память и кэш
   const data = (await getJSON(`${GAME.dataDir}/characters-full.json`))
-    .map(({ id, name, image_url, fields }) => ({ id, name, image_url, fields }));
+    .map(({ id, name, image_url, fields }) => ({ id, name, image_url, fields }))
+    .map(profile => GAME.dataDir === 'dataft' ? normalizeFairyTailDebut(normalizeFairyTailMagic(profile)) : profile);
   try {
     localStorage.setItem('animedle:characters', JSON.stringify(data));
     localStorage.setItem('animedle:characters-version', v);

@@ -558,3 +558,89 @@ h1 { font-family:'Arial Black','Segoe UI',Arial,sans-serif; font-size:clamp(42px
 :is([data-world="prison-school"],[data-world="fairy-tail"]) .comparison-table .character-cell { display:flex; flex-direction:column; flex-wrap:nowrap; gap:0; padding:0; min-height:144px; overflow:hidden; }
 :is([data-world="prison-school"],[data-world="fairy-tail"]) .comparison-table .attempt-index { display:none; }
 :is([data-world="prison-school"],[data-world="fairy-tail"]) .comparison-table .character-name { position:static; flex:none; padding:5px 4px; font-size:11px; line-height:1.35; text-align:center; white-space:normal; overflow-wrap:anywhere; background:#ffffff08; }
+/* Fairy Tail: guild quest board. Outer banner dimensions come from the shared rule. */
+.app-shell[data-world="fairy-tail"] { --accent:#b52c40!important; --world-base:#e8e9ed; --world-backdrop:linear-gradient(#f1f2f612,#e9eaef30),url('/art/fairy-tail-background-v1.png'); color:#30333d; color-scheme:light; }
+[data-world="fairy-tail"] .site-header { background:#eeeff3f2; border-color:#c4c7d2; }
+[data-world="fairy-tail"] .brand-icon { background:#b52c40; color:#ffffff; }
+[data-world="fairy-tail"] .wordmark-soft { color:#a72538; }
+[data-world="fairy-tail"] .text-button { color:#5b3441; }
+[data-world="fairy-tail"] .text-button:hover { color:#a51e32; }
+[data-world="fairy-tail"] .world-tab { background:#eeeff3f2; border-color:#c5c8d2; color:#454751; }
+[data-world="fairy-tail"] .world-tab svg { color:#8e4d5b; }
+[data-world="fairy-tail"] .world-tab.active { background:#b52c40; border-color:#8e2033; color:#ffffff; }
+[data-world="fairy-tail"] .world-tab.active svg { color:#ffffff; }
+.app-shell[data-world="fairy-tail"] .world-banner { position:relative; display:block; padding:0; border:0; border-radius:9px; background:url('/art/fairy-tail-banner-v1.png') center/100% 100% no-repeat; box-shadow:0 12px 28px #10080b66; }
+[data-world="fairy-tail"] .world-banner h1 { position:absolute; top:5%; left:22%; width:56%; height:14%; display:flex; flex-direction:column; justify-content:center; margin:0; color:#4a281e; font-family:Georgia,'Times New Roman',serif; font-size:clamp(11px,2.7vw,21px); line-height:1.12; letter-spacing:0; text-shadow:0 1px 0 #fff7e2; }
+[data-world="fairy-tail"] .world-banner-cards { position:absolute; top:70%; bottom:10%; left:6%; right:6%; gap:7%; }
+[data-world="fairy-tail"] .world-banner-cards button { display:grid; place-items:center; padding:4px; border:0; border-radius:4px; background:transparent; color:#4a281e; font-family:Georgia,'Times New Roman',serif; font-size:clamp(11px,2.1vw,16px); font-weight:700; line-height:1.25; }
+[data-world="fairy-tail"] .world-banner-cards button:disabled { opacity:1; }
+[data-world="fairy-tail"] .world-banner-cards button:not(:disabled):hover { background:#b52c4030; box-shadow:inset 0 0 18px #aa4b3338; }
+[data-world="fairy-tail"] .world-banner-cards button:focus-visible { outline:3px solid #a84131; outline-offset:-3px; }
+[data-world="fairy-tail"] .world-banner-cards strong { margin-top:6px; }
+[data-world="fairy-tail"] .guess-form { background:#f2f3f6f5; border:3px solid #b52c40; border-radius:6px; box-shadow:inset 0 0 0 2px #d9dce4,0 4px 12px #10080b40; }
+[data-world="fairy-tail"] .guess-form.is-focused { border-color:#ce4054; box-shadow:0 0 0 4px #b52c4020; }
+[data-world="fairy-tail"] .guess-form input { color:#30333d; }
+[data-world="fairy-tail"] .guess-form input::placeholder { color:#747783; }
+[data-world="fairy-tail"] .guess-button { background:#b52c40; color:#ffffff; }
+[data-world="fairy-tail"] .search-dropdown { background:#f4f5f8; border-color:#bec1cc; }
+[data-world="fairy-tail"] .character-option { color:#30333d; }
+[data-world="fairy-tail"] .character-option.selected,[data-world="fairy-tail"] .character-option:hover { background:#b52c4014; }
+[data-world="fairy-tail"] .character-option small,[data-world="fairy-tail"] .search-message { color:#626672; }
+[data-world="fairy-tail"] .table-section { padding:14px; border:1px solid #b9bdca; border-radius:8px; background:#eeeff3ed; box-shadow:inset 0 2px #ffffff90; }
+[data-world="fairy-tail"] .table-scroll { border-color:#c5c8d2; scrollbar-color:#b52c40 #e4e6ec; }
+[data-world="fairy-tail"] .comparison-table { border-spacing:0 6px; }
+[data-world="fairy-tail"] .comparison-table th { height:72px; padding:5px 5px 17px; color:#853044; font-size:16px; line-height:1.35; }
+[data-world="fairy-tail"] .comparison-table td { height:1px; padding:0 2px; }
+[data-world="fairy-tail"] .comparison-table .character-cell { border-color:#babeca; border-radius:4px; background:#e3e5ec; color:#30333d; }
+[data-world="fairy-tail"] .comparison-table .character-name { background:#d8dbe4; }
+[data-world="fairy-tail"] .comparison-table .trait-cell { min-height:144px; padding:12px 3px 6px; border-width:2px; font-size:15px; font-weight:700; line-height:1.18; }
+[data-world="fairy-tail"] .trait-cell.correct { background:#326344; border-color:#7daf79; color:#f0ffe8; }
+[data-world="fairy-tail"] .trait-cell.wrong { background:#b93649; border-color:#e27888; color:#ffffff; }
+[data-world="fairy-tail"] .trait-cell.partial,[data-world="fairy-tail"] .trait-cell.unknown { background:#795524; border-color:#d6a64b; color:#fff1c2; }
+[data-world="fairy-tail"] .comparison-table .direction { width:24px; height:24px; stroke-width:4; }
+[data-world="fairy-tail"] .stats-section { border:1px solid #bfc3ce; border-top:3px solid #b52c40; border-radius:6px; background:linear-gradient(110deg,#f2f3f6f5,#e4e6edf5,#f2f3f6f5); color:#30333d; }
+[data-world="fairy-tail"] .stats-icon { background:#b52c4012; color:#b52c40; }
+[data-world="fairy-tail"] .stats-intro p,[data-world="fairy-tail"] .stat>span { color:#646876; }
+[data-world="fairy-tail"] .stat { border-color:#bfc3ce; }
+[data-world="fairy-tail"] .stat strong { color:#a72538; }
+[data-world="fairy-tail"] .bottom-strip { color:#343744; }
+[data-world="fairy-tail"] .debut-hint { border-color:#b52c40; background:#f1f2f6; color:#853044; }
+@media(max-width:760px) {
+ [data-world="fairy-tail"] .table-section { padding:6px 2px; }
+ [data-world="fairy-tail"] .comparison-table { min-width:800px; }
+ [data-world="fairy-tail"] .comparison-table th { font-size:14px; }
+ [data-world="fairy-tail"] .comparison-table .trait-cell { font-size:13px; }
+}
+.world-banner h1 > span { display:block; }
+[data-world="fairy-tail"] .world-banner h1 { left:19%; width:62%; font-size:clamp(10px,2.3vw,18px); }
+[data-world="fairy-tail"] .tab-dot { background:#ffffff; }
+/* Neutral surfaces and red accents stay legible over the full-color artwork. */
+[data-world="fairy-tail"] .ambient { display:none; }
+[data-world="fairy-tail"] .beta { border-color:#c6c9d2; color:#626672; }
+[data-world="fairy-tail"] .header-divider { background:#c6c9d2; }
+[data-world="fairy-tail"] .restart-button { background:#f0f1f5f5; color:#a72538; }
+[data-world="fairy-tail"] .restart-button:not(:disabled):hover { background:#f8e8ec; }
+[data-world="fairy-tail"] .comparison-table .character-cell .avatar.avatar-placeholder { background:linear-gradient(145deg,#f1f2f6,#d9dce5); color:#797e8e; }
+[data-world="fairy-tail"] .stats-intro h2 { color:#30333d; }
+[data-world="fairy-tail"] .bottom-strip { width:fit-content; max-width:100%; padding:7px 10px; border-radius:4px; background:#eeeff3ed; }
+[data-world="fairy-tail"] .victory,[data-world="fairy-tail"] .surrender-result { background:#f0f1f5f5; color:#30333d; border-color:#b9bdca; }
+[data-world="fairy-tail"] .modal { background:#f1f2f6; color:#30333d; border-color:#bdc1cc; color-scheme:light; }
+[data-world="fairy-tail"] .modal p,[data-world="fairy-tail"] .modal li { color:#575c69; }
+[data-world="fairy-tail"] .primary-button { background:#b52c40; color:#fff; }
+[data-world="fairy-tail"] .secondary-button { background:#e5e7ee; color:#853044; border-color:#bdc1cc; }
+[data-world="fairy-tail"] .icon-button { color:#853044; }
+/* All character portraits use a square viewport, independent of source proportions. */
+.app-shell { --portrait-size:160px; }
+.app-shell .comparison-table .character-column { width:calc(var(--portrait-size) + 10px); }
+.app-shell .comparison-table .character-cell,
+.app-shell .comparison-table .character-cell:has(.avatar-placeholder) { display:flex; flex-direction:column; flex-wrap:nowrap; align-items:center; justify-content:flex-start; width:calc(var(--portrait-size) + 2px); max-width:100%; min-height:0; padding:0; gap:0; margin-inline:auto; }
+.app-shell .comparison-table .character-cell .avatar:is(.avatar,.avatar-placeholder) { position:relative; display:grid; place-items:center; flex:none; align-self:center; width:var(--portrait-size); max-width:100%; min-width:0; height:auto; min-height:0; max-height:none; aspect-ratio:1; overflow:hidden; border:0; border-radius:0; }
+.app-shell .comparison-table .character-cell .avatar img { position:absolute; inset:0; display:block; width:100%; height:100%; min-width:0; min-height:0; max-width:100%; max-height:100%; object-fit:contain; object-position:center; }
+.app-shell .comparison-table .attempt-index { display:none; }
+.app-shell .comparison-table .character-cell .character-name { position:static; flex:none; width:100%; min-width:0; max-width:100%; padding:5px 4px; text-align:center; overflow-wrap:anywhere; }
+.app-shell .comparison-table tbody td { height:1px; vertical-align:top; }
+.app-shell .comparison-table .trait-cell { height:100%; }
+.app-shell .catalog-portrait { position:relative; width:var(--portrait-size); max-width:100%; height:auto; aspect-ratio:1; flex:none; overflow:hidden; }
+.app-shell .catalog-portrait img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; object-position:center; }
+.app-shell .character-option .avatar { width:40px; height:40px; aspect-ratio:1; }
+.app-shell .avatar.avatar-large { width:80px; height:80px; aspect-ratio:1; }

@@ -12,6 +12,7 @@ def parse_infobox(html: str) -> dict[str, str]:
     if not aside:
         return {}
 
+    # Сносим служебные элементы
     for sel in (
         "sup.reference",
         ".mw-editsection",
@@ -31,6 +32,9 @@ def parse_infobox(html: str) -> dict[str, str]:
 
         value_el = item.select_one(".pi-data-value")
         if value_el is not None:
+            # Для "простых" полей (gender/hair color/school/occupation) берём
+            # весь текст значения, а не только ссылки: иначе символы-иконки
+            # и ссылки-картинки дают пустой raw.
             if source in ("gender", "hair color", "school", "occupation"):
                 raw = value_el.get_text(" ", strip=True)
             else:
@@ -41,6 +45,7 @@ def parse_infobox(html: str) -> dict[str, str]:
                 else:
                     raw = value_el.get_text(" ", strip=True)
 
+            # Fallback: если значение — чистая картинка, берём alt
             if not raw:
                 img = value_el.select_one("img")
                 if img:
@@ -50,6 +55,8 @@ def parse_infobox(html: str) -> dict[str, str]:
 
         raw = _clean(raw)
 
+        # Очистка пола от значков ♂/♀ — но с маппингом на случай,
+        # если после очистки ничего не осталось (был только символ).
         if source == "gender":
             original = raw
             raw = re.sub(r"[^\w\s]", "", raw).strip()
@@ -62,6 +69,7 @@ def parse_infobox(html: str) -> dict[str, str]:
         if raw and source not in data:
             data[source] = raw
 
+    # Склеиваем дебют (в викитексте они разделены)
     debut_parts = []
     if "manga debut" in data:
         debut_parts.append(data["manga debut"])
@@ -71,6 +79,7 @@ def parse_infobox(html: str) -> dict[str, str]:
     if debut_parts:
         data["debut"] = ", ".join(debut_parts)
 
+    # Картинка
     img = aside.select_one("figure.pi-image img")
     if img is not None:
         url = img.get("data-src") or img.get("src")
@@ -79,6 +88,11 @@ def parse_infobox(html: str) -> dict[str, str]:
             data["image_url"] = url
 
     return data
+
+
+# ============================================================
+# НОРМАЛИЗАТОРЫ
+# ============================================================
 
 def _appearance(raw: str | None) -> dict | None:
     if not raw: return None
